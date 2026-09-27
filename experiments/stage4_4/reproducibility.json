@@ -1,0 +1,21 @@
+{
+  "runs_compared": [
+    "run1.json",
+    "run2.json"
+  ],
+  "runtime_seconds": {
+    "run1": 582.648,
+    "run2": 674.202
+  },
+  "sample_id_count": 300,
+  "sample_sha256": "66d963beac3452316b714ca67943f367bd17e587cb7a451efaba70b000fe794c",
+  "checks": {
+    "all_result_fields_except_tag_runtime_identical": true,
+    "stage43_gates_passed_both": true,
+    "sample_hash_and_300_ids_match": true,
+    "disjoint_from_stage43": true,
+    "per_strategy_recovered_hashes_identical": true,
+    "candidate_distributions_and_zero_bins_identical": true
+  },
+  "passed": true
+}

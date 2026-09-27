@@ -1,0 +1,48 @@
+# Official challenge data is local only.
+student_resource/dataset/
+
+# Generated submission outputs and data exports.
+output/
+*.tsv
+*.csv
+*.zip
+*.parquet
+
+# Local databases and generated binary artifacts.
+*.sqlite
+*.sqlite3
+*.db
+*.wal
+*.shm
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.tmp
+*.temp
+
+# Secrets and credentials.
+.env
+.env.*
+*.env
+credentials
+credentials.*
+*credentials*
+*secret*
+*password*
+*.pem
+*.key
+
+# OS, Python, and tool caches.
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments.
+.venv/
+venv/
+env/

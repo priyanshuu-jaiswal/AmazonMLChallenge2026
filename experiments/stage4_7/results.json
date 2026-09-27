@@ -1,0 +1,2286 @@
+{
+  "title": "Stage 4.7 final candidate-generation validation",
+  "run_tag": "run2",
+  "sample": {
+    "seed": 20261010,
+    "sample_size": 1500,
+    "sampling_method": "population-proportional joint class×country stratified sample; deterministic bottom-k SHA-256 ranking within each stratum using SHA256(seed + NUL + UTF-8 S1 ID); no replacement",
+    "population_eligible_counts_by_stratum": {
+      "multi/India": 786069,
+      "multi/US": 1177748,
+      "one/India": 47168,
+      "one/US": 71389,
+      "zero/India": 49051,
+      "zero/US": 73596
+    },
+    "sample_quotas_by_stratum": {
+      "multi/India": 535,
+      "multi/US": 801,
+      "one/India": 32,
+      "one/US": 49,
+      "zero/India": 33,
+      "zero/US": 50
+    },
+    "sample_counts_by_stratum": {
+      "multi/India": 535,
+      "multi/US": 801,
+      "one/India": 32,
+      "one/US": 49,
+      "zero/India": 33,
+      "zero/US": 50
+    },
+    "excluded_known_samples": [
+      "Stage 4.3",
+      "Stage 4.4",
+      "all three Stage 4.5 samples",
+      "Stage 4.6"
+    ],
+    "unknown_historical_samples": "Stage 4.1/4.2 exact IDs are not saved; overlap with those cannot be proven.",
+    "countries_in_training": [
+      "India",
+      "US"
+    ],
+    "true_links": 5156,
+    "s2_true_links": 2505,
+    "s3_true_links": 2651,
+    "sha256_ordered_ids": "0cbae83ea46220e4efbe161c984ac45e0202ea8d153c4b835c55a93b200da9d5",
+    "hash_input": "UTF-8 final-order S1 IDs joined by LF, no trailing LF",
+    "final_order": "class zero/one/multi, country lexicographically, S1 ID lexicographically",
+    "excluded_known_id_count": 1800
+  },
+  "strategy_definitions": {
+    "A": "Prefix5 UNION Address2500",
+    "B": "Prefix5 UNION Address25000",
+    "A_HF_NAME": "A UNION (shared country-address token df 2,501..25,000 AND shared country-name token df 1..25,000)",
+    "A_NAME2500": "A UNION shared country-name token df 1..2,500",
+    "normalization_and_key_definitions": "unchanged from Stage 4.4 / Stage 4.5; combined S2+S3 target df; same-country blocking"
+  },
+  "strategies": {
+    "A": {
+      "true_links": 5156,
+      "recovered_links": 4959,
+      "missed_links": 197,
+      "recall": 0.9617920868890613,
+      "s2": {
+        "true": 2505,
+        "recovered": 2420,
+        "missed": 85,
+        "recall": 0.9660678642714571
+      },
+      "s3": {
+        "true": 2651,
+        "recovered": 2539,
+        "missed": 112,
+        "recall": 0.957751791776688
+      },
+      "candidate_pairs_total_unique": 10906369,
+      "candidate_pairs_s2": 5253117,
+      "candidate_pairs_s3": 5653252,
+      "candidate_pairs_deduplicated": 10906369,
+      "candidate_pairs_per_s1": {
+        "n": 1500,
+        "min": 3,
+        "mean": 7270.912666666667,
+        "median": 3660.0,
+        "p95": 21547,
+        "p99": 34535,
+        "max": 64105,
+        "total": 10906369
+      },
+      "zero_match": {
+        "n": 83,
+        "min": 17,
+        "mean": 6797.626506024097,
+        "median": 3426,
+        "p95": 22423,
+        "p99": 30740,
+        "max": 30740,
+        "total": 564203,
+        "bins": {
+          "0": 0,
+          "1-10": 0,
+          "11-100": 2,
+          "101-1000": 17,
+          "1001-10000": 40,
+          "10001-100000": 24,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "2899e783176f50d44e63ce2df29fef00ffa7db64e7ecef6fc44e0024bb9de607",
+      "candidate_pairs_per_true_link": 2115.2771528316525
+    },
+    "B": {
+      "true_links": 5156,
+      "recovered_links": 5096,
+      "missed_links": 60,
+      "recall": 0.9883630721489527,
+      "s2": {
+        "true": 2505,
+        "recovered": 2480,
+        "missed": 25,
+        "recall": 0.9900199600798403
+      },
+      "s3": {
+        "true": 2651,
+        "recovered": 2616,
+        "missed": 35,
+        "recall": 0.986797434930215
+      },
+      "candidate_pairs_total_unique": 36380324,
+      "candidate_pairs_s2": 17796817,
+      "candidate_pairs_s3": 18583507,
+      "candidate_pairs_deduplicated": 36380324,
+      "candidate_pairs_per_s1": {
+        "n": 1500,
+        "min": 72,
+        "mean": 24253.549333333332,
+        "median": 21686.5,
+        "p95": 55510,
+        "p99": 75313,
+        "max": 127644,
+        "total": 36380324
+      },
+      "zero_match": {
+        "n": 83,
+        "min": 181,
+        "mean": 24131.734939759037,
+        "median": 23093,
+        "p95": 59890,
+        "p99": 72551,
+        "max": 72551,
+        "total": 2002934,
+        "bins": {
+          "0": 0,
+          "1-10": 0,
+          "11-100": 0,
+          "101-1000": 2,
+          "1001-10000": 21,
+          "10001-100000": 60,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "f9ead992f9bffafbaff56e395b19ca26d28a55b282a8808273e29fb7cf5e51fd",
+      "candidate_pairs_per_true_link": 7055.920093095423
+    },
+    "A_HF_NAME": {
+      "true_links": 5156,
+      "recovered_links": 5023,
+      "missed_links": 133,
+      "recall": 0.9742048099301784,
+      "s2": {
+        "true": 2505,
+        "recovered": 2442,
+        "missed": 63,
+        "recall": 0.9748502994011976
+      },
+      "s3": {
+        "true": 2651,
+        "recovered": 2581,
+        "missed": 70,
+        "recall": 0.97359486986043
+      },
+      "candidate_pairs_total_unique": 10967173,
+      "candidate_pairs_s2": 5280699,
+      "candidate_pairs_s3": 5686474,
+      "candidate_pairs_deduplicated": 10967173,
+      "candidate_pairs_per_s1": {
+        "n": 1500,
+        "min": 5,
+        "mean": 7311.448666666666,
+        "median": 3698.0,
+        "p95": 21557,
+        "p99": 34648,
+        "max": 64105,
+        "total": 10967173
+      },
+      "zero_match": {
+        "n": 83,
+        "min": 17,
+        "mean": 6834.722891566265,
+        "median": 3426,
+        "p95": 22530,
+        "p99": 30759,
+        "max": 30759,
+        "total": 567282,
+        "bins": {
+          "0": 0,
+          "1-10": 0,
+          "11-100": 1,
+          "101-1000": 18,
+          "1001-10000": 39,
+          "10001-100000": 25,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "bf86951654fc21cd9b946d75c08f6953a6d0d1c87ecbeeb0c140469f5418c8fe",
+      "candidate_pairs_per_true_link": 2127.070015515904
+    },
+    "A_NAME2500": {
+      "true_links": 5156,
+      "recovered_links": 5034,
+      "missed_links": 122,
+      "recall": 0.9763382467028704,
+      "s2": {
+        "true": 2505,
+        "recovered": 2447,
+        "missed": 58,
+        "recall": 0.9768463073852296
+      },
+      "s3": {
+        "true": 2651,
+        "recovered": 2587,
+        "missed": 64,
+        "recall": 0.9758581667295361
+      },
+      "candidate_pairs_total_unique": 11770701,
+      "candidate_pairs_s2": 5674400,
+      "candidate_pairs_s3": 6096301,
+      "candidate_pairs_deduplicated": 11770701,
+      "candidate_pairs_per_s1": {
+        "n": 1500,
+        "min": 7,
+        "mean": 7847.134,
+        "median": 4787.5,
+        "p95": 21760,
+        "p99": 34535,
+        "max": 64105,
+        "total": 11770701
+      },
+      "zero_match": {
+        "n": 83,
+        "min": 70,
+        "mean": 7377.3975903614455,
+        "median": 4980,
+        "p95": 22423,
+        "p99": 32250,
+        "max": 32250,
+        "total": 612324,
+        "bins": {
+          "0": 0,
+          "1-10": 0,
+          "11-100": 1,
+          "101-1000": 10,
+          "1001-10000": 47,
+          "10001-100000": 25,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "1164924cf01b95cfb247726907e46da9e255f2600a80b607c03181a1d3cbe28b",
+      "candidate_pairs_per_true_link": 2282.9133048875096
+    }
+  },
+  "failure_slices": {
+    "multilingual_script": {
+      "true_links": 369,
+      "strategies": {
+        "A": {
+          "recovered": 299,
+          "missed": 70,
+          "recall": 0.8102981029810298
+        },
+        "B": {
+          "recovered": 351,
+          "missed": 18,
+          "recall": 0.9512195121951219
+        },
+        "A_HF_NAME": {
+          "recovered": 299,
+          "missed": 70,
+          "recall": 0.8102981029810298
+        },
+        "A_NAME2500": {
+          "recovered": 299,
+          "missed": 70,
+          "recall": 0.8102981029810298
+        }
+      }
+    },
+    "missing_target_address": {
+      "true_links": 217,
+      "strategies": {
+        "A": {
+          "recovered": 205,
+          "missed": 12,
+          "recall": 0.9447004608294931
+        },
+        "B": {
+          "recovered": 205,
+          "missed": 12,
+          "recall": 0.9447004608294931
+        },
+        "A_HF_NAME": {
+          "recovered": 205,
+          "missed": 12,
+          "recall": 0.9447004608294931
+        },
+        "A_NAME2500": {
+          "recovered": 217,
+          "missed": 0,
+          "recall": 1.0
+        }
+      }
+    },
+    "name_order_variation": {
+      "true_links": 308,
+      "strategies": {
+        "A": {
+          "recovered": 291,
+          "missed": 17,
+          "recall": 0.9448051948051948
+        },
+        "B": {
+          "recovered": 304,
+          "missed": 4,
+          "recall": 0.987012987012987
+        },
+        "A_HF_NAME": {
+          "recovered": 304,
+          "missed": 4,
+          "recall": 0.987012987012987
+        },
+        "A_NAME2500": {
+          "recovered": 306,
+          "missed": 2,
+          "recall": 0.9935064935064936
+        }
+      }
+    },
+    "typo_like_name_variation": {
+      "true_links": 2831,
+      "strategies": {
+        "A": {
+          "recovered": 2760,
+          "missed": 71,
+          "recall": 0.9749205227834687
+        },
+        "B": {
+          "recovered": 2809,
+          "missed": 22,
+          "recall": 0.9922288943836101
+        },
+        "A_HF_NAME": {
+          "recovered": 2802,
+          "missed": 29,
+          "recall": 0.9897562698693041
+        },
+        "A_NAME2500": {
+          "recovered": 2807,
+          "missed": 24,
+          "recall": 0.9915224302366655
+        }
+      }
+    }
+  },
+  "failure_slice_examples": {
+    "multilingual_script": [
+      {
+        "s1_id": "S1-17216298",
+        "target_id": "S2-163175154",
+        "target_source": "S2",
+        "s1_name": "Indo East Services Private Limited",
+        "target_name": "इंडो ईस्ट सर्विसेज प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-359896049",
+        "target_id": "S2-829700552",
+        "target_source": "S2",
+        "s1_name": "International Global Marketing Pvt Ltd",
+        "target_name": "इंटरनेशनल ग्लोबल मार्केटिंग प्रा. लि.",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-630289692",
+        "target_id": "S2-461067673",
+        "target_source": "S2",
+        "s1_name": "Swastik Urban Marketing Limited",
+        "target_name": "स्वस्तिक अर्बन मार्केटिंग लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-92555004",
+        "target_id": "S2-269441852",
+        "target_source": "S2",
+        "s1_name": "Indo Ss Infotech",
+        "target_name": "ইন্দো এসএস ইনফোটেক",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "BENGALI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-100388089",
+        "target_id": "S2-156316947",
+        "target_source": "S2",
+        "s1_name": "Dynamic Software Private Limited",
+        "target_name": "डायनामिक सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-100388089",
+        "target_id": "S2-782490031",
+        "target_source": "S2",
+        "s1_name": "Dynamic Software Private Limited",
+        "target_name": "डायनामिक सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-100388089",
+        "target_id": "S3-419613684",
+        "target_source": "S3",
+        "s1_name": "Dynamic Software Private Limited",
+        "target_name": "डायनामिक सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-102630351",
+        "target_id": "S2-637607895",
+        "target_source": "S2",
+        "s1_name": "North Ventures Private Limited",
+        "target_name": "नॉर्थ वेंचर्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-102630351",
+        "target_id": "S3-541982299",
+        "target_source": "S3",
+        "s1_name": "North Ventures Private Limited",
+        "target_name": "नॉर्थ वेंचर्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-105641606",
+        "target_id": "S2-443448663",
+        "target_source": "S2",
+        "s1_name": "Bombay Infrastructure Private Limited",
+        "target_name": "बॉम्बे इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-105641606",
+        "target_id": "S3-424347909",
+        "target_source": "S3",
+        "s1_name": "Bombay Infrastructure Private Limited",
+        "target_name": "बॉम्बे इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-109453773",
+        "target_id": "S2-364695059",
+        "target_source": "S2",
+        "s1_name": "All City Tech Private Limited",
+        "target_name": "ऑल सिटी टेक प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-109453773",
+        "target_id": "S2-148824530",
+        "target_source": "S2",
+        "s1_name": "All City Tech Private Limited",
+        "target_name": "ऑल सिटी टेक प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-122306013",
+        "target_id": "S2-787097793",
+        "target_source": "S2",
+        "s1_name": "Modern Projects Limited",
+        "target_name": "मॉडर्न प्रोजेक्ट्स लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-122306013",
+        "target_id": "S3-826932232",
+        "target_source": "S3",
+        "s1_name": "Modern Projects Limited",
+        "target_name": "मॉडर्न प्रोजेक्ट्स लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-122306013",
+        "target_id": "S3-21549227",
+        "target_source": "S3",
+        "s1_name": "Modern Projects Limited",
+        "target_name": "मॉडर्न प्रोजेक्ट्स लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-125879529",
+        "target_id": "S2-661609585",
+        "target_source": "S2",
+        "s1_name": "Ace Consultants Private Limited",
+        "target_name": "एस कंसल्टेंट्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-125879529",
+        "target_id": "S2-145288132",
+        "target_source": "S2",
+        "s1_name": "Ace Consultants Private Limited",
+        "target_name": "एस कंसल्टेंट्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-125879529",
+        "target_id": "S3-333134005",
+        "target_source": "S3",
+        "s1_name": "Ace Consultants Private Limited",
+        "target_name": "एस कंसल्टेंट्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-125879529",
+        "target_id": "S3-805583689",
+        "target_source": "S3",
+        "s1_name": "Ace Consultants Private Limited",
+        "target_name": "एस कंसल्टेंट्स प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      },
+      {
+        "s1_id": "S1-129063661",
+        "target_id": "S2-83329852",
+        "target_source": "S2",
+        "s1_name": "Bharat Software Private Limited",
+        "target_name": "भारत सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-129063661",
+        "target_id": "S2-204659784",
+        "target_source": "S2",
+        "s1_name": "Bharat Software Private Limited",
+        "target_name": "भारत सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-129063661",
+        "target_id": "S3-190398379",
+        "target_source": "S3",
+        "s1_name": "Bharat Software Private Limited",
+        "target_name": "भारत सॉफ्टवेयर प्राइवेट लिमिटेड",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "DEVANAGARI"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-132858597",
+        "target_id": "S2-95130470",
+        "target_source": "S2",
+        "s1_name": "Al Future Hospitality Private Limited",
+        "target_name": "அல் ஃபியூச்சர் ஹாஸ்பிடாலிட்டி பிரைவேட் லிமிடெட்",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "TAMIL"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-132858597",
+        "target_id": "S3-318865023",
+        "target_source": "S3",
+        "s1_name": "Al Future Hospitality Private Limited",
+        "target_name": "அல் ஃபியூச்சர் ஹாஸ்பிடாலிட்டி பிரைவேட் லிமிடெட்",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "TAMIL"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": false,
+          "A_NAME2500": false
+        }
+      }
+    ],
+    "missing_target_address": [
+      {
+        "s1_id": "S1-182025556",
+        "target_id": "S3-657521976",
+        "target_source": "S3",
+        "s1_name": "Neev Energy Private Limited",
+        "target_name": "Neev Energy Private",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-134325628",
+        "target_id": "S3-61294875",
+        "target_source": "S3",
+        "s1_name": "H U & E Cslm Inc",
+        "target_name": "H + E Cslm Inc (Center)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-819781796",
+        "target_id": "S3-387830595",
+        "target_source": "S3",
+        "s1_name": "Stein and Chung",
+        "target_name": "Stein and (Chung)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-108132552",
+        "target_id": "S2-329223557",
+        "target_source": "S2",
+        "s1_name": "Seaways Sangh",
+        "target_name": "Seaways Slaggh",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-109602912",
+        "target_id": "S3-531572973",
+        "target_source": "S3",
+        "s1_name": "Vijaya Pumps Pvt Ltd",
+        "target_name": "Vijaya Pvt Ltd Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-113780468",
+        "target_id": "S2-384227467",
+        "target_source": "S2",
+        "s1_name": "Thane Services LLP",
+        "target_name": "Thane Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-115939475",
+        "target_id": "S3-950499274",
+        "target_source": "S3",
+        "s1_name": "PP Collections Care",
+        "target_name": "PP Collections Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-125399326",
+        "target_id": "S2-892527118",
+        "target_source": "S2",
+        "s1_name": "Technologies Group",
+        "target_name": "TECHNOLOGIES LIMITED",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-141385513",
+        "target_id": "S3-249118158",
+        "target_source": "S3",
+        "s1_name": "Digital Producer Pvt Ltd",
+        "target_name": "Digital Producer",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-16625091",
+        "target_id": "S3-262318925",
+        "target_source": "S3",
+        "s1_name": "Sea Logistics Private Limited",
+        "target_name": "Sea Logistics Piimhle Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-16625091",
+        "target_id": "S3-11989871",
+        "target_source": "S3",
+        "s1_name": "Sea Logistics Private Limited",
+        "target_name": "Sea Logistics Private Límited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-168461819",
+        "target_id": "S3-500118562",
+        "target_source": "S3",
+        "s1_name": "Bihani Pharmacy Pvt Ltd",
+        "target_name": "Mr Bihani Pharmacy  Pvt Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-177700789",
+        "target_id": "S3-473915554",
+        "target_source": "S3",
+        "s1_name": "International Industries Private Limited",
+        "target_name": "International Industries Private  Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-194646730",
+        "target_id": "S2-966739698",
+        "target_source": "S2",
+        "s1_name": "Tarang Welfare Society",
+        "target_name": "Sri Tarang Welfare Society Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-202699550",
+        "target_id": "S2-446424261",
+        "target_source": "S2",
+        "s1_name": "Rajputana Trading Private Limited",
+        "target_name": "Mr Rajputana Trading Prfa Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-206027221",
+        "target_id": "S3-876852721",
+        "target_source": "S3",
+        "s1_name": "Landcraft Alloys Associates",
+        "target_name": "Landcraft Alloys Associates Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-209791366",
+        "target_id": "S3-316912011",
+        "target_source": "S3",
+        "s1_name": "Technologies Spirit Detectiveservices Private Limited",
+        "target_name": "Technologies Spirit Detectiveservices Private Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-219331414",
+        "target_id": "S3-31923640",
+        "target_source": "S3",
+        "s1_name": "Zade Industries Group Pvt Ltd",
+        "target_name": "Zade Industries Group Pvt",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-231202753",
+        "target_id": "S2-230043970",
+        "target_source": "S2",
+        "s1_name": "Atco Import Pvt Ltd",
+        "target_name": "Atco-Import Pvt Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-231202753",
+        "target_id": "S2-535886016",
+        "target_source": "S2",
+        "s1_name": "Atco Import Pvt Ltd",
+        "target_name": "Atco Iotp Pvt Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-231593042",
+        "target_id": "S2-863738799",
+        "target_source": "S2",
+        "s1_name": "Ernakulam Technologies Pvt. Ltd.",
+        "target_name": "Ernakulam Ltd. Pvt. Technologies",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-233900869",
+        "target_id": "S2-509677588",
+        "target_source": "S2",
+        "s1_name": "Navkar Foods Private Limited",
+        "target_name": "Navkar Foods Limited Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-24387240",
+        "target_id": "S3-187497749",
+        "target_source": "S3",
+        "s1_name": "East Builders Private Limited",
+        "target_name": "East Builders ప్రైవేట్ లిమిటెడ్",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN",
+          "TELUGU"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-24812000",
+        "target_id": "S3-107628126",
+        "target_source": "S3",
+        "s1_name": "Mark Technologies Co",
+        "target_name": "Mark Techn0logies Co",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-25367562",
+        "target_id": "S2-761824610",
+        "target_source": "S2",
+        "s1_name": "Projects North Software LLP",
+        "target_name": "Projects North Software LLP",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      }
+    ],
+    "name_order_variation": [
+      {
+        "s1_id": "S1-123269673",
+        "target_id": "S3-61670635",
+        "target_source": "S3",
+        "s1_name": "CBJ Servicesprivate Pvt. Ltd.",
+        "target_name": "Pvt CBJ Servicesprivate Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-132364004",
+        "target_id": "S3-139556007",
+        "target_source": "S3",
+        "s1_name": "RAX Manufacture Limited",
+        "target_name": "RAX RAX Manufacture Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-234909655",
+        "target_id": "S3-447309020",
+        "target_source": "S3",
+        "s1_name": "Allred Silverbox, Inc",
+        "target_name": "((Inc)) Allred Silverbox,",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-395115251",
+        "target_id": "S2-772813270",
+        "target_source": "S2",
+        "s1_name": "Physical Therapy Best Clinic Inc",
+        "target_name": "Inc. Physical Therapy Best Clinic",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-49057164",
+        "target_id": "S3-578312457",
+        "target_source": "S3",
+        "s1_name": "Annmaria Johnson Fresh Axiom, Inc",
+        "target_name": "Annmaria Annmaria Johnson Fresh Axiom, (Inc)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-558171747",
+        "target_id": "S2-22963701",
+        "target_source": "S2",
+        "s1_name": "Creative Creative Services Inc",
+        "target_name": "Creative Creative Inc Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-752743878",
+        "target_id": "S3-244318851",
+        "target_source": "S3",
+        "s1_name": "Anvil Corp",
+        "target_name": "Anvil Anvil Corp",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-116859422",
+        "target_id": "S2-795245640",
+        "target_source": "S2",
+        "s1_name": "Chandrasekhar Chem Private Limited",
+        "target_name": "CHANDRASEKHAR LIMITED PRIVATE CHEM",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-116859422",
+        "target_id": "S2-975864245",
+        "target_source": "S2",
+        "s1_name": "Chandrasekhar Chem Private Limited",
+        "target_name": "Private Chandrasekhar Chem Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-153514497",
+        "target_id": "S2-991086210",
+        "target_source": "S2",
+        "s1_name": "Orbit Technologies Private Limited",
+        "target_name": "Orbit Technologies  Limited Private",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-175437386",
+        "target_id": "S2-903587903",
+        "target_source": "S2",
+        "s1_name": "Hvr Brothers Private Limited",
+        "target_name": "Hvr Limited Private Brothers",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-201352350",
+        "target_id": "S2-555642014",
+        "target_source": "S2",
+        "s1_name": "Panacea (kerala) Pvt Ltd",
+        "target_name": "Pvt Panacea (kerala) Ltd.",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-202699550",
+        "target_id": "S2-256359752",
+        "target_source": "S2",
+        "s1_name": "Rajputana Trading Private Limited",
+        "target_name": "PRIVATE RAJPUTANA TRADING LIMITED",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-209791366",
+        "target_id": "S2-944832092",
+        "target_source": "S2",
+        "s1_name": "Technologies Spirit Detectiveservices Private Limited",
+        "target_name": "Private Technologies Spirit Detectiveservices Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-216211198",
+        "target_id": "S3-501993044",
+        "target_source": "S3",
+        "s1_name": "Srinidhi Investments Private Limited",
+        "target_name": "SRINIDHI INVESTMENTS PRIVATE PRIVATE LIMITED",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-231593042",
+        "target_id": "S2-863738799",
+        "target_source": "S2",
+        "s1_name": "Ernakulam Technologies Pvt. Ltd.",
+        "target_name": "Ernakulam Ltd. Pvt. Technologies",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-250620109",
+        "target_id": "S3-222036506",
+        "target_source": "S3",
+        "s1_name": "Kolkata International Private Limited",
+        "target_name": "Kolkata Private International Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-26346902",
+        "target_id": "S2-708783927",
+        "target_source": "S2",
+        "s1_name": "Media Hvac Realtors Clinic",
+        "target_name": "Realtors Hvac Media Clinic",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-269077072",
+        "target_id": "S2-57829474",
+        "target_source": "S2",
+        "s1_name": "Distikon Projects Corp",
+        "target_name": "Distikon Corp Projects",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-269077072",
+        "target_id": "S3-394015235",
+        "target_source": "S3",
+        "s1_name": "Distikon Projects Corp",
+        "target_name": "CORP Distikon Projects",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-277525766",
+        "target_id": "S2-490796970",
+        "target_source": "S2",
+        "s1_name": "New Energy Pvt Ltd",
+        "target_name": "PVT NEW ENERGY (LTD.)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-282850516",
+        "target_id": "S2-11467134",
+        "target_source": "S2",
+        "s1_name": "GWM Info Private Limited",
+        "target_name": "GWM Private Info Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-297981291",
+        "target_id": "S2-287340452",
+        "target_source": "S2",
+        "s1_name": "Guntur Promoters Pvt Ltd",
+        "target_name": "PVT GUNTUR PROMOTERS LTD",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-312247016",
+        "target_id": "S3-133990426",
+        "target_source": "S3",
+        "s1_name": "Anand Innovative Consulting Pvt Ltd",
+        "target_name": "anand innovative consulting pvt ltd ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-314178578",
+        "target_id": "S2-847957139",
+        "target_source": "S2",
+        "s1_name": "Hetal Group Partners",
+        "target_name": "Hetal Partners Group",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      }
+    ],
+    "typo_like_name_variation": [
+      {
+        "s1_id": "S1-123269673",
+        "target_id": "S3-61670635",
+        "target_source": "S3",
+        "s1_name": "CBJ Servicesprivate Pvt. Ltd.",
+        "target_name": "Pvt CBJ Servicesprivate Ltd",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-132364004",
+        "target_id": "S3-139556007",
+        "target_source": "S3",
+        "s1_name": "RAX Manufacture Limited",
+        "target_name": "RAX RAX Manufacture Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-182025556",
+        "target_id": "S3-657521976",
+        "target_source": "S3",
+        "s1_name": "Neev Energy Private Limited",
+        "target_name": "Neev Energy Private",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-198255876",
+        "target_id": "S2-815261373",
+        "target_source": "S2",
+        "s1_name": "Shakti Smart Services Private Limited",
+        "target_name": "Shakti St Services  Private Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-21418032",
+        "target_id": "S3-806106352",
+        "target_source": "S3",
+        "s1_name": "Tripti Charitable Trust",
+        "target_name": "Tripti Chgiitbmel (Trust)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-252114234",
+        "target_id": "S3-458394309",
+        "target_source": "S3",
+        "s1_name": "Indian Solutions Private Limited",
+        "target_name": "Indian Solutions Private",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-317678284",
+        "target_id": "S2-597916133",
+        "target_source": "S2",
+        "s1_name": "Kamakshi Green (India) Private Limited",
+        "target_name": "KAMAKSHI-GREEN PRIVATE LIMITED SERVICE",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-394894131",
+        "target_id": "S3-254704999",
+        "target_source": "S3",
+        "s1_name": "Marketing Illumine Foods Private Limited",
+        "target_name": "Marketingilluminefoods.Com",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-430269217",
+        "target_id": "S2-911046797",
+        "target_source": "S2",
+        "s1_name": "Al Estate Pvt Ltd",
+        "target_name": "Al Estate Pvt",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-433473869",
+        "target_id": "S3-964093346",
+        "target_source": "S3",
+        "s1_name": "Marygold Clinic",
+        "target_name": "marygoldclinic.com",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-613103651",
+        "target_id": "S2-810130095",
+        "target_source": "S2",
+        "s1_name": "Seven Galaxy Marketing Limited",
+        "target_name": "Seven Galbxtay Marketing Limited",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-873028313",
+        "target_id": "S2-920849630",
+        "target_source": "S2",
+        "s1_name": "Esha Nursing Home",
+        "target_name": "Esha Nursing",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-974868656",
+        "target_id": "S3-416282848",
+        "target_source": "S3",
+        "s1_name": "Classic Care Private Limited",
+        "target_name": "Classic Private Limited Services",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-134325628",
+        "target_id": "S3-61294875",
+        "target_source": "S3",
+        "s1_name": "H U & E Cslm Inc",
+        "target_name": "H + E Cslm Inc (Center)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": false,
+          "B": false,
+          "A_HF_NAME": false,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-165559506",
+        "target_id": "S3-803249044",
+        "target_source": "S3",
+        "s1_name": "Cascade Lease L.L.C.",
+        "target_name": "Cascade Léase [L.L.C.]",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-169003902",
+        "target_id": "S2-217034433",
+        "target_source": "S2",
+        "s1_name": "Greenwood's Produce",
+        "target_name": "Greenwood's  Center",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-187738519",
+        "target_id": "S2-959987762",
+        "target_source": "S2",
+        "s1_name": "Global School of Medicine Inc",
+        "target_name": "Global School of Mndcdne lnc",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-234909655",
+        "target_id": "S3-447309020",
+        "target_source": "S3",
+        "s1_name": "Allred Silverbox, Inc",
+        "target_name": "((Inc)) Allred Silverbox,",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-286309179",
+        "target_id": "S2-790496640",
+        "target_source": "S2",
+        "s1_name": "Surgical Clinic LLC",
+        "target_name": "Surgical-Clinic",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-325095627",
+        "target_id": "S2-10326003",
+        "target_source": "S2",
+        "s1_name": "Eastern Trusted Arch LLC",
+        "target_name": "The Eastern Trusted Arch [LLC]",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-383258802",
+        "target_id": "S3-919557215",
+        "target_source": "S3",
+        "s1_name": "Nolan, Davida, Ph.D., M.D., P.C.",
+        "target_name": "Nolan, Davida, Ph.D.,",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-395115251",
+        "target_id": "S2-772813270",
+        "target_source": "S2",
+        "s1_name": "Physical Therapy Best Clinic Inc",
+        "target_name": "Inc. Physical Therapy Best Clinic",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-433537269",
+        "target_id": "S3-581512475",
+        "target_source": "S3",
+        "s1_name": "Brianna Hoelscher Keystone Optics",
+        "target_name": "Brianna  Hoelscher Keystone",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-453505088",
+        "target_id": "S2-492502449",
+        "target_source": "S2",
+        "s1_name": "Clink, Hundley & Warman Clinic",
+        "target_name": "Clink, Hundley and  Warman",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      },
+      {
+        "s1_id": "S1-49057164",
+        "target_id": "S3-578312457",
+        "target_source": "S3",
+        "s1_name": "Annmaria Johnson Fresh Axiom, Inc",
+        "target_name": "Annmaria Annmaria Johnson Fresh Axiom, (Inc)",
+        "scripts_s1": [
+          "LATIN"
+        ],
+        "scripts_target": [
+          "LATIN"
+        ],
+        "recovered": {
+          "A": true,
+          "B": true,
+          "A_HF_NAME": true,
+          "A_NAME2500": true
+        }
+      }
+    ]
+  },
+  "runtime_seconds": 494.717
+}

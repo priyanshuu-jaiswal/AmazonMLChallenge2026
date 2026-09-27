@@ -1,0 +1,2484 @@
+{
+  "title": "Stage 5 rule-based validation baseline",
+  "validation_sample": {
+    "seed_split": 20261011,
+    "seed_sampling": 20261012,
+    "split": "entity-level hash split: SHA256(split_seed + NUL + S1 ID) first byte modulo 5 == 0 is held-out validation pool; other 80% reserved as development/training IDs. No fitting is done in this rule-based baseline.",
+    "sample": "50 deterministic bottom-k SHA256-ranked S1s from each match-class×country stratum in the validation pool",
+    "sample_size": 300,
+    "sample_sha256": "2218951d787c79fde2547400c2c73e7b9375965ed43b8854d11c7c6c0ab56eb4",
+    "strata": {
+      "zero/India": 50,
+      "zero/US": 50,
+      "one/India": 50,
+      "one/US": 50,
+      "multi/India": 50,
+      "multi/US": 50
+    },
+    "validation_pool_counts": {
+      "zero/India": 9888,
+      "zero/US": 15043,
+      "one/India": 9659,
+      "one/US": 14594,
+      "multi/India": 159797,
+      "multi/US": 238597
+    },
+    "countries": [
+      "India",
+      "US"
+    ],
+    "true_links": 482,
+    "s2_true_links": 229,
+    "s3_true_links": 253
+  },
+  "scorer_weights": {
+    "name_exact": 4.0,
+    "name_char_similarity": 3.0,
+    "name_token_jaccard": 2.0,
+    "name_token_containment": 1.0,
+    "address_exact": 4.0,
+    "address_abbreviation_exact": 3.5,
+    "address_token_jaccard": 2.5,
+    "address_token_containment": 1.0,
+    "country_equal": 1.0,
+    "address_missing_either": -0.5
+  },
+  "scorer_formula": "sum(weight × feature); country exact bonus, address missingness penalty; threshold applied to each candidate independently",
+  "threshold_sweep": [
+    {
+      "threshold": 5.0,
+      "macro_f0_5": 0.12126125318695384,
+      "micro_precision": 0.004092950915286149,
+      "micro_recall": 0.8298755186721992,
+      "true_positive_links": 400,
+      "false_positive_count": 97329,
+      "false_negative_count": 82,
+      "predicted_match_count": 97729,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 0,
+      "zero_match_accuracy": 0.0
+    },
+    {
+      "threshold": 5.25,
+      "macro_f0_5": 0.14720938994652555,
+      "micro_precision": 0.006243299489184587,
+      "micro_recall": 0.8215767634854771,
+      "true_positive_links": 396,
+      "false_positive_count": 63032,
+      "false_negative_count": 86,
+      "predicted_match_count": 63428,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 0,
+      "zero_match_accuracy": 0.0
+    },
+    {
+      "threshold": 5.5,
+      "macro_f0_5": 0.1786215562802438,
+      "micro_precision": 0.011055191133227777,
+      "micro_recall": 0.8112033195020747,
+      "true_positive_links": 391,
+      "false_positive_count": 34977,
+      "false_negative_count": 91,
+      "predicted_match_count": 35368,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 0,
+      "zero_match_accuracy": 0.0
+    },
+    {
+      "threshold": 5.75,
+      "macro_f0_5": 0.22117257505745253,
+      "micro_precision": 0.019525519753148868,
+      "micro_recall": 0.8008298755186722,
+      "true_positive_links": 386,
+      "false_positive_count": 19383,
+      "false_negative_count": 96,
+      "predicted_match_count": 19769,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 3,
+      "zero_match_accuracy": 0.03
+    },
+    {
+      "threshold": 6.0,
+      "macro_f0_5": 0.2586841470612153,
+      "micro_precision": 0.03192559074912016,
+      "micro_recall": 0.7904564315352697,
+      "true_positive_links": 381,
+      "false_positive_count": 11553,
+      "false_negative_count": 101,
+      "predicted_match_count": 11934,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 5,
+      "zero_match_accuracy": 0.05
+    },
+    {
+      "threshold": 6.25,
+      "macro_f0_5": 0.29969115598853335,
+      "micro_precision": 0.053413772807533844,
+      "micro_recall": 0.7531120331950207,
+      "true_positive_links": 363,
+      "false_positive_count": 6433,
+      "false_negative_count": 119,
+      "predicted_match_count": 6796,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 8,
+      "zero_match_accuracy": 0.08
+    },
+    {
+      "threshold": 6.5,
+      "macro_f0_5": 0.3250121811884226,
+      "micro_precision": 0.08190255220417633,
+      "micro_recall": 0.7323651452282157,
+      "true_positive_links": 353,
+      "false_positive_count": 3957,
+      "false_negative_count": 129,
+      "predicted_match_count": 4310,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 10,
+      "zero_match_accuracy": 0.1
+    },
+    {
+      "threshold": 6.75,
+      "macro_f0_5": 0.35563816054676817,
+      "micro_precision": 0.10602782071097372,
+      "micro_recall": 0.7116182572614108,
+      "true_positive_links": 343,
+      "false_positive_count": 2892,
+      "false_negative_count": 139,
+      "predicted_match_count": 3235,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 13,
+      "zero_match_accuracy": 0.13
+    },
+    {
+      "threshold": 7.0,
+      "macro_f0_5": 0.37427564986364414,
+      "micro_precision": 0.11160258591357605,
+      "micro_recall": 0.6804979253112033,
+      "true_positive_links": 328,
+      "false_positive_count": 2611,
+      "false_negative_count": 154,
+      "predicted_match_count": 2939,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 15,
+      "zero_match_accuracy": 0.15
+    },
+    {
+      "threshold": 7.25,
+      "macro_f0_5": 0.39923444989472795,
+      "micro_precision": 0.11292613636363637,
+      "micro_recall": 0.6597510373443983,
+      "true_positive_links": 318,
+      "false_positive_count": 2498,
+      "false_negative_count": 164,
+      "predicted_match_count": 2816,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 20,
+      "zero_match_accuracy": 0.2
+    },
+    {
+      "threshold": 7.5,
+      "macro_f0_5": 0.4160457114514185,
+      "micro_precision": 0.10714285714285714,
+      "micro_recall": 0.6099585062240664,
+      "true_positive_links": 294,
+      "false_positive_count": 2450,
+      "false_negative_count": 188,
+      "predicted_match_count": 2744,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 27,
+      "zero_match_accuracy": 0.27
+    },
+    {
+      "threshold": 7.75,
+      "macro_f0_5": 0.42675439145523447,
+      "micro_precision": 0.10215453194650817,
+      "micro_recall": 0.5705394190871369,
+      "true_positive_links": 275,
+      "false_positive_count": 2417,
+      "false_negative_count": 207,
+      "predicted_match_count": 2692,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 35,
+      "zero_match_accuracy": 0.35
+    },
+    {
+      "threshold": 8.0,
+      "macro_f0_5": 0.42575799679794135,
+      "micro_precision": 0.09676204819277108,
+      "micro_recall": 0.533195020746888,
+      "true_positive_links": 257,
+      "false_positive_count": 2399,
+      "false_negative_count": 225,
+      "predicted_match_count": 2656,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 38,
+      "zero_match_accuracy": 0.38
+    },
+    {
+      "threshold": 8.25,
+      "macro_f0_5": 0.4257349566225947,
+      "micro_precision": 0.08647194465795542,
+      "micro_recall": 0.46680497925311204,
+      "true_positive_links": 225,
+      "false_positive_count": 2377,
+      "false_negative_count": 257,
+      "predicted_match_count": 2602,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 44,
+      "zero_match_accuracy": 0.44
+    },
+    {
+      "threshold": 8.5,
+      "macro_f0_5": 0.42145661545338664,
+      "micro_precision": 0.07625786163522012,
+      "micro_recall": 0.4024896265560166,
+      "true_positive_links": 194,
+      "false_positive_count": 2350,
+      "false_negative_count": 288,
+      "predicted_match_count": 2544,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 51,
+      "zero_match_accuracy": 0.51
+    },
+    {
+      "threshold": 8.75,
+      "macro_f0_5": 0.40700328293039995,
+      "micro_precision": 0.06980454726765058,
+      "micro_recall": 0.3630705394190871,
+      "true_positive_links": 175,
+      "false_positive_count": 2332,
+      "false_negative_count": 307,
+      "predicted_match_count": 2507,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 55,
+      "zero_match_accuracy": 0.55
+    },
+    {
+      "threshold": 9.0,
+      "macro_f0_5": 0.3843702112843991,
+      "micro_precision": 0.062146892655367235,
+      "micro_recall": 0.31950207468879666,
+      "true_positive_links": 154,
+      "false_positive_count": 2324,
+      "false_negative_count": 328,
+      "predicted_match_count": 2478,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 56,
+      "zero_match_accuracy": 0.56
+    },
+    {
+      "threshold": 9.25,
+      "macro_f0_5": 0.3692123136265014,
+      "micro_precision": 0.05841784989858012,
+      "micro_recall": 0.2987551867219917,
+      "true_positive_links": 144,
+      "false_positive_count": 2321,
+      "false_negative_count": 338,
+      "predicted_match_count": 2465,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 57,
+      "zero_match_accuracy": 0.57
+    },
+    {
+      "threshold": 9.5,
+      "macro_f0_5": 0.3675688055661686,
+      "micro_precision": 0.05616605616605617,
+      "micro_recall": 0.2863070539419087,
+      "true_positive_links": 138,
+      "false_positive_count": 2319,
+      "false_negative_count": 344,
+      "predicted_match_count": 2457,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 9.75,
+      "macro_f0_5": 0.35953160583779237,
+      "micro_precision": 0.054241435562805876,
+      "micro_recall": 0.27593360995850624,
+      "true_positive_links": 133,
+      "false_positive_count": 2319,
+      "false_negative_count": 349,
+      "predicted_match_count": 2452,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 10.0,
+      "macro_f0_5": 0.3499191194175256,
+      "micro_precision": 0.051921504497138185,
+      "micro_recall": 0.26348547717842324,
+      "true_positive_links": 127,
+      "false_positive_count": 2319,
+      "false_negative_count": 355,
+      "predicted_match_count": 2446,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 10.25,
+      "macro_f0_5": 0.3499191194175256,
+      "micro_precision": 0.051921504497138185,
+      "micro_recall": 0.26348547717842324,
+      "true_positive_links": 127,
+      "false_positive_count": 2319,
+      "false_negative_count": 355,
+      "predicted_match_count": 2446,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 10.5,
+      "macro_f0_5": 0.3508715003699066,
+      "micro_precision": 0.05194274028629857,
+      "micro_recall": 0.26348547717842324,
+      "true_positive_links": 127,
+      "false_positive_count": 2318,
+      "false_negative_count": 355,
+      "predicted_match_count": 2445,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 10.75,
+      "macro_f0_5": 0.35020456770704295,
+      "micro_precision": 0.051817801922273296,
+      "micro_recall": 0.2572614107883817,
+      "true_positive_links": 124,
+      "false_positive_count": 2269,
+      "false_negative_count": 358,
+      "predicted_match_count": 2393,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 11.0,
+      "macro_f0_5": 0.35020456770704295,
+      "micro_precision": 0.051817801922273296,
+      "micro_recall": 0.2572614107883817,
+      "true_positive_links": 124,
+      "false_positive_count": 2269,
+      "false_negative_count": 358,
+      "predicted_match_count": 2393,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 58,
+      "zero_match_accuracy": 0.58
+    },
+    {
+      "threshold": 11.25,
+      "macro_f0_5": 0.450325284650161,
+      "micro_precision": 0.3054187192118227,
+      "micro_recall": 0.2572614107883817,
+      "true_positive_links": 124,
+      "false_positive_count": 282,
+      "false_negative_count": 358,
+      "predicted_match_count": 406,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 75,
+      "zero_match_accuracy": 0.75
+    },
+    {
+      "threshold": 11.5,
+      "macro_f0_5": 0.5226161017819233,
+      "micro_precision": 0.754601226993865,
+      "micro_recall": 0.2551867219917012,
+      "true_positive_links": 123,
+      "false_positive_count": 40,
+      "false_negative_count": 359,
+      "predicted_match_count": 163,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 89,
+      "zero_match_accuracy": 0.89
+    },
+    {
+      "threshold": 11.75,
+      "macro_f0_5": 0.5420004211662427,
+      "micro_precision": 0.8541666666666666,
+      "micro_recall": 0.2551867219917012,
+      "true_positive_links": 123,
+      "false_positive_count": 21,
+      "false_negative_count": 359,
+      "predicted_match_count": 144,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 94,
+      "zero_match_accuracy": 0.94
+    },
+    {
+      "threshold": 12.0,
+      "macro_f0_5": 0.5482513053395406,
+      "micro_precision": 0.9029850746268657,
+      "micro_recall": 0.25103734439834025,
+      "true_positive_links": 121,
+      "false_positive_count": 13,
+      "false_negative_count": 361,
+      "predicted_match_count": 134,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 96,
+      "zero_match_accuracy": 0.96
+    },
+    {
+      "threshold": 12.25,
+      "macro_f0_5": 0.5407513053395406,
+      "micro_precision": 0.928,
+      "micro_recall": 0.24066390041493776,
+      "true_positive_links": 116,
+      "false_positive_count": 9,
+      "false_negative_count": 366,
+      "predicted_match_count": 125,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 98,
+      "zero_match_accuracy": 0.98
+    },
+    {
+      "threshold": 12.5,
+      "macro_f0_5": 0.5178961077049312,
+      "micro_precision": 0.9210526315789473,
+      "micro_recall": 0.21784232365145229,
+      "true_positive_links": 105,
+      "false_positive_count": 9,
+      "false_negative_count": 377,
+      "predicted_match_count": 114,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 98,
+      "zero_match_accuracy": 0.98
+    },
+    {
+      "threshold": 12.75,
+      "macro_f0_5": 0.5015463213257331,
+      "micro_precision": 0.9393939393939394,
+      "micro_recall": 0.19294605809128632,
+      "true_positive_links": 93,
+      "false_positive_count": 6,
+      "false_negative_count": 389,
+      "predicted_match_count": 99,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 98,
+      "zero_match_accuracy": 0.98
+    },
+    {
+      "threshold": 13.0,
+      "macro_f0_5": 0.4933518768812886,
+      "micro_precision": 0.9775280898876404,
+      "micro_recall": 0.18049792531120332,
+      "true_positive_links": 87,
+      "false_positive_count": 2,
+      "false_negative_count": 395,
+      "predicted_match_count": 89,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 99,
+      "zero_match_accuracy": 0.99
+    },
+    {
+      "threshold": 13.25,
+      "macro_f0_5": 0.4771406044935457,
+      "micro_precision": 0.9866666666666667,
+      "micro_recall": 0.15352697095435686,
+      "true_positive_links": 74,
+      "false_positive_count": 1,
+      "false_negative_count": 408,
+      "predicted_match_count": 75,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 13.5,
+      "macro_f0_5": 0.4566007603507603,
+      "micro_precision": 0.9848484848484849,
+      "micro_recall": 0.13485477178423236,
+      "true_positive_links": 65,
+      "false_positive_count": 1,
+      "false_negative_count": 417,
+      "predicted_match_count": 66,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 13.75,
+      "macro_f0_5": 0.44489848114848113,
+      "micro_precision": 1.0,
+      "micro_recall": 0.11825726141078838,
+      "true_positive_links": 57,
+      "false_positive_count": 0,
+      "false_negative_count": 425,
+      "predicted_match_count": 57,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 14.0,
+      "macro_f0_5": 0.42862022237022235,
+      "micro_precision": 1.0,
+      "micro_recall": 0.0995850622406639,
+      "true_positive_links": 48,
+      "false_positive_count": 0,
+      "false_negative_count": 434,
+      "predicted_match_count": 48,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 14.25,
+      "macro_f0_5": 0.42320355570355567,
+      "micro_precision": 1.0,
+      "micro_recall": 0.0954356846473029,
+      "true_positive_links": 46,
+      "false_positive_count": 0,
+      "false_negative_count": 436,
+      "predicted_match_count": 46,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 14.5,
+      "macro_f0_5": 0.41184195434195436,
+      "micro_precision": 1.0,
+      "micro_recall": 0.08298755186721991,
+      "true_positive_links": 40,
+      "false_positive_count": 0,
+      "false_negative_count": 442,
+      "predicted_match_count": 40,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 14.75,
+      "macro_f0_5": 0.3933162208162208,
+      "micro_precision": 1.0,
+      "micro_recall": 0.06846473029045644,
+      "true_positive_links": 33,
+      "false_positive_count": 0,
+      "false_negative_count": 449,
+      "predicted_match_count": 33,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 15.0,
+      "macro_f0_5": 0.39203416953416953,
+      "micro_precision": 1.0,
+      "micro_recall": 0.06639004149377593,
+      "true_positive_links": 32,
+      "false_positive_count": 0,
+      "false_negative_count": 450,
+      "predicted_match_count": 32,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 15.25,
+      "macro_f0_5": 0.3861545399045399,
+      "micro_precision": 1.0,
+      "micro_recall": 0.06016597510373444,
+      "true_positive_links": 29,
+      "false_positive_count": 0,
+      "false_negative_count": 453,
+      "predicted_match_count": 29,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 15.5,
+      "macro_f0_5": 0.3861545399045399,
+      "micro_precision": 1.0,
+      "micro_recall": 0.06016597510373444,
+      "true_positive_links": 29,
+      "false_positive_count": 0,
+      "false_negative_count": 453,
+      "predicted_match_count": 29,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 15.75,
+      "macro_f0_5": 0.3861545399045399,
+      "micro_precision": 1.0,
+      "micro_recall": 0.06016597510373444,
+      "true_positive_links": 29,
+      "false_positive_count": 0,
+      "false_negative_count": 453,
+      "predicted_match_count": 29,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 16.0,
+      "macro_f0_5": 0.3720428182928183,
+      "micro_precision": 1.0,
+      "micro_recall": 0.04564315352697095,
+      "true_positive_links": 22,
+      "false_positive_count": 0,
+      "false_negative_count": 460,
+      "predicted_match_count": 22,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 16.25,
+      "macro_f0_5": 0.3696618659118659,
+      "micro_precision": 1.0,
+      "micro_recall": 0.043568464730290454,
+      "true_positive_links": 21,
+      "false_positive_count": 0,
+      "false_negative_count": 461,
+      "predicted_match_count": 21,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 16.5,
+      "macro_f0_5": 0.36224326599326595,
+      "micro_precision": 1.0,
+      "micro_recall": 0.03319502074688797,
+      "true_positive_links": 16,
+      "false_positive_count": 0,
+      "false_negative_count": 466,
+      "predicted_match_count": 16,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 16.75,
+      "macro_f0_5": 0.3586765059559177,
+      "micro_precision": 1.0,
+      "micro_recall": 0.029045643153526972,
+      "true_positive_links": 14,
+      "false_positive_count": 0,
+      "false_negative_count": 468,
+      "predicted_match_count": 14,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    },
+    {
+      "threshold": 17.0,
+      "macro_f0_5": 0.3492716542716543,
+      "micro_precision": 1.0,
+      "micro_recall": 0.016597510373443983,
+      "true_positive_links": 8,
+      "false_positive_count": 0,
+      "false_negative_count": 474,
+      "predicted_match_count": 8,
+      "zero_match_s1": 100,
+      "zero_match_correct_empty": 100,
+      "zero_match_accuracy": 1.0
+    }
+  ],
+  "chosen_threshold": 12.0,
+  "chosen_metrics": {
+    "threshold": 12.0,
+    "macro_f0_5": 0.5482513053395406,
+    "micro_precision": 0.9029850746268657,
+    "micro_recall": 0.25103734439834025,
+    "true_positive_links": 121,
+    "false_positive_count": 13,
+    "false_negative_count": 361,
+    "predicted_match_count": 134,
+    "zero_match_s1": 100,
+    "zero_match_correct_empty": 96,
+    "zero_match_accuracy": 0.96
+  },
+  "candidate_recall_ceiling": {
+    "recovered": 465,
+    "true": 482,
+    "recall": 0.9647302904564315
+  },
+  "strongest_threshold_error_analysis": [
+    {
+      "threshold": 12.0,
+      "metrics": {
+        "threshold": 12.0,
+        "macro_f0_5": 0.5482513053395406,
+        "micro_precision": 0.9029850746268657,
+        "micro_recall": 0.25103734439834025,
+        "true_positive_links": 121,
+        "false_positive_count": 13,
+        "false_negative_count": 361,
+        "predicted_match_count": 134,
+        "zero_match_s1": 100,
+        "zero_match_correct_empty": 96,
+        "zero_match_accuracy": 0.96
+      },
+      "error_entities": [
+        {
+          "s1_id": "S1-444637320",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-900425778",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Shakti Trading Private Limited",
+              "target_name": "Shakti Trading  Private Limited"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-420032454",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-417419893",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "CRYSTALMERGER.COM"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S2-497850799",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "Crystal Mergre LLC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-453233474",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-398438808",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "URGENT CARE CLBNC"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S3-177232971",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "Keloonyxio formerly: Urgent Care Clinic"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-989408812",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-512796197",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Pediatric Group",
+              "target_name": "Pediatric Group"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-109289768",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-99123601",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Anant Foundation Corp",
+              "target_name": "Shri Anant Anant Corp Services"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-127461973",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-444748507",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Smart Dream Foundation Limited",
+              "target_name": "स्मार्ट ड्रीम फाउंडेशन लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-149176656",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-589777303",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "CXI Bhaiya Private Limited",
+              "target_name": "CXI Bhaiya Pravate Limited"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-165331932",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-30467441",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Real Foods Private Limited",
+              "target_name": "रियल फूड्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-167878663",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-284466890",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Volvo Infra Private Limited",
+              "target_name": "VOLVO  INFRA PRIVATE"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-184754618",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-120058867",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Omsons & Brothers Limited",
+              "target_name": "OMSONS & BROTHERS LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-227837902",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-215511965",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Divine Industries LLP",
+              "target_name": "L.L.P. Divine Industries"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-276641459",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-751659540",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Shades Systems",
+              "target_name": "SHADES SYSTEMS CÓRP"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-287359833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-22576848",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ayra Traders Pvt Ltd",
+              "target_name": "Ayra Trrs Pvt Ltd"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-288892121",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-387000945",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Indian Blue Developers Private Limited",
+              "target_name": "इंडियन ब्लू डेवलपर्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-301337358",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-546973821",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Green Systems Private Limited",
+              "target_name": "Green [Systems]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-305501613",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-495522192",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ps Funds Private Limited",
+              "target_name": "M/s PS FUNDS PRIVATE  LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-329207664",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-330638854",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Consultants Rudramukhi Communications Pvt Ltd",
+              "target_name": "Ltd Consultants Rudramukhi Pvt Center"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-331268813",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-293371921",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Shyam Hospitality Private Limited",
+              "target_name": "shyamhospitality.com"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-344989269",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-145556448",
+              "categories": [
+                "missing_address"
+              ],
+              "s1_name": "Asp Dairy Limited",
+              "target_name": "Asp Dairy"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-356938135",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-258642206",
+              "categories": [
+                "name_order"
+              ],
+              "s1_name": "Veekay Maintenance Pvt. Ltd.",
+              "target_name": "Veekay Ltd. Pvt. Maintenance"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-357312326",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-703698261",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Alok Memorial Trust",
+              "target_name": "Dr Alok Memorial Trust Trust"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-517888810",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-111170026",
+              "categories": [
+                "missing_address",
+                "typo_like"
+              ],
+              "s1_name": "Tasty Developers Private Limited",
+              "target_name": "Tasty Developers Private"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-526849692",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-767150528",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Hyderabad Fine LLP",
+              "target_name": "Hyderabad Fine"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-579021615",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-390618452",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Ss Care Private Limited",
+              "target_name": "SC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-596554308",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-48112448",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "All Agro Private Limited",
+              "target_name": "M/s All Agro Pimvde [Limited]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-603701330",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-901897625",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Oneclick Satya",
+              "target_name": "Oneclick Saray"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-623114833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-305334884",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "अल्फा सॉफ्टवेयर"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S2-352050057",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "Alpha Software"
+            },
+            {
+              "type": "false_negative",
+              "target_id": "S2-841500618",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "प्रीमियर गुड हेल्थकेयर प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-640619766",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-938617222",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Onkar Estates (India) Private Limited",
+              "target_name": "Nexpyra"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-644732666",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-775898092",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "WX Agarwal Private Limited",
+              "target_name": "wxagarwal.com"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-664824327",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-262343774",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Genesis Hotels Limited",
+              "target_name": "Genesis [Hotels]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "threshold": 11.75,
+      "metrics": {
+        "threshold": 11.75,
+        "macro_f0_5": 0.5420004211662427,
+        "micro_precision": 0.8541666666666666,
+        "micro_recall": 0.2551867219917012,
+        "true_positive_links": 123,
+        "false_positive_count": 21,
+        "false_negative_count": 359,
+        "predicted_match_count": 144,
+        "zero_match_s1": 100,
+        "zero_match_correct_empty": 94,
+        "zero_match_accuracy": 0.94
+      },
+      "error_entities": [
+        {
+          "s1_id": "S1-444637320",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-900425778",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Shakti Trading Private Limited",
+              "target_name": "Shakti Trading  Private Limited"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-829580392",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-293272210",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "New Delhi Home Private Limited",
+              "target_name": "NEW DELHI HOME PRIVATE [LIMITED]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-86573873",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-892321420",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Vedant Institute",
+              "target_name": "Vedant Institute"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-420032454",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-417419893",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "CRYSTALMERGER.COM"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S2-497850799",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "Crystal Mergre LLC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-453233474",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-398438808",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "URGENT CARE CLBNC"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S3-177232971",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "Keloonyxio formerly: Urgent Care Clinic"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-989408812",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-512796197",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Pediatric Group",
+              "target_name": "Pediatric Group"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-109289768",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-99123601",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Anant Foundation Corp",
+              "target_name": "Shri Anant Anant Corp Services"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-127461973",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-444748507",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Smart Dream Foundation Limited",
+              "target_name": "स्मार्ट ड्रीम फाउंडेशन लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-149176656",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-589777303",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "CXI Bhaiya Private Limited",
+              "target_name": "CXI Bhaiya Pravate Limited"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-165331932",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-30467441",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Real Foods Private Limited",
+              "target_name": "रियल फूड्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-167878663",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-284466890",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Volvo Infra Private Limited",
+              "target_name": "VOLVO  INFRA PRIVATE"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-184754618",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-120058867",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Omsons & Brothers Limited",
+              "target_name": "OMSONS & BROTHERS LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-227837902",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-215511965",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Divine Industries LLP",
+              "target_name": "L.L.P. Divine Industries"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-276641459",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-751659540",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Shades Systems",
+              "target_name": "SHADES SYSTEMS CÓRP"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-287359833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-22576848",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ayra Traders Pvt Ltd",
+              "target_name": "Ayra Trrs Pvt Ltd"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-288892121",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-387000945",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Indian Blue Developers Private Limited",
+              "target_name": "इंडियन ब्लू डेवलपर्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-301337358",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-546973821",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Green Systems Private Limited",
+              "target_name": "Green [Systems]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-305501613",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-495522192",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ps Funds Private Limited",
+              "target_name": "M/s PS FUNDS PRIVATE  LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-329207664",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-330638854",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Consultants Rudramukhi Communications Pvt Ltd",
+              "target_name": "Ltd Consultants Rudramukhi Pvt Center"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-331268813",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-293371921",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Shyam Hospitality Private Limited",
+              "target_name": "shyamhospitality.com"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-344989269",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-145556448",
+              "categories": [
+                "missing_address"
+              ],
+              "s1_name": "Asp Dairy Limited",
+              "target_name": "Asp Dairy"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-356938135",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-258642206",
+              "categories": [
+                "name_order"
+              ],
+              "s1_name": "Veekay Maintenance Pvt. Ltd.",
+              "target_name": "Veekay Ltd. Pvt. Maintenance"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-357312326",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-703698261",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Alok Memorial Trust",
+              "target_name": "Dr Alok Memorial Trust Trust"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-517888810",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-111170026",
+              "categories": [
+                "missing_address",
+                "typo_like"
+              ],
+              "s1_name": "Tasty Developers Private Limited",
+              "target_name": "Tasty Developers Private"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-526849692",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-767150528",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Hyderabad Fine LLP",
+              "target_name": "Hyderabad Fine"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-579021615",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-390618452",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Ss Care Private Limited",
+              "target_name": "SC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-596554308",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-48112448",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "All Agro Private Limited",
+              "target_name": "M/s All Agro Pimvde [Limited]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-603701330",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-901897625",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Oneclick Satya",
+              "target_name": "Oneclick Saray"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-623114833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-305334884",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "अल्फा सॉफ्टवेयर"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S2-352050057",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "Alpha Software"
+            },
+            {
+              "type": "false_negative",
+              "target_id": "S2-841500618",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "प्रीमियर गुड हेल्थकेयर प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-640619766",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-938617222",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Onkar Estates (India) Private Limited",
+              "target_name": "Nexpyra"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "threshold": 12.25,
+      "metrics": {
+        "threshold": 12.25,
+        "macro_f0_5": 0.5407513053395406,
+        "micro_precision": 0.928,
+        "micro_recall": 0.24066390041493776,
+        "true_positive_links": 116,
+        "false_positive_count": 9,
+        "false_negative_count": 366,
+        "predicted_match_count": 125,
+        "zero_match_s1": 100,
+        "zero_match_correct_empty": 98,
+        "zero_match_accuracy": 0.98
+      },
+      "error_entities": [
+        {
+          "s1_id": "S1-420032454",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-417419893",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "CRYSTALMERGER.COM"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S2-497850799",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Primary Care Health P.C.",
+              "target_name": "Crystal Mergre LLC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-453233474",
+          "match_class": "zero",
+          "zero_match_false_positive": true,
+          "missed_singleton": false,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-398438808",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "URGENT CARE CLBNC"
+            },
+            {
+              "type": "false_positive",
+              "target_id": "S3-177232971",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Coon LLC",
+              "target_name": "Keloonyxio formerly: Urgent Care Clinic"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-109289768",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-99123601",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Anant Foundation Corp",
+              "target_name": "Shri Anant Anant Corp Services"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-127461973",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-444748507",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Smart Dream Foundation Limited",
+              "target_name": "स्मार्ट ड्रीम फाउंडेशन लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-149176656",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-589777303",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "CXI Bhaiya Private Limited",
+              "target_name": "CXI Bhaiya Pravate Limited"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-165331932",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-30467441",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Real Foods Private Limited",
+              "target_name": "रियल फूड्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-167878663",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-284466890",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Volvo Infra Private Limited",
+              "target_name": "VOLVO  INFRA PRIVATE"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-184754618",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-120058867",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Omsons & Brothers Limited",
+              "target_name": "OMSONS & BROTHERS LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-227837902",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-215511965",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Divine Industries LLP",
+              "target_name": "L.L.P. Divine Industries"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-276641459",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-751659540",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Shades Systems",
+              "target_name": "SHADES SYSTEMS CÓRP"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-287359833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-22576848",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ayra Traders Pvt Ltd",
+              "target_name": "Ayra Trrs Pvt Ltd"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-288892121",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-387000945",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Indian Blue Developers Private Limited",
+              "target_name": "इंडियन ब्लू डेवलपर्स प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-301337358",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-546973821",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Green Systems Private Limited",
+              "target_name": "Green [Systems]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-305501613",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-495522192",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Ps Funds Private Limited",
+              "target_name": "M/s PS FUNDS PRIVATE  LTD"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-329207664",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-330638854",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Consultants Rudramukhi Communications Pvt Ltd",
+              "target_name": "Ltd Consultants Rudramukhi Pvt Center"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-331268813",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-293371921",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Shyam Hospitality Private Limited",
+              "target_name": "shyamhospitality.com"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-344989269",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-145556448",
+              "categories": [
+                "missing_address"
+              ],
+              "s1_name": "Asp Dairy Limited",
+              "target_name": "Asp Dairy"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-356938135",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-258642206",
+              "categories": [
+                "name_order"
+              ],
+              "s1_name": "Veekay Maintenance Pvt. Ltd.",
+              "target_name": "Veekay Ltd. Pvt. Maintenance"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-357312326",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-703698261",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Alok Memorial Trust",
+              "target_name": "Dr Alok Memorial Trust Trust"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-388476249",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-481711935",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Krishna Hospitality",
+              "target_name": "कृष्ण हॉस्पिटैलिटी"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-473027413",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-362490143",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Mumbai Consultants LLP",
+              "target_name": "Mumbai Consultants  LLP"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-517888810",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-111170026",
+              "categories": [
+                "missing_address",
+                "typo_like"
+              ],
+              "s1_name": "Tasty Developers Private Limited",
+              "target_name": "Tasty Developers Private"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-526849692",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-767150528",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Hyderabad Fine LLP",
+              "target_name": "Hyderabad Fine"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-579021615",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-390618452",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Ss Care Private Limited",
+              "target_name": "SC"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-596554308",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-48112448",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "All Agro Private Limited",
+              "target_name": "M/s All Agro Pimvde [Limited]"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-603701330",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-901897625",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Oneclick Satya",
+              "target_name": "Oneclick Saray"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-623114833",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_positive",
+              "target_id": "S2-352050057",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "Alpha Software"
+            },
+            {
+              "type": "false_negative",
+              "target_id": "S2-841500618",
+              "categories": [
+                "multilingual_script"
+              ],
+              "s1_name": "Premier Good Healthcare Private Limited",
+              "target_name": "प्रीमियर गुड हेल्थकेयर प्राइवेट लिमिटेड"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-640619766",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-938617222",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "Onkar Estates (India) Private Limited",
+              "target_name": "Nexpyra"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-644732666",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S3-775898092",
+              "categories": [
+                "other"
+              ],
+              "s1_name": "WX Agarwal Private Limited",
+              "target_name": "wxagarwal.com"
+            }
+          ]
+        },
+        {
+          "s1_id": "S1-664824327",
+          "match_class": "one",
+          "zero_match_false_positive": false,
+          "missed_singleton": true,
+          "missed_multi_links": false,
+          "errors": [
+            {
+              "type": "false_negative",
+              "target_id": "S2-262343774",
+              "categories": [
+                "typo_like"
+              ],
+              "s1_name": "Genesis Hotels Limited",
+              "target_name": "Genesis [Hotels]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime_seconds": 745.185
+}

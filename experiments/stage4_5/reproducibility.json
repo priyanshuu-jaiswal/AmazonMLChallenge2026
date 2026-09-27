@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "sample_hashes": [
+    "ec651dfe7d26e0f51b8ed5d4fa440196a9f0ca0e1df0ef1a5420399c65f93bd2",
+    "73ea778d56b9af2e29cf32120b2ac59baeb40d4b60a88ec2fc185ea74b0928de",
+    "8e2bcf60321c30475676cd3fec5a5409ff1617abd2444fce2cb808090fcb0be8"
+  ],
+  "samples_compared": 3,
+  "all_results_exactly_equal_except_runtime_and_tag": true
+}

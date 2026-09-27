@@ -1,0 +1,1043 @@
+{
+  "title": "Stage 4.5 multi-sample blocking validation",
+  "run_tag": "run2",
+  "baseline_gate": {
+    "stage43": {
+      "Union cap 2,500": {
+        "recovered": 460,
+        "true": 487
+      },
+      "Union cap 25,000": {
+        "recovered": 484,
+        "true": 487
+      }
+    },
+    "stage44": {
+      "A": {
+        "recovered": 476,
+        "true": 491
+      },
+      "B": {
+        "recovered": 488,
+        "true": 491
+      },
+      "A_HF_NAME": {
+        "recovered": 485,
+        "true": 491
+      },
+      "A_NAME2500": {
+        "recovered": 485,
+        "true": 491
+      }
+    },
+    "stage44_reproducibility_passed": true
+  },
+  "samples": [
+    {
+      "specification": {
+        "seed": 20261005,
+        "sample_count": 300,
+        "strata": {
+          "zero": 100,
+          "one": 100,
+          "multi": 100
+        },
+        "country_counts": {
+          "India": 150,
+          "US": 150
+        },
+        "strata_country_counts": {
+          "zero/India": 50,
+          "zero/US": 50,
+          "one/India": 50,
+          "one/US": 50,
+          "multi/India": 50,
+          "multi/US": 50
+        },
+        "true_links": 480,
+        "s2_true_links": 231,
+        "s3_true_links": 249,
+        "sample_sha256": "ec651dfe7d26e0f51b8ed5d4fa440196a9f0ca0e1df0ef1a5420399c65f93bd2",
+        "hash_input": "UTF-8 ordered S1 IDs joined by LF, no trailing LF",
+        "source_order": "S1 IDs lexicographically sorted within exact class × country pools",
+        "filtering": "join supplied train_source1 and train_ground_truth; India/US; 0/1/>=2 links; SHA256(ID) first byte >=64; exclude saved Stage 4.3/4.4 IDs and all earlier Stage 4.5 samples",
+        "sampling": "stdlib random.Random(seed).sample without replacement, one RNG over zero/one/multi then India/US, 50 per stratum",
+        "final_order": "match class zero/one/multi, then India/US, then S1 ID lexicographically",
+        "replay": "passed using fresh RNG and fresh eligible-pool queries",
+        "historical_limit": "Stage 4.1/4.2 sample IDs unavailable; no claim of disjointness from those samples"
+      },
+      "strategies": {
+        "A": {
+          "label": "prefix5_or_address_le2500",
+          "true_links": 480,
+          "recovered_links": 465,
+          "missed_links": 15,
+          "recall": 0.96875,
+          "s2": {
+            "true": 231,
+            "recovered": 225,
+            "missed": 6,
+            "recall": 0.974025974025974
+          },
+          "s3": {
+            "true": 249,
+            "recovered": 240,
+            "missed": 9,
+            "recall": 0.963855421686747
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 6,
+            "mean": 7215.376666666667,
+            "median": 4110.5,
+            "p90": 16062,
+            "p95": 20784,
+            "p99": 45291,
+            "max": 63460,
+            "total": 2164613
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 9,
+            "mean": 6888.19,
+            "median": 3853.0,
+            "p90": 15813,
+            "p95": 19259,
+            "p99": 26017,
+            "max": 45291,
+            "total": 688819,
+            "bins": {
+              "0": 0,
+              "1-10": 1,
+              "11-100": 1,
+              "101-1000": 8,
+              "1001-10000": 64,
+              "10001-100000": 26,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "6ad5b1573c0ed0e6068f6043ee9e599ca84861389c533c144530e584f3c29573",
+          "marginal_vs_A": {
+            "additional_links": 0,
+            "added_candidate_pairs": 0,
+            "added_candidates_per_additional_link": null,
+            "mean_additional_candidates_per_s1": 0.0,
+            "p95_additional_candidates_per_s1": 0,
+            "zero_match_additional_candidate_pairs": 0,
+            "zero_match_mean_additional_candidates": 0.0
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 6,
+            "mean": 7378.97,
+            "median": 4697.0,
+            "p90": 16679,
+            "p95": 21324,
+            "p99": 45688,
+            "max": 63460,
+            "total": 1475794
+          },
+          "candidate_pairs_not_ground_truth": 2164148,
+          "blocking_candidate_purity_proxy": 0.0002148189999782871,
+          "candidate_pairs_per_true_link": 4509.610416666666
+        },
+        "B": {
+          "label": "prefix5_or_address_le25000",
+          "true_links": 480,
+          "recovered_links": 474,
+          "missed_links": 6,
+          "recall": 0.9875,
+          "s2": {
+            "true": 231,
+            "recovered": 228,
+            "missed": 3,
+            "recall": 0.987012987012987
+          },
+          "s3": {
+            "true": 249,
+            "recovered": 246,
+            "missed": 3,
+            "recall": 0.9879518072289156
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 296,
+            "mean": 25526.38,
+            "median": 21648.0,
+            "p90": 49515,
+            "p95": 57680,
+            "p99": 93445,
+            "max": 116343,
+            "total": 7657914
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 1391,
+            "mean": 22269.31,
+            "median": 18176.5,
+            "p90": 40848,
+            "p95": 50945,
+            "p99": 67798,
+            "max": 104298,
+            "total": 2226931,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 0,
+              "101-1000": 0,
+              "1001-10000": 17,
+              "10001-100000": 82,
+              ">100000": 1
+            }
+          },
+          "recovered_link_set_sha256": "cdbc149ca5f3548ce24ffa2069ff92b07a4a8a79ce60ca328e1701a7c459d775",
+          "marginal_vs_A": {
+            "additional_links": 9,
+            "added_candidate_pairs": 5493301,
+            "added_candidates_per_additional_link": 610366.7777777778,
+            "mean_additional_candidates_per_s1": 18311.003333333334,
+            "p95_additional_candidates_per_s1": 50952,
+            "zero_match_additional_candidate_pairs": 1538112,
+            "zero_match_mean_additional_candidates": 15381.12
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 296,
+            "mean": 27154.915,
+            "median": 25092.0,
+            "p90": 50436,
+            "p95": 66839,
+            "p99": 93445,
+            "max": 116343,
+            "total": 5430983
+          },
+          "candidate_pairs_not_ground_truth": 7657440,
+          "blocking_candidate_purity_proxy": 6.18967515174498e-05,
+          "candidate_pairs_per_true_link": 15953.9875
+        },
+        "A_HF_NAME": {
+          "label": "A_plus_hf_address_and_name_token",
+          "true_links": 480,
+          "recovered_links": 468,
+          "missed_links": 12,
+          "recall": 0.975,
+          "s2": {
+            "true": 231,
+            "recovered": 225,
+            "missed": 6,
+            "recall": 0.974025974025974
+          },
+          "s3": {
+            "true": 249,
+            "recovered": 243,
+            "missed": 6,
+            "recall": 0.9759036144578314
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 6,
+            "mean": 7259.25,
+            "median": 4193.5,
+            "p90": 16154,
+            "p95": 20805,
+            "p99": 45332,
+            "max": 63460,
+            "total": 2177775
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 9,
+            "mean": 6927.38,
+            "median": 3884.0,
+            "p90": 15821,
+            "p95": 19259,
+            "p99": 26042,
+            "max": 45332,
+            "total": 692738,
+            "bins": {
+              "0": 0,
+              "1-10": 1,
+              "11-100": 1,
+              "101-1000": 8,
+              "1001-10000": 62,
+              "10001-100000": 28,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "731ee2b37ab8104c036f61e2fdffbf70d9648ce541843ecddd52ff2c642869e2",
+          "marginal_vs_A": {
+            "additional_links": 3,
+            "added_candidate_pairs": 13162,
+            "added_candidates_per_additional_link": 4387.333333333333,
+            "mean_additional_candidates_per_s1": 43.873333333333335,
+            "p95_additional_candidates_per_s1": 235,
+            "zero_match_additional_candidate_pairs": 3919,
+            "zero_match_mean_additional_candidates": 39.19
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 6,
+            "mean": 7425.185,
+            "median": 4701.5,
+            "p90": 16679,
+            "p95": 21554,
+            "p99": 45688,
+            "max": 63460,
+            "total": 1485037
+          },
+          "candidate_pairs_not_ground_truth": 2177307,
+          "blocking_candidate_purity_proxy": 0.00021489823328856288,
+          "candidate_pairs_per_true_link": 4537.03125
+        },
+        "A_NAME2500": {
+          "label": "A_plus_name_token_df_le2500",
+          "true_links": 480,
+          "recovered_links": 470,
+          "missed_links": 10,
+          "recall": 0.9791666666666666,
+          "s2": {
+            "true": 231,
+            "recovered": 226,
+            "missed": 5,
+            "recall": 0.9783549783549783
+          },
+          "s3": {
+            "true": 249,
+            "recovered": 244,
+            "missed": 5,
+            "recall": 0.9799196787148594
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 19,
+            "mean": 7651.723333333333,
+            "median": 4782.0,
+            "p90": 17110,
+            "p95": 21343,
+            "p99": 45291,
+            "max": 63460,
+            "total": 2295517
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 19,
+            "mean": 7312.72,
+            "median": 4286.0,
+            "p90": 15813,
+            "p95": 19259,
+            "p99": 27200,
+            "max": 45291,
+            "total": 731272,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 2,
+              "101-1000": 7,
+              "1001-10000": 65,
+              "10001-100000": 26,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "2ab7caf406fa314d9f66c0e4441b0695e8a81eb2dbc146dda3638ef7992ae252",
+          "marginal_vs_A": {
+            "additional_links": 5,
+            "added_candidate_pairs": 130904,
+            "added_candidates_per_additional_link": 26180.8,
+            "mean_additional_candidates_per_s1": 436.3466666666667,
+            "p95_additional_candidates_per_s1": 1953,
+            "zero_match_additional_candidate_pairs": 42453,
+            "zero_match_mean_additional_candidates": 424.53
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 87,
+            "mean": 7821.225,
+            "median": 5199.0,
+            "p90": 17431,
+            "p95": 21343,
+            "p99": 45949,
+            "max": 63460,
+            "total": 1564245
+          },
+          "candidate_pairs_not_ground_truth": 2295047,
+          "blocking_candidate_purity_proxy": 0.0002047469045099644,
+          "candidate_pairs_per_true_link": 4782.327083333334
+        }
+      }
+    },
+    {
+      "specification": {
+        "seed": 20261006,
+        "sample_count": 300,
+        "strata": {
+          "zero": 100,
+          "one": 100,
+          "multi": 100
+        },
+        "country_counts": {
+          "India": 150,
+          "US": 150
+        },
+        "strata_country_counts": {
+          "zero/India": 50,
+          "zero/US": 50,
+          "one/India": 50,
+          "one/US": 50,
+          "multi/India": 50,
+          "multi/US": 50
+        },
+        "true_links": 478,
+        "s2_true_links": 245,
+        "s3_true_links": 233,
+        "sample_sha256": "73ea778d56b9af2e29cf32120b2ac59baeb40d4b60a88ec2fc185ea74b0928de",
+        "hash_input": "UTF-8 ordered S1 IDs joined by LF, no trailing LF",
+        "source_order": "S1 IDs lexicographically sorted within exact class × country pools",
+        "filtering": "join supplied train_source1 and train_ground_truth; India/US; 0/1/>=2 links; SHA256(ID) first byte >=64; exclude saved Stage 4.3/4.4 IDs and all earlier Stage 4.5 samples",
+        "sampling": "stdlib random.Random(seed).sample without replacement, one RNG over zero/one/multi then India/US, 50 per stratum",
+        "final_order": "match class zero/one/multi, then India/US, then S1 ID lexicographically",
+        "replay": "passed using fresh RNG and fresh eligible-pool queries",
+        "historical_limit": "Stage 4.1/4.2 sample IDs unavailable; no claim of disjointness from those samples"
+      },
+      "strategies": {
+        "A": {
+          "label": "prefix5_or_address_le2500",
+          "true_links": 478,
+          "recovered_links": 450,
+          "missed_links": 28,
+          "recall": 0.9414225941422594,
+          "s2": {
+            "true": 245,
+            "recovered": 229,
+            "missed": 16,
+            "recall": 0.9346938775510204
+          },
+          "s3": {
+            "true": 233,
+            "recovered": 221,
+            "missed": 12,
+            "recall": 0.9484978540772532
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 3,
+            "mean": 6550.543333333333,
+            "median": 3156.0,
+            "p90": 15670,
+            "p95": 20021,
+            "p99": 44198,
+            "max": 63186,
+            "total": 1965163
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 23,
+            "mean": 6077.37,
+            "median": 3255.0,
+            "p90": 15152,
+            "p95": 18421,
+            "p99": 22752,
+            "max": 44198,
+            "total": 607737,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 3,
+              "101-1000": 9,
+              "1001-10000": 68,
+              "10001-100000": 20,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "38623ae5b30cf3ea06d7a6192c29fae7bd618129a249adb4880a45031501af1d",
+          "marginal_vs_A": {
+            "additional_links": 0,
+            "added_candidate_pairs": 0,
+            "added_candidates_per_additional_link": null,
+            "mean_additional_candidates_per_s1": 0.0,
+            "p95_additional_candidates_per_s1": 0,
+            "zero_match_additional_candidate_pairs": 0,
+            "zero_match_mean_additional_candidates": 0.0
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 3,
+            "mean": 6787.13,
+            "median": 2955.5,
+            "p90": 16573,
+            "p95": 20718,
+            "p99": 48515,
+            "max": 63186,
+            "total": 1357426
+          },
+          "candidate_pairs_not_ground_truth": 1964713,
+          "blocking_candidate_purity_proxy": 0.00022898863860147987,
+          "candidate_pairs_per_true_link": 4111.219665271967
+        },
+        "B": {
+          "label": "prefix5_or_address_le25000",
+          "true_links": 478,
+          "recovered_links": 469,
+          "missed_links": 9,
+          "recall": 0.9811715481171548,
+          "s2": {
+            "true": 245,
+            "recovered": 238,
+            "missed": 7,
+            "recall": 0.9714285714285714
+          },
+          "s3": {
+            "true": 233,
+            "recovered": 231,
+            "missed": 2,
+            "recall": 0.9914163090128756
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 1103,
+            "mean": 25628.566666666666,
+            "median": 21909.5,
+            "p90": 50521,
+            "p95": 63186,
+            "p99": 84574,
+            "max": 113046,
+            "total": 7688570
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 1171,
+            "mean": 23814.22,
+            "median": 20046.0,
+            "p90": 46343,
+            "p95": 60140,
+            "p99": 88416,
+            "max": 113046,
+            "total": 2381422,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 0,
+              "101-1000": 0,
+              "1001-10000": 24,
+              "10001-100000": 75,
+              ">100000": 1
+            }
+          },
+          "recovered_link_set_sha256": "e45673e62963adef1e01759152f6cbc7e5fa1865f4a83f027f15b9f538f74aa2",
+          "marginal_vs_A": {
+            "additional_links": 19,
+            "added_candidate_pairs": 5723407,
+            "added_candidates_per_additional_link": 301231.94736842107,
+            "mean_additional_candidates_per_s1": 19078.023333333334,
+            "p95_additional_candidates_per_s1": 54095,
+            "zero_match_additional_candidate_pairs": 1773685,
+            "zero_match_mean_additional_candidates": 17736.85
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 1103,
+            "mean": 26535.74,
+            "median": 24322.5,
+            "p90": 50736,
+            "p95": 63393,
+            "p99": 83321,
+            "max": 86783,
+            "total": 5307148
+          },
+          "candidate_pairs_not_ground_truth": 7688101,
+          "blocking_candidate_purity_proxy": 6.099963972494235e-05,
+          "candidate_pairs_per_true_link": 16084.874476987448
+        },
+        "A_HF_NAME": {
+          "label": "A_plus_hf_address_and_name_token",
+          "true_links": 478,
+          "recovered_links": 457,
+          "missed_links": 21,
+          "recall": 0.9560669456066946,
+          "s2": {
+            "true": 245,
+            "recovered": 231,
+            "missed": 14,
+            "recall": 0.9428571428571428
+          },
+          "s3": {
+            "true": 233,
+            "recovered": 226,
+            "missed": 7,
+            "recall": 0.9699570815450643
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 10,
+            "mean": 6598.873333333333,
+            "median": 3186.5,
+            "p90": 15690,
+            "p95": 20021,
+            "p99": 44198,
+            "max": 63186,
+            "total": 1979662
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 23,
+            "mean": 6126.27,
+            "median": 3299.0,
+            "p90": 15167,
+            "p95": 18544,
+            "p99": 22778,
+            "max": 44198,
+            "total": 612627,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 3,
+              "101-1000": 9,
+              "1001-10000": 68,
+              "10001-100000": 20,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "1cd3096ba0c66257fa234daa8ae1f24df43cd39b399d7ad444ab54023130d5e6",
+          "marginal_vs_A": {
+            "additional_links": 7,
+            "added_candidate_pairs": 14499,
+            "added_candidates_per_additional_link": 2071.285714285714,
+            "mean_additional_candidates_per_s1": 48.33,
+            "p95_additional_candidates_per_s1": 261,
+            "zero_match_additional_candidate_pairs": 4890,
+            "zero_match_mean_additional_candidates": 48.9
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 10,
+            "mean": 6835.175,
+            "median": 3085.0,
+            "p90": 16573,
+            "p95": 20735,
+            "p99": 48518,
+            "max": 63186,
+            "total": 1367035
+          },
+          "candidate_pairs_not_ground_truth": 1979205,
+          "blocking_candidate_purity_proxy": 0.00023084748810655556,
+          "candidate_pairs_per_true_link": 4141.55230125523
+        },
+        "A_NAME2500": {
+          "label": "A_plus_name_token_df_le2500",
+          "true_links": 478,
+          "recovered_links": 457,
+          "missed_links": 21,
+          "recall": 0.9560669456066946,
+          "s2": {
+            "true": 245,
+            "recovered": 231,
+            "missed": 14,
+            "recall": 0.9428571428571428
+          },
+          "s3": {
+            "true": 233,
+            "recovered": 226,
+            "missed": 7,
+            "recall": 0.9699570815450643
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 21,
+            "mean": 7009.106666666667,
+            "median": 3958.5,
+            "p90": 16573,
+            "p95": 20718,
+            "p99": 44198,
+            "max": 63186,
+            "total": 2102732
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 60,
+            "mean": 6545.45,
+            "median": 4160.5,
+            "p90": 15152,
+            "p95": 18421,
+            "p99": 22752,
+            "max": 44198,
+            "total": 654545,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 1,
+              "101-1000": 9,
+              "1001-10000": 69,
+              "10001-100000": 21,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "8cd6af62ebecd6ca0ce20e92ac7e24efc2862a0439d4c6435af665587199990c",
+          "marginal_vs_A": {
+            "additional_links": 7,
+            "added_candidate_pairs": 137569,
+            "added_candidates_per_additional_link": 19652.714285714286,
+            "mean_additional_candidates_per_s1": 458.56333333333333,
+            "p95_additional_candidates_per_s1": 2038,
+            "zero_match_additional_candidate_pairs": 46808,
+            "zero_match_mean_additional_candidates": 468.08
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 21,
+            "mean": 7240.935,
+            "median": 3883.5,
+            "p90": 17172,
+            "p95": 20877,
+            "p99": 48515,
+            "max": 63186,
+            "total": 1448187
+          },
+          "candidate_pairs_not_ground_truth": 2102275,
+          "blocking_candidate_purity_proxy": 0.00021733630343762306,
+          "candidate_pairs_per_true_link": 4399.020920502092
+        }
+      }
+    },
+    {
+      "specification": {
+        "seed": 20261007,
+        "sample_count": 300,
+        "strata": {
+          "zero": 100,
+          "one": 100,
+          "multi": 100
+        },
+        "country_counts": {
+          "India": 150,
+          "US": 150
+        },
+        "strata_country_counts": {
+          "zero/India": 50,
+          "zero/US": 50,
+          "one/India": 50,
+          "one/US": 50,
+          "multi/India": 50,
+          "multi/US": 50
+        },
+        "true_links": 485,
+        "s2_true_links": 245,
+        "s3_true_links": 240,
+        "sample_sha256": "8e2bcf60321c30475676cd3fec5a5409ff1617abd2444fce2cb808090fcb0be8",
+        "hash_input": "UTF-8 ordered S1 IDs joined by LF, no trailing LF",
+        "source_order": "S1 IDs lexicographically sorted within exact class × country pools",
+        "filtering": "join supplied train_source1 and train_ground_truth; India/US; 0/1/>=2 links; SHA256(ID) first byte >=64; exclude saved Stage 4.3/4.4 IDs and all earlier Stage 4.5 samples",
+        "sampling": "stdlib random.Random(seed).sample without replacement, one RNG over zero/one/multi then India/US, 50 per stratum",
+        "final_order": "match class zero/one/multi, then India/US, then S1 ID lexicographically",
+        "replay": "passed using fresh RNG and fresh eligible-pool queries",
+        "historical_limit": "Stage 4.1/4.2 sample IDs unavailable; no claim of disjointness from those samples"
+      },
+      "strategies": {
+        "A": {
+          "label": "prefix5_or_address_le2500",
+          "true_links": 485,
+          "recovered_links": 464,
+          "missed_links": 21,
+          "recall": 0.9567010309278351,
+          "s2": {
+            "true": 245,
+            "recovered": 235,
+            "missed": 10,
+            "recall": 0.9591836734693877
+          },
+          "s3": {
+            "true": 240,
+            "recovered": 229,
+            "missed": 11,
+            "recall": 0.9541666666666667
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 9,
+            "mean": 7256.053333333333,
+            "median": 4246.0,
+            "p90": 17396,
+            "p95": 21259,
+            "p99": 31539,
+            "max": 63541,
+            "total": 2176816
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 62,
+            "mean": 7485.41,
+            "median": 4039.5,
+            "p90": 18230,
+            "p95": 20679,
+            "p99": 30092,
+            "max": 63541,
+            "total": 748541,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 2,
+              "101-1000": 12,
+              "1001-10000": 60,
+              "10001-100000": 26,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "ea4dfefdb97ee26136a838f42efb73426194e2893adbf0374b0dce8588226b08",
+          "marginal_vs_A": {
+            "additional_links": 0,
+            "added_candidate_pairs": 0,
+            "added_candidates_per_additional_link": null,
+            "mean_additional_candidates_per_s1": 0.0,
+            "p95_additional_candidates_per_s1": 0,
+            "zero_match_additional_candidate_pairs": 0,
+            "zero_match_mean_additional_candidates": 0.0
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 9,
+            "mean": 7141.375,
+            "median": 4605.0,
+            "p90": 16702,
+            "p95": 21415,
+            "p99": 31539,
+            "max": 43733,
+            "total": 1428275
+          },
+          "candidate_pairs_not_ground_truth": 2176352,
+          "blocking_candidate_purity_proxy": 0.00021315536085732555,
+          "candidate_pairs_per_true_link": 4488.280412371134
+        },
+        "B": {
+          "label": "prefix5_or_address_le25000",
+          "true_links": 485,
+          "recovered_links": 473,
+          "missed_links": 12,
+          "recall": 0.9752577319587629,
+          "s2": {
+            "true": 245,
+            "recovered": 237,
+            "missed": 8,
+            "recall": 0.9673469387755103
+          },
+          "s3": {
+            "true": 240,
+            "recovered": 236,
+            "missed": 4,
+            "recall": 0.9833333333333333
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 348,
+            "mean": 25296.046666666665,
+            "median": 21805.0,
+            "p90": 45480,
+            "p95": 60554,
+            "p99": 78770,
+            "max": 161353,
+            "total": 7588814
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 596,
+            "mean": 26383.19,
+            "median": 23125.0,
+            "p90": 46557,
+            "p95": 54586,
+            "p99": 69598,
+            "max": 91937,
+            "total": 2638319,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 0,
+              "101-1000": 2,
+              "1001-10000": 16,
+              "10001-100000": 82,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "10d5072f415f08d827e119427d8000429096bf47f7c5e9a0aa7eeb4f6720a15c",
+          "marginal_vs_A": {
+            "additional_links": 9,
+            "added_candidate_pairs": 5411998,
+            "added_candidates_per_additional_link": 601333.1111111111,
+            "mean_additional_candidates_per_s1": 18039.993333333332,
+            "p95_additional_candidates_per_s1": 50709,
+            "zero_match_additional_candidate_pairs": 1889778,
+            "zero_match_mean_additional_candidates": 18897.78
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 348,
+            "mean": 24752.475,
+            "median": 21234.0,
+            "p90": 42404,
+            "p95": 61549,
+            "p99": 78770,
+            "max": 161353,
+            "total": 4950495
+          },
+          "candidate_pairs_not_ground_truth": 7588341,
+          "blocking_candidate_purity_proxy": 6.232857993357065e-05,
+          "candidate_pairs_per_true_link": 15647.039175257732
+        },
+        "A_HF_NAME": {
+          "label": "A_plus_hf_address_and_name_token",
+          "true_links": 485,
+          "recovered_links": 470,
+          "missed_links": 15,
+          "recall": 0.9690721649484536,
+          "s2": {
+            "true": 245,
+            "recovered": 235,
+            "missed": 10,
+            "recall": 0.9591836734693877
+          },
+          "s3": {
+            "true": 240,
+            "recovered": 235,
+            "missed": 5,
+            "recall": 0.9791666666666666
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 29,
+            "mean": 7302.1466666666665,
+            "median": 4268.0,
+            "p90": 17396,
+            "p95": 21370,
+            "p99": 31548,
+            "max": 63541,
+            "total": 2190644
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 62,
+            "mean": 7534.37,
+            "median": 4085.5,
+            "p90": 18239,
+            "p95": 20688,
+            "p99": 30508,
+            "max": 63541,
+            "total": 753437,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 1,
+              "101-1000": 13,
+              "1001-10000": 60,
+              "10001-100000": 26,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "7bacc8b842ef62e33e2487e878c9f28e6f3c7aa09b1d45033654e8291554e425",
+          "marginal_vs_A": {
+            "additional_links": 6,
+            "added_candidate_pairs": 13828,
+            "added_candidates_per_additional_link": 2304.6666666666665,
+            "mean_additional_candidates_per_s1": 46.093333333333334,
+            "p95_additional_candidates_per_s1": 229,
+            "zero_match_additional_candidate_pairs": 4896,
+            "zero_match_mean_additional_candidates": 48.96
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 29,
+            "mean": 7186.035,
+            "median": 4608.0,
+            "p90": 16777,
+            "p95": 21468,
+            "p99": 31548,
+            "max": 43832,
+            "total": 1437207
+          },
+          "candidate_pairs_not_ground_truth": 2190174,
+          "blocking_candidate_purity_proxy": 0.00021454878108903135,
+          "candidate_pairs_per_true_link": 4516.79175257732
+        },
+        "A_NAME2500": {
+          "label": "A_plus_name_token_df_le2500",
+          "true_links": 485,
+          "recovered_links": 470,
+          "missed_links": 15,
+          "recall": 0.9690721649484536,
+          "s2": {
+            "true": 245,
+            "recovered": 235,
+            "missed": 10,
+            "recall": 0.9591836734693877
+          },
+          "s3": {
+            "true": 240,
+            "recovered": 235,
+            "missed": 5,
+            "recall": 0.9791666666666666
+          },
+          "candidate_volume": {
+            "n": 300,
+            "min": 40,
+            "mean": 7832.883333333333,
+            "median": 5363.5,
+            "p90": 18474,
+            "p95": 21415,
+            "p99": 31718,
+            "max": 63541,
+            "total": 2349865
+          },
+          "zero_match": {
+            "n": 100,
+            "min": 88,
+            "mean": 8030.13,
+            "median": 4991.5,
+            "p90": 19381,
+            "p95": 21300,
+            "p99": 30092,
+            "max": 63541,
+            "total": 803013,
+            "bins": {
+              "0": 0,
+              "1-10": 0,
+              "11-100": 1,
+              "101-1000": 10,
+              "1001-10000": 63,
+              "10001-100000": 26,
+              ">100000": 0
+            }
+          },
+          "recovered_link_set_sha256": "7bacc8b842ef62e33e2487e878c9f28e6f3c7aa09b1d45033654e8291554e425",
+          "marginal_vs_A": {
+            "additional_links": 6,
+            "added_candidate_pairs": 173049,
+            "added_candidates_per_additional_link": 28841.5,
+            "mean_additional_candidates_per_s1": 576.83,
+            "p95_additional_candidates_per_s1": 2052,
+            "zero_match_additional_candidate_pairs": 54472,
+            "zero_match_mean_additional_candidates": 544.72
+          },
+          "matched_s1_candidate_volume": {
+            "n": 200,
+            "min": 40,
+            "mean": 7734.26,
+            "median": 5568.5,
+            "p90": 16702,
+            "p95": 21415,
+            "p99": 31718,
+            "max": 43733,
+            "total": 1546852
+          },
+          "candidate_pairs_not_ground_truth": 2349395,
+          "blocking_candidate_purity_proxy": 0.00020001149002176722,
+          "candidate_pairs_per_true_link": 4845.082474226804
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "A": "country + conservative normalized name prefix-5 UNION country + distinct conservative/approved-abbreviation address tokens with target df 1..2500",
+    "B": "same, address df 1..25000",
+    "A_HF_NAME": "A UNION targets sharing country-address token df 2501..25000 AND any shared country-name token df 1..25000",
+    "A_NAME2500": "A UNION targets sharing any country-name token df 1..2500",
+    "candidate_count": "unique S2+S3 target IDs per S1",
+    "quantile": "nearest rank ceil(p*n)",
+    "purity": "blocking-level true candidate links / candidate pairs; not final matching precision"
+  },
+  "runtime_seconds": 649.476
+}

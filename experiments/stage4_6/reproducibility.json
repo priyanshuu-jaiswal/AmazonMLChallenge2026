@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "exact_results_equal_except_runtime_and_tag": true,
+  "sample_sha256": "76c0939e141c8e11defc103677dbf9f6be2d64844cbdb42c711ca0184c3dabef",
+  "runtime_run1_seconds": 567.05,
+  "runtime_run2_seconds": 559.7
+}

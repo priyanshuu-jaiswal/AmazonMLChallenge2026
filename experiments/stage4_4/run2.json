@@ -1,0 +1,4863 @@
+{
+  "title": "Stage 4.4 targeted blocking recovery experiment",
+  "run_tag": "run2",
+  "stage43_baseline_artifact": {
+    "sample_sha256": "e10975919f7d6b4b5a7fdc268617e936661a2a938ce6afa7aedf2a3137304b75",
+    "sample_count": 300,
+    "true_links": 487,
+    "saved_A_recovered": 460,
+    "saved_B_recovered": 484,
+    "recomputed_A_recovered": 460,
+    "recomputed_B_recovered": 484,
+    "recomputed_overlap": {
+      "both": 460,
+      "A_only": 0,
+      "B_only": 24,
+      "missed_both": 3
+    },
+    "gate_passed": true
+  },
+  "new_sample": {
+    "seed": 20261004,
+    "algorithm": "stdlib random.Random.sample without replacement; one RNG across strata",
+    "source_order": "population sorted lexicographically by S1 ID within exact match-class × country stratum",
+    "filtering": "join supplied train_source1.tsv and train_ground_truth.tsv by ID; exact country India/US; match classes 0, 1, >=2; retain SHA-256(UTF-8 S1 ID) first byte >=64",
+    "stratum_order": "zero, one, multi; within each: India then US",
+    "quota": "50 S1 IDs per match-class × country stratum",
+    "final_id_order": "match class zero/one/multi, then India/US, then S1 ID lexicographically",
+    "sample_count": 300,
+    "sample_sha256": "66d963beac3452316b714ca67943f367bd17e587cb7a451efaba70b000fe794c",
+    "hash_input": "UTF-8 final ordered S1 IDs joined by LF, no trailing LF",
+    "disjointness": "The Stage 4.3 saved sample uses the complementary SHA-256 first-byte partition (<64); direct ID-set overlap also checked.",
+    "strata": {
+      "zero": 100,
+      "one": 100,
+      "multi": 100
+    },
+    "country_counts": {
+      "India": 150,
+      "US": 150
+    },
+    "strata_country_counts": {
+      "zero/India": 50,
+      "zero/US": 50,
+      "one/India": 50,
+      "one/US": 50,
+      "multi/India": 50,
+      "multi/US": 50
+    },
+    "true_links": 491,
+    "s2_true_links": 231,
+    "s3_true_links": 260
+  },
+  "definitions": {
+    "prefix": "country + first 4/5/6 chars of Stage 3 conservative-normalized name; short strings do not emit that prefix",
+    "address": "country + each distinct key from union of conservative/approved abbreviation address tokens; df is target-record count S2+S3; use 1..cap",
+    "name": "country + distinct conservative normalized name token; df is target-record count S2+S3; use 1..cap",
+    "high_frequency_band": "2500 < address-token df <= 25000; target record must share one key in the rule band",
+    "candidate_count": "unique target entity IDs across S2 and S3 for each S1",
+    "quantile": "nearest rank ceil(p*n)"
+  },
+  "stage43_exploration": {
+    "metrics": {
+      "A": {
+        "label": "prefix5_or_address_le2500",
+        "true_links": 487,
+        "recovered_links": 460,
+        "missed_links": 27,
+        "recall": 0.944558521560575,
+        "s2": {
+          "true": 252,
+          "recovered": 234,
+          "missed": 18,
+          "recall": 0.9285714285714286
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 226,
+          "missed": 9,
+          "recall": 0.9617021276595744
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 6440.22,
+          "median": 3413.5,
+          "p90": 15821,
+          "p95": 20794,
+          "p99": 30685,
+          "max": 45201,
+          "total": 1932066
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 6738.24,
+          "median": 4007.5,
+          "p90": 15667,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 673824,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 1,
+            "101-1000": 11,
+            "1001-10000": 62,
+            "10001-100000": 25,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "52eaf186a6854f044dc9c536a4ae7a4bba43343609a9650f5d8d9e4c0acf2a05",
+        "marginal_vs_A": {
+          "additional_links": 0,
+          "added_candidate_pairs": 0,
+          "added_candidates_per_additional_link": null,
+          "mean_additional_candidates_per_s1": 0.0,
+          "p95_additional_candidates_per_s1": 0,
+          "zero_match_additional_candidate_pairs": 0,
+          "zero_match_mean_additional_candidates": 0.0
+        }
+      },
+      "B": {
+        "label": "prefix5_or_address_le25000",
+        "true_links": 487,
+        "recovered_links": 484,
+        "missed_links": 3,
+        "recall": 0.9938398357289527,
+        "s2": {
+          "true": 252,
+          "recovered": 251,
+          "missed": 1,
+          "recall": 0.996031746031746
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 233,
+          "missed": 2,
+          "recall": 0.9914893617021276
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 24633.54,
+          "median": 22741.0,
+          "p90": 46329,
+          "p95": 58191,
+          "p99": 73224,
+          "max": 81132,
+          "total": 7390062
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 23060.41,
+          "median": 21249.5,
+          "p90": 42626,
+          "p95": 49793,
+          "p99": 69193,
+          "max": 73361,
+          "total": 2306041,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 0,
+            "101-1000": 1,
+            "1001-10000": 16,
+            "10001-100000": 82,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "4967c3dd1304ed1e873cfdf72c18ccedbe8649c4ed2bdddd4815efc9f6bd4881",
+        "marginal_vs_A": {
+          "additional_links": 24,
+          "added_candidate_pairs": 5457996,
+          "added_candidates_per_additional_link": 227416.5,
+          "mean_additional_candidates_per_s1": 18193.32,
+          "p95_additional_candidates_per_s1": 47303,
+          "zero_match_additional_candidate_pairs": 1632217,
+          "zero_match_mean_additional_candidates": 16322.17
+        }
+      },
+      "PREFIX4": {
+        "label": "prefix4_only",
+        "true_links": 487,
+        "recovered_links": 368,
+        "missed_links": 119,
+        "recall": 0.75564681724846,
+        "s2": {
+          "true": 252,
+          "recovered": 187,
+          "missed": 65,
+          "recall": 0.7420634920634921
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 181,
+          "missed": 54,
+          "recall": 0.7702127659574468
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 2,
+          "mean": 6429.806666666666,
+          "median": 3605.5,
+          "p90": 16774,
+          "p95": 21338,
+          "p99": 30367,
+          "max": 61759,
+          "total": 1928942
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 5,
+          "mean": 6345.33,
+          "median": 2958.0,
+          "p90": 14456,
+          "p95": 20776,
+          "p99": 27352,
+          "max": 55650,
+          "total": 634533,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 17,
+            "101-1000": 19,
+            "1001-10000": 38,
+            "10001-100000": 25,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "f21b0578b8723dc469ea66e9a4cc0cd6d5d31df55466067f0a2ada8a6d1d2d11",
+        "marginal_vs_A": {
+          "additional_links": 3,
+          "added_candidate_pairs": -3124,
+          "added_candidates_per_additional_link": -1041.3333333333333,
+          "mean_additional_candidates_per_s1": 1362.2166666666667,
+          "p95_additional_candidates_per_s1": 7957,
+          "zero_match_additional_candidate_pairs": 91497,
+          "zero_match_mean_additional_candidates": 914.97
+        }
+      },
+      "PREFIX6": {
+        "label": "prefix6_only",
+        "true_links": 487,
+        "recovered_links": 343,
+        "missed_links": 144,
+        "recall": 0.704312114989733,
+        "s2": {
+          "true": 252,
+          "recovered": 176,
+          "missed": 76,
+          "recall": 0.6984126984126984
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 167,
+          "missed": 68,
+          "recall": 0.7106382978723405
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 0,
+          "mean": 3887.8633333333332,
+          "median": 347.5,
+          "p90": 13539,
+          "p95": 17804,
+          "p99": 20278,
+          "max": 26747,
+          "total": 1166359
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 0,
+          "mean": 4262.19,
+          "median": 558.5,
+          "p90": 13490,
+          "p95": 17804,
+          "p99": 21962,
+          "max": 26747,
+          "total": 426219,
+          "bins": {
+            "0": 1,
+            "1-10": 8,
+            "11-100": 22,
+            "101-1000": 29,
+            "1001-10000": 24,
+            "10001-100000": 16,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "a7bd54b3444ab6c1aeefc242554562ca7af0316bf1c17dc3937cf809825d3998",
+        "marginal_vs_A": {
+          "additional_links": 0,
+          "added_candidate_pairs": -765707,
+          "added_candidates_per_additional_link": null,
+          "mean_additional_candidates_per_s1": 0.0,
+          "p95_additional_candidates_per_s1": 0,
+          "zero_match_additional_candidate_pairs": 0,
+          "zero_match_mean_additional_candidates": 0.0
+        }
+      },
+      "NAME2500": {
+        "label": "name_token_df_le2500_only",
+        "true_links": 487,
+        "recovered_links": 294,
+        "missed_links": 193,
+        "recall": 0.6036960985626283,
+        "s2": {
+          "true": 252,
+          "recovered": 155,
+          "missed": 97,
+          "recall": 0.6150793650793651
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 139,
+          "missed": 96,
+          "recall": 0.5914893617021276
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 0,
+          "mean": 618.8466666666667,
+          "median": 136.0,
+          "p90": 1840,
+          "p95": 2026,
+          "p99": 3057,
+          "max": 4122,
+          "total": 185654
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 0,
+          "mean": 688.1,
+          "median": 153.5,
+          "p90": 1893,
+          "p95": 2243,
+          "p99": 3057,
+          "max": 3288,
+          "total": 68810,
+          "bins": {
+            "0": 35,
+            "1-10": 2,
+            "11-100": 4,
+            "101-1000": 28,
+            "1001-10000": 31,
+            "10001-100000": 0,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "ecabd088e28668193611d0acf7049a38adb7cfb59ad78996959f85af92b844e4",
+        "marginal_vs_A": {
+          "additional_links": 10,
+          "added_candidate_pairs": -1746412,
+          "added_candidates_per_additional_link": -174641.2,
+          "mean_additional_candidates_per_s1": 532.2333333333333,
+          "p95_additional_candidates_per_s1": 1906,
+          "zero_match_additional_candidate_pairs": 60188,
+          "zero_match_mean_additional_candidates": 601.88
+        }
+      },
+      "NAME25000": {
+        "label": "name_token_df_le25000_only",
+        "true_links": 487,
+        "recovered_links": 402,
+        "missed_links": 85,
+        "recall": 0.8254620123203286,
+        "s2": {
+          "true": 252,
+          "recovered": 203,
+          "missed": 49,
+          "recall": 0.8055555555555556
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 199,
+          "missed": 36,
+          "recall": 0.8468085106382979
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 0,
+          "mean": 12213.726666666667,
+          "median": 9286.5,
+          "p90": 29257,
+          "p95": 31593,
+          "p99": 45422,
+          "max": 59339,
+          "total": 3664118
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 0,
+          "mean": 12487.54,
+          "median": 9201.0,
+          "p90": 30357,
+          "p95": 31265,
+          "p99": 43131,
+          "max": 48658,
+          "total": 1248754,
+          "bins": {
+            "0": 2,
+            "1-10": 0,
+            "11-100": 2,
+            "101-1000": 15,
+            "1001-10000": 34,
+            "10001-100000": 47,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "b294af5ed2fb6a54867d613fbf9629677b06010a0e033487d8645a895b86277b",
+        "marginal_vs_A": {
+          "additional_links": 12,
+          "added_candidate_pairs": 1732052,
+          "added_candidates_per_additional_link": 144337.66666666666,
+          "mean_additional_candidates_per_s1": 9886.4,
+          "p95_additional_candidates_per_s1": 30011,
+          "zero_match_additional_candidate_pairs": 957272,
+          "zero_match_mean_additional_candidates": 9572.72
+        }
+      },
+      "A_NAME2500": {
+        "label": "A_plus_name_token_df_le2500",
+        "true_links": 487,
+        "recovered_links": 470,
+        "missed_links": 17,
+        "recall": 0.9650924024640657,
+        "s2": {
+          "true": 252,
+          "recovered": 239,
+          "missed": 13,
+          "recall": 0.9484126984126984
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 231,
+          "missed": 4,
+          "recall": 0.9829787234042553
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 6,
+          "mean": 6972.453333333333,
+          "median": 4409.0,
+          "p90": 16458,
+          "p95": 20965,
+          "p99": 30722,
+          "max": 45201,
+          "total": 2091736
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 145,
+          "mean": 7340.12,
+          "median": 4724.5,
+          "p90": 16856,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 734012,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 0,
+            "101-1000": 5,
+            "1001-10000": 69,
+            "10001-100000": 26,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "5636d2b2ede00af60b840947ed8f5fbd2e95ab3376884659144fbb55aaf1454d",
+        "marginal_vs_A": {
+          "additional_links": 10,
+          "added_candidate_pairs": 159670,
+          "added_candidates_per_additional_link": 15967.0,
+          "mean_additional_candidates_per_s1": 532.2333333333333,
+          "p95_additional_candidates_per_s1": 1906,
+          "zero_match_additional_candidate_pairs": 60188,
+          "zero_match_mean_additional_candidates": 601.88
+        }
+      },
+      "A_NAME25000": {
+        "label": "A_plus_name_token_df_le25000",
+        "true_links": 487,
+        "recovered_links": 472,
+        "missed_links": 15,
+        "recall": 0.9691991786447639,
+        "s2": {
+          "true": 252,
+          "recovered": 240,
+          "missed": 12,
+          "recall": 0.9523809523809523
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 232,
+          "missed": 3,
+          "recall": 0.9872340425531915
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 6,
+          "mean": 16326.62,
+          "median": 13980.5,
+          "p90": 32912,
+          "p95": 39653,
+          "p99": 49640,
+          "max": 69554,
+          "total": 4897986
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 359,
+          "mean": 16310.96,
+          "median": 14648.0,
+          "p90": 31840,
+          "p95": 38627,
+          "p99": 48099,
+          "max": 49702,
+          "total": 1631096,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 0,
+            "101-1000": 3,
+            "1001-10000": 35,
+            "10001-100000": 62,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "e6630076ac21a97ee32c3452900b865416329501389f9099ba9a77cf271224f2",
+        "marginal_vs_A": {
+          "additional_links": 12,
+          "added_candidate_pairs": 2965920,
+          "added_candidates_per_additional_link": 247160.0,
+          "mean_additional_candidates_per_s1": 9886.4,
+          "p95_additional_candidates_per_s1": 30011,
+          "zero_match_additional_candidate_pairs": 957272,
+          "zero_match_mean_additional_candidates": 9572.72
+        }
+      },
+      "A_HF_PREFIX": {
+        "label": "A_plus_hf_address_and_prefix5",
+        "true_links": 487,
+        "recovered_links": 460,
+        "missed_links": 27,
+        "recall": 0.944558521560575,
+        "s2": {
+          "true": 252,
+          "recovered": 234,
+          "missed": 18,
+          "recall": 0.9285714285714286
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 226,
+          "missed": 9,
+          "recall": 0.9617021276595744
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 6440.22,
+          "median": 3413.5,
+          "p90": 15821,
+          "p95": 20794,
+          "p99": 30685,
+          "max": 45201,
+          "total": 1932066
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 6738.24,
+          "median": 4007.5,
+          "p90": 15667,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 673824,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 1,
+            "101-1000": 11,
+            "1001-10000": 62,
+            "10001-100000": 25,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "52eaf186a6854f044dc9c536a4ae7a4bba43343609a9650f5d8d9e4c0acf2a05",
+        "marginal_vs_A": {
+          "additional_links": 0,
+          "added_candidate_pairs": 0,
+          "added_candidates_per_additional_link": null,
+          "mean_additional_candidates_per_s1": 0.0,
+          "p95_additional_candidates_per_s1": 0,
+          "zero_match_additional_candidate_pairs": 0,
+          "zero_match_mean_additional_candidates": 0.0
+        }
+      },
+      "A_HF_ANYADDR": {
+        "label": "A_plus_hf_address_and_second_address_token",
+        "true_links": 487,
+        "recovered_links": 474,
+        "missed_links": 13,
+        "recall": 0.973305954825462,
+        "s2": {
+          "true": 252,
+          "recovered": 244,
+          "missed": 8,
+          "recall": 0.9682539682539683
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 230,
+          "missed": 5,
+          "recall": 0.9787234042553191
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 7008.623333333333,
+          "median": 4142.5,
+          "p90": 16458,
+          "p95": 20970,
+          "p99": 34754,
+          "max": 45201,
+          "total": 2102587
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 7436.69,
+          "median": 4797.0,
+          "p90": 16918,
+          "p95": 21366,
+          "p99": 27065,
+          "max": 45201,
+          "total": 743669,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 0,
+            "101-1000": 9,
+            "1001-10000": 61,
+            "10001-100000": 29,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "946b099b8dbda36a35ce9e3335c5d3e3e257936af90a12087543ea03fdf6f5c3",
+        "marginal_vs_A": {
+          "additional_links": 14,
+          "added_candidate_pairs": 170521,
+          "added_candidates_per_additional_link": 12180.07142857143,
+          "mean_additional_candidates_per_s1": 568.4033333333333,
+          "p95_additional_candidates_per_s1": 3325,
+          "zero_match_additional_candidate_pairs": 69845,
+          "zero_match_mean_additional_candidates": 698.45
+        }
+      },
+      "A_HF_RARE": {
+        "label": "A_plus_hf_address_and_rare_address_token",
+        "true_links": 487,
+        "recovered_links": 460,
+        "missed_links": 27,
+        "recall": 0.944558521560575,
+        "s2": {
+          "true": 252,
+          "recovered": 234,
+          "missed": 18,
+          "recall": 0.9285714285714286
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 226,
+          "missed": 9,
+          "recall": 0.9617021276595744
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 6440.22,
+          "median": 3413.5,
+          "p90": 15821,
+          "p95": 20794,
+          "p99": 30685,
+          "max": 45201,
+          "total": 1932066
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 6738.24,
+          "median": 4007.5,
+          "p90": 15667,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 673824,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 1,
+            "101-1000": 11,
+            "1001-10000": 62,
+            "10001-100000": 25,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "52eaf186a6854f044dc9c536a4ae7a4bba43343609a9650f5d8d9e4c0acf2a05",
+        "marginal_vs_A": {
+          "additional_links": 0,
+          "added_candidate_pairs": 0,
+          "added_candidates_per_additional_link": null,
+          "mean_additional_candidates_per_s1": 0.0,
+          "p95_additional_candidates_per_s1": 0,
+          "zero_match_additional_candidate_pairs": 0,
+          "zero_match_mean_additional_candidates": 0.0
+        }
+      },
+      "A_HF_NAME": {
+        "label": "A_plus_hf_address_and_name_token",
+        "true_links": 487,
+        "recovered_links": 469,
+        "missed_links": 18,
+        "recall": 0.9630390143737166,
+        "s2": {
+          "true": 252,
+          "recovered": 239,
+          "missed": 13,
+          "recall": 0.9484126984126984
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 230,
+          "missed": 5,
+          "recall": 0.9787234042553191
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 6480.893333333333,
+          "median": 3506.5,
+          "p90": 15823,
+          "p95": 20794,
+          "p99": 30780,
+          "max": 45203,
+          "total": 1944268
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 6771.72,
+          "median": 4072.0,
+          "p90": 15732,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45203,
+          "total": 677172,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 1,
+            "101-1000": 11,
+            "1001-10000": 62,
+            "10001-100000": 25,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "78dd29e659d5ea24693bb62364f1848908745cc99bedcdb41ae3656cbb965ed7",
+        "marginal_vs_A": {
+          "additional_links": 9,
+          "added_candidate_pairs": 12202,
+          "added_candidates_per_additional_link": 1355.7777777777778,
+          "mean_additional_candidates_per_s1": 40.67333333333333,
+          "p95_additional_candidates_per_s1": 175,
+          "zero_match_additional_candidate_pairs": 3348,
+          "zero_match_mean_additional_candidates": 33.48
+        }
+      },
+      "A_TWOADDR": {
+        "label": "A_plus_two_shared_address_tokens",
+        "true_links": 487,
+        "recovered_links": 474,
+        "missed_links": 13,
+        "recall": 0.973305954825462,
+        "s2": {
+          "true": 252,
+          "recovered": 244,
+          "missed": 8,
+          "recall": 0.9682539682539683
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 230,
+          "missed": 5,
+          "recall": 0.9787234042553191
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 1,
+          "mean": 7008.623333333333,
+          "median": 4142.5,
+          "p90": 16458,
+          "p95": 20970,
+          "p99": 34754,
+          "max": 45201,
+          "total": 2102587
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 1,
+          "mean": 7436.69,
+          "median": 4797.0,
+          "p90": 16918,
+          "p95": 21366,
+          "p99": 27065,
+          "max": 45201,
+          "total": 743669,
+          "bins": {
+            "0": 0,
+            "1-10": 1,
+            "11-100": 0,
+            "101-1000": 9,
+            "1001-10000": 61,
+            "10001-100000": 29,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "946b099b8dbda36a35ce9e3335c5d3e3e257936af90a12087543ea03fdf6f5c3",
+        "marginal_vs_A": {
+          "additional_links": 14,
+          "added_candidate_pairs": 170521,
+          "added_candidates_per_additional_link": 12180.07142857143,
+          "mean_additional_candidates_per_s1": 568.4033333333333,
+          "p95_additional_candidates_per_s1": 3325,
+          "zero_match_additional_candidate_pairs": 69845,
+          "zero_match_mean_additional_candidates": 698.45
+        }
+      },
+      "A_HF_BAND1_ANYADDR": {
+        "label": "A_plus_hf_address_band_2501_5000_and_second_address_token",
+        "true_links": 487,
+        "recovered_links": 470,
+        "missed_links": 17,
+        "recall": 0.9650924024640657,
+        "s2": {
+          "true": 252,
+          "recovered": 241,
+          "missed": 11,
+          "recall": 0.9563492063492064
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 229,
+          "missed": 6,
+          "recall": 0.9744680851063829
+        },
+        "candidate_volume": {
+          "n": 600,
+          "min": 1,
+          "mean": 6579.153333333334,
+          "median": 3771.0,
+          "p90": 15939,
+          "p95": 20794,
+          "p99": 30685,
+          "max": 45201,
+          "total": 3947492
+        },
+        "zero_match": {
+          "n": 200,
+          "min": 1,
+          "mean": 6920.57,
+          "median": 4094.5,
+          "p90": 15839,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 1384114,
+          "bins": {
+            "0": 0,
+            "1-10": 2,
+            "11-100": 0,
+            "101-1000": 20,
+            "1001-10000": 126,
+            "10001-100000": 52,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "e5a8953d9e6fc51ee6286f9798f8cf7877830590199c670a8fdfb14fd0d84cbd",
+        "marginal_vs_A": {
+          "additional_links": 10,
+          "added_candidate_pairs": 2015426,
+          "added_candidates_per_additional_link": 201542.6,
+          "mean_additional_candidates_per_s1": 138.93333333333334,
+          "p95_additional_candidates_per_s1": 945,
+          "zero_match_additional_candidate_pairs": 36466,
+          "zero_match_mean_additional_candidates": 182.33
+        }
+      },
+      "A_HF_BAND2_ANYADDR": {
+        "label": "A_plus_hf_address_band_5001_10000_and_second_address_token",
+        "true_links": 487,
+        "recovered_links": 468,
+        "missed_links": 19,
+        "recall": 0.9609856262833676,
+        "s2": {
+          "true": 252,
+          "recovered": 239,
+          "missed": 13,
+          "recall": 0.9484126984126984
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 229,
+          "missed": 6,
+          "recall": 0.9744680851063829
+        },
+        "candidate_volume": {
+          "n": 600,
+          "min": 1,
+          "mean": 6689.676666666666,
+          "median": 3787.5,
+          "p90": 16128,
+          "p95": 20794,
+          "p99": 34754,
+          "max": 45201,
+          "total": 4013806
+        },
+        "zero_match": {
+          "n": 200,
+          "min": 1,
+          "mean": 6923.61,
+          "median": 4007.5,
+          "p90": 15832,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 1384722,
+          "bins": {
+            "0": 0,
+            "1-10": 2,
+            "11-100": 0,
+            "101-1000": 24,
+            "1001-10000": 118,
+            "10001-100000": 56,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "179239eac3d3ffe01b5634cb84a32595e778e34b264c92d6b270e0bede650979",
+        "marginal_vs_A": {
+          "additional_links": 8,
+          "added_candidate_pairs": 2081740,
+          "added_candidates_per_additional_link": 260217.5,
+          "mean_additional_candidates_per_s1": 249.45666666666668,
+          "p95_additional_candidates_per_s1": 1335,
+          "zero_match_additional_candidate_pairs": 37074,
+          "zero_match_mean_additional_candidates": 185.37
+        }
+      },
+      "A_HF_BAND3_ANYADDR": {
+        "label": "A_plus_hf_address_band_10001_15000_and_second_address_token",
+        "true_links": 487,
+        "recovered_links": 466,
+        "missed_links": 21,
+        "recall": 0.9568788501026694,
+        "s2": {
+          "true": 252,
+          "recovered": 239,
+          "missed": 13,
+          "recall": 0.9484126984126984
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 227,
+          "missed": 8,
+          "recall": 0.9659574468085106
+        },
+        "candidate_volume": {
+          "n": 600,
+          "min": 1,
+          "mean": 6643.68,
+          "median": 3739.0,
+          "p90": 16128,
+          "p95": 20970,
+          "p99": 32404,
+          "max": 45201,
+          "total": 3986208
+        },
+        "zero_match": {
+          "n": 200,
+          "min": 1,
+          "mean": 7018.95,
+          "median": 4170.5,
+          "p90": 15821,
+          "p95": 21366,
+          "p99": 27065,
+          "max": 45201,
+          "total": 1403790,
+          "bins": {
+            "0": 0,
+            "1-10": 2,
+            "11-100": 0,
+            "101-1000": 22,
+            "1001-10000": 124,
+            "10001-100000": 52,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "c8f1d919fc3de4079e069baca873392101119e2d9910955395888171b21dba30",
+        "marginal_vs_A": {
+          "additional_links": 6,
+          "added_candidate_pairs": 2054142,
+          "added_candidates_per_additional_link": 342357.0,
+          "mean_additional_candidates_per_s1": 203.46,
+          "p95_additional_candidates_per_s1": 515,
+          "zero_match_additional_candidate_pairs": 56142,
+          "zero_match_mean_additional_candidates": 280.71
+        }
+      },
+      "A_HF_BAND4_ANYADDR": {
+        "label": "A_plus_hf_address_band_15001_25000_and_second_address_token",
+        "true_links": 487,
+        "recovered_links": 462,
+        "missed_links": 25,
+        "recall": 0.9486652977412731,
+        "s2": {
+          "true": 252,
+          "recovered": 235,
+          "missed": 17,
+          "recall": 0.9325396825396826
+        },
+        "s3": {
+          "true": 235,
+          "recovered": 227,
+          "missed": 8,
+          "recall": 0.9659574468085106
+        },
+        "candidate_volume": {
+          "n": 600,
+          "min": 1,
+          "mean": 6713.72,
+          "median": 3892.0,
+          "p90": 16128,
+          "p95": 20794,
+          "p99": 30685,
+          "max": 45201,
+          "total": 4028232
+        },
+        "zero_match": {
+          "n": 200,
+          "min": 1,
+          "mean": 7100.28,
+          "median": 4712.5,
+          "p90": 15958,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 1420056,
+          "bins": {
+            "0": 0,
+            "1-10": 2,
+            "11-100": 2,
+            "101-1000": 20,
+            "1001-10000": 124,
+            "10001-100000": 52,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "4c4b100f81fa077f6f26b75e0b2e1154e64a560b5021674a740d3d4b28b13bc6",
+        "marginal_vs_A": {
+          "additional_links": 2,
+          "added_candidate_pairs": 2096166,
+          "added_candidates_per_additional_link": 1048083.0,
+          "mean_additional_candidates_per_s1": 273.5,
+          "p95_additional_candidates_per_s1": 913,
+          "zero_match_additional_candidate_pairs": 72408,
+          "zero_match_mean_additional_candidates": 362.04
+        }
+      }
+    },
+    "b_only_count": 24,
+    "b_only_frequency_band_counts": {
+      "10001-15000": 10,
+      "2501-5000": 14,
+      "15001-25000": 4,
+      "5001-10000": 8
+    },
+    "b_only_rule_recovery_counts": {
+      "A_HF_PREFIX": 0,
+      "A_HF_ANYADDR": 14,
+      "A_HF_RARE": 0,
+      "A_HF_NAME": 9,
+      "A_TWOADDR": 14,
+      "A_HF_BAND1_ANYADDR": 10,
+      "A_HF_BAND2_ANYADDR": 8,
+      "A_HF_BAND3_ANYADDR": 6,
+      "A_HF_BAND4_ANYADDR": 2
+    },
+    "b_only_links": [
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-15914874",
+        "target_source": "S2",
+        "target_id": "S2-828914623",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Super Engineering Limited",
+        "target_name": "LIMITED SUPER ENGINEDRNG",
+        "s1_normalized_name": "super engineering limited",
+        "target_normalized_name": "limited super enginedrng",
+        "prefix5": "super",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Plot No-303, Vrundavan Nagar Society, B/H Moti Bahuchraji Mandir, Ved Road, Surat, Gujarat",
+        "target_address": "PLOT NO-303, SURAT, KATARGAM, Gujarat",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "303",
+          "b",
+          "bahuchraji",
+          "gujarat",
+          "h",
+          "mandir",
+          "moti",
+          "nagar",
+          "no",
+          "plot",
+          "road",
+          "society",
+          "surat",
+          "ved",
+          "vrundavan"
+        ],
+        "target_address_tokens": [
+          "303",
+          "gujarat",
+          "katargam",
+          "no",
+          "plot",
+          "surat"
+        ],
+        "shared_address_tokens": [
+          "303",
+          "gujarat",
+          "no",
+          "plot",
+          "surat"
+        ],
+        "shared_address_token_df": {
+          "303": 12678,
+          "gujarat": 103662,
+          "no": 1827194,
+          "plot": 341966,
+          "surat": 37849
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "303"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "gujarat",
+            "no",
+            "plot",
+            "surat"
+          ]
+        },
+        "shared_name_tokens": [
+          "limited",
+          "super"
+        ],
+        "shared_name_token_df": {
+          "limited": 1199657,
+          "super": 10127
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.5,
+        "name_sequence_ratio_descriptive_only": 0.6122448979591837,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-197157861",
+        "target_source": "S2",
+        "target_id": "S2-955124494",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Paige's Reliable Restaurant LP",
+        "target_name": "[Inc] Paige's Reliable Restaurant",
+        "s1_normalized_name": "paige s reliable restaurant lp",
+        "target_normalized_name": "inc paige s reliable restaurant",
+        "prefix5": "paige",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "408 Lexington Drive, Folsom, CA",
+        "target_address": "408 LEXINGTON DR, FOLSOM, CA",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "408",
+          "ca",
+          "drive",
+          "folsom",
+          "lexington"
+        ],
+        "target_address_tokens": [
+          "408",
+          "ca",
+          "dr",
+          "drive",
+          "folsom",
+          "lexington"
+        ],
+        "shared_address_tokens": [
+          "408",
+          "ca",
+          "drive",
+          "folsom",
+          "lexington"
+        ],
+        "shared_address_token_df": {
+          "408": 4441,
+          "ca": 86262,
+          "drive": 1000019,
+          "folsom": 2830,
+          "lexington": 10443
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "408",
+            "folsom"
+          ],
+          "5001-10000": [],
+          "10001-15000": [
+            "lexington"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "ca",
+            "drive"
+          ]
+        },
+        "shared_name_tokens": [
+          "paige",
+          "reliable",
+          "restaurant",
+          "s"
+        ],
+        "shared_name_token_df": {
+          "paige": 492,
+          "reliable": 24139,
+          "restaurant": 4689,
+          "s": 229430
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.6666666666666666,
+        "name_sequence_ratio_descriptive_only": 0.8852459016393442,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-235315002",
+        "target_source": "S2",
+        "target_id": "S2-7547324",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "International Power Limited",
+        "target_name": "இன்டர்நேஷனல் பவர் லிமிடெட்",
+        "s1_normalized_name": "international power limited",
+        "target_normalized_name": "இன்டர்நேஷனல் பவர் லிமிடெட்",
+        "prefix5": "inter",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Old No.1/62, Nmew No.620 I T Express Road, Seevaram, Perungudi, Chennai, Tamil Nadu",
+        "target_address": "OLD NO.1/62, CHENNAI, Tamil Nadu",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "62",
+          "620",
+          "chennai",
+          "express",
+          "i",
+          "nadu",
+          "nmew",
+          "no",
+          "old",
+          "perungudi",
+          "road",
+          "seevaram",
+          "t",
+          "tamil"
+        ],
+        "target_address_tokens": [
+          "1",
+          "62",
+          "chennai",
+          "nadu",
+          "no",
+          "old",
+          "tamil"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "62",
+          "chennai",
+          "nadu",
+          "no",
+          "old",
+          "tamil"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "62": 16977,
+          "chennai": 124809,
+          "nadu": 113365,
+          "no": 1827194,
+          "old": 48144,
+          "tamil": 113422
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [
+            "62"
+          ],
+          ">25000_or_absent": [
+            "1",
+            "chennai",
+            "nadu",
+            "no",
+            "old",
+            "tamil"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "TAMIL"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.07547169811320754,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-237355917",
+        "target_source": "S2",
+        "target_id": "S2-973803682",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Y 6 Peak Newbury PC",
+        "target_name": "Y Peak Newbury PC Center",
+        "s1_normalized_name": "y 6 peak newbury pc",
+        "target_normalized_name": "y peak newbury pc center",
+        "prefix5": "y 6 p",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "219 Broadway Avenue, Pasadena, TX",
+        "target_address": "219 BROADWAY AVENUE, PASADENA, TX",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "219",
+          "avenue",
+          "broadway",
+          "pasadena",
+          "tx"
+        ],
+        "target_address_tokens": [
+          "219",
+          "avenue",
+          "broadway",
+          "pasadena",
+          "tx"
+        ],
+        "shared_address_tokens": [
+          "219",
+          "avenue",
+          "broadway",
+          "pasadena",
+          "tx"
+        ],
+        "shared_address_token_df": {
+          "219": 4967,
+          "avenue": 824188,
+          "broadway": 13652,
+          "pasadena": 4506,
+          "tx": 307567
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "219",
+            "pasadena"
+          ],
+          "5001-10000": [],
+          "10001-15000": [
+            "broadway"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "avenue",
+            "tx"
+          ]
+        },
+        "shared_name_tokens": [
+          "newbury",
+          "pc",
+          "peak",
+          "y"
+        ],
+        "shared_name_token_df": {
+          "newbury": 1762,
+          "pc": 75567,
+          "peak": 22911,
+          "y": 6818
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.6666666666666666,
+        "name_sequence_ratio_descriptive_only": 0.7906976744186046,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-323636434",
+        "target_source": "S2",
+        "target_id": "S2-6415510",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Big Finance Private Limited",
+        "target_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+        "s1_normalized_name": "big finance private limited",
+        "target_normalized_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+        "prefix5": "big f",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+        "target_address": "#567 L-1/19-B, DDA FLATS KALKAJI, DELHI",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "target_address_tokens": [
+          "1",
+          "19",
+          "567",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "19": 48520,
+          "b": 319704,
+          "dda": 9133,
+          "delhi": 534840,
+          "flats": 9006,
+          "kalkaji": 4272,
+          "l": 33167
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "kalkaji"
+          ],
+          "5001-10000": [
+            "dda",
+            "flats"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "19",
+            "b",
+            "delhi",
+            "l"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.10909090909090909,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-323636434",
+        "target_source": "S2",
+        "target_id": "S2-717931239",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Big Finance Private Limited",
+        "target_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+        "s1_normalized_name": "big finance private limited",
+        "target_normalized_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+        "prefix5": "big f",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+        "target_address": "567 L-1/19-B, DDA FLATS KALKAJI, DELHI, दिल्ली",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "target_address_tokens": [
+          "1",
+          "19",
+          "567",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l",
+          "दिल्ली"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "19": 48520,
+          "b": 319704,
+          "dda": 9133,
+          "delhi": 534840,
+          "flats": 9006,
+          "kalkaji": 4272,
+          "l": 33167
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "kalkaji"
+          ],
+          "5001-10000": [
+            "dda",
+            "flats"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "19",
+            "b",
+            "delhi",
+            "l"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.10909090909090909,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-323636434",
+        "target_source": "S3",
+        "target_id": "S3-335798528",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Big Finance Private Limited",
+        "target_name": "bigfinance.com",
+        "s1_normalized_name": "big finance private limited",
+        "target_normalized_name": "bigfinance com",
+        "prefix5": "big f",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+        "target_address": "L-1/19-b, Dda Flats Kalkaji, Delhi, DL",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "target_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "dl",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "19",
+          "b",
+          "dda",
+          "delhi",
+          "flats",
+          "kalkaji",
+          "l"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "19": 48520,
+          "b": 319704,
+          "dda": 9133,
+          "delhi": 534840,
+          "flats": 9006,
+          "kalkaji": 4272,
+          "l": 33167
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "kalkaji"
+          ],
+          "5001-10000": [
+            "dda",
+            "flats"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "19",
+            "b",
+            "delhi",
+            "l"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.5853658536585366,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-455764853",
+        "target_source": "S2",
+        "target_id": "S2-312908650",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Daex Assets",
+        "target_name": "daexassets.com",
+        "s1_normalized_name": "daex assets",
+        "target_normalized_name": "daexassets com",
+        "prefix5": "daex ",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": true,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "415 Silver Spring Avenue, Silver Spring, MD",
+        "target_address": "415 SILVER SPRING AVE, SILVER SPRING, MD",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "415",
+          "avenue",
+          "md",
+          "silver",
+          "spring"
+        ],
+        "target_address_tokens": [
+          "415",
+          "ave",
+          "avenue",
+          "md",
+          "silver",
+          "spring"
+        ],
+        "shared_address_tokens": [
+          "415",
+          "avenue",
+          "md",
+          "silver",
+          "spring"
+        ],
+        "shared_address_token_df": {
+          "415": 4270,
+          "avenue": 824188,
+          "md": 93640,
+          "silver": 12978,
+          "spring": 38512
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "415"
+          ],
+          "5001-10000": [],
+          "10001-15000": [
+            "silver"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "avenue",
+            "md",
+            "spring"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.8,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-474875759",
+        "target_source": "S3",
+        "target_id": "S3-940971153",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Kushagra Advertising Ltd",
+        "target_name": "Mr Kushagra Adverising Ltd",
+        "s1_normalized_name": "kushagra advertising ltd",
+        "target_normalized_name": "mr kushagra adverising ltd",
+        "prefix5": "kusha",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Kh No.317, 318, 442, 320, 321, Sector-75, Sarfabad, Noida, Gautam Buddha Nagar, Uttar Pradesh",
+        "target_address": "Kh No.317, Noida, Gautam Buddha Nagar, UP",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "317",
+          "318",
+          "320",
+          "321",
+          "442",
+          "75",
+          "buddha",
+          "gautam",
+          "kh",
+          "nagar",
+          "no",
+          "noida",
+          "pradesh",
+          "sarfabad",
+          "sector",
+          "uttar"
+        ],
+        "target_address_tokens": [
+          "317",
+          "buddha",
+          "gautam",
+          "kh",
+          "nagar",
+          "no",
+          "noida",
+          "up"
+        ],
+        "shared_address_tokens": [
+          "317",
+          "buddha",
+          "gautam",
+          "kh",
+          "nagar",
+          "no",
+          "noida"
+        ],
+        "shared_address_token_df": {
+          "317": 3012,
+          "buddha": 40319,
+          "gautam": 44513,
+          "kh": 34363,
+          "nagar": 554769,
+          "no": 1827194,
+          "noida": 53898
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "317"
+          ],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "buddha",
+            "gautam",
+            "kh",
+            "nagar",
+            "no",
+            "noida"
+          ]
+        },
+        "shared_name_tokens": [
+          "kushagra",
+          "ltd"
+        ],
+        "shared_name_token_df": {
+          "kushagra": 62,
+          "ltd": 648418
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.4,
+        "name_sequence_ratio_descriptive_only": 0.92,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": false,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-486844041",
+        "target_source": "S3",
+        "target_id": "S3-143669574",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Angeliqua Traders Private Limited",
+        "target_name": "tradersprivatecom",
+        "s1_normalized_name": "angeliqua traders private limited",
+        "target_normalized_name": "tradersprivatecom",
+        "prefix5": "angel",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "9 Square, Ramdas Sutrale Marg, Off Chandavarkar Lane, Borivali West., Mumbai, Maharashtra",
+        "target_address": "Borivali West., Square, MH, N/A",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "9",
+          "borivali",
+          "chandavarkar",
+          "lane",
+          "maharashtra",
+          "marg",
+          "mumbai",
+          "off",
+          "ramdas",
+          "square",
+          "sutrale",
+          "west"
+        ],
+        "target_address_tokens": [
+          "a",
+          "borivali",
+          "mh",
+          "n",
+          "square",
+          "west"
+        ],
+        "shared_address_tokens": [
+          "borivali",
+          "square",
+          "west"
+        ],
+        "shared_address_token_df": {
+          "borivali": 10440,
+          "square": 18387,
+          "west": 310450
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "borivali"
+          ],
+          "15001-25000": [
+            "square"
+          ],
+          ">25000_or_absent": [
+            "west"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.6,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": true
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-518474806",
+        "target_source": "S2",
+        "target_id": "S2-220835930",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Holly-Anne Hagen Premier Inc",
+        "target_name": "Hagen, Holly-Anne Inc Services",
+        "s1_normalized_name": "holly anne hagen premier inc",
+        "target_normalized_name": "hagen holly anne inc services",
+        "prefix5": "holly",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "11808 41, Tyler, TX",
+        "target_address": "41, TYLER CITY, TX",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "11808",
+          "41",
+          "tx",
+          "tyler"
+        ],
+        "target_address_tokens": [
+          "41",
+          "city",
+          "tx",
+          "tyler"
+        ],
+        "shared_address_tokens": [
+          "41",
+          "tx",
+          "tyler"
+        ],
+        "shared_address_token_df": {
+          "41": 9780,
+          "tx": 307567,
+          "tyler": 6719
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [
+            "41",
+            "tyler"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "tx"
+          ]
+        },
+        "shared_name_tokens": [
+          "anne",
+          "hagen",
+          "holly",
+          "inc"
+        ],
+        "shared_name_token_df": {
+          "anne": 930,
+          "hagen": 285,
+          "holly": 545,
+          "inc": 820140
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.6666666666666666,
+        "name_sequence_ratio_descriptive_only": 0.49122807017543857,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-583097336",
+        "target_source": "S2",
+        "target_id": "S2-81496173",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Ss Healthcare Limited",
+        "target_name": "ਐੱਸਐੱਸ ਹੈਲਥਕੇਅਰ ਲਿਮਟਿਡ",
+        "s1_normalized_name": "ss healthcare limited",
+        "target_normalized_name": "ਐੱਸਐੱਸ ਹੈਲਥਕੇਅਰ ਲਿਮਟਿਡ",
+        "prefix5": "ss he",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Ludhiana, Punjab, Ludhiana, Scerat Heart School, Vill. Bhamian Kalan, Distt- Ludhiana, Sant Enclave",
+        "target_address": "PLOT 83 SANT ENCLAVE, LUDHIANA, Punjab",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "bhamian",
+          "distt",
+          "enclave",
+          "heart",
+          "kalan",
+          "ludhiana",
+          "punjab",
+          "sant",
+          "scerat",
+          "school",
+          "vill"
+        ],
+        "target_address_tokens": [
+          "83",
+          "enclave",
+          "ludhiana",
+          "plot",
+          "punjab",
+          "sant"
+        ],
+        "shared_address_tokens": [
+          "enclave",
+          "ludhiana",
+          "punjab",
+          "sant"
+        ],
+        "shared_address_token_df": {
+          "enclave": 50340,
+          "ludhiana": 12455,
+          "punjab": 26214,
+          "sant": 6225
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [
+            "sant"
+          ],
+          "10001-15000": [
+            "ludhiana"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "enclave",
+            "punjab"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "GURMUKHI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.09302325581395349,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-63612430",
+        "target_source": "S2",
+        "target_id": "S2-852896198",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Star Infrastructure Private Limited",
+        "target_name": "स्टार इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+        "s1_normalized_name": "star infrastructure private limited",
+        "target_normalized_name": "स्टार इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+        "prefix5": "star ",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "61, 1St Floor, Ashoka Enclave-1, Sector-35, Faridabad, Haryana",
+        "target_address": "61, FARIDABAD, SECTOR-35, हरियाणा",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "1st",
+          "35",
+          "61",
+          "ashoka",
+          "enclave",
+          "faridabad",
+          "floor",
+          "haryana",
+          "sector"
+        ],
+        "target_address_tokens": [
+          "35",
+          "61",
+          "faridabad",
+          "sector",
+          "हरियाणा"
+        ],
+        "shared_address_tokens": [
+          "35",
+          "61",
+          "faridabad",
+          "sector"
+        ],
+        "shared_address_token_df": {
+          "35": 24721,
+          "61": 14717,
+          "faridabad": 24185,
+          "sector": 173024
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "61"
+          ],
+          "15001-25000": [
+            "35",
+            "faridabad"
+          ],
+          ">25000_or_absent": [
+            "sector"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 3,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.0821917808219178,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": true,
+          "A_HF_BAND4_ANYADDR": true
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-677348138",
+        "target_source": "S2",
+        "target_id": "S2-799002838",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Red Energy Private Limited",
+        "target_name": "റെഡ് എനർജി പ്രൈവറ്റ് ലിമിറ്റഡ്",
+        "s1_normalized_name": "red energy private limited",
+        "target_normalized_name": "റെഡ് എനർജി പ്രൈവറ്റ് ലിമിറ്റഡ്",
+        "prefix5": "red e",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "40/13 Shop No 70, Second Floor, Vyapar Mandir Shopping Complex, Ernakulam, Kerala",
+        "target_address": "40/13 SHOP NO 70, ERNAKULAM, Kerala",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "complex",
+          "ernakulam",
+          "floor",
+          "kerala",
+          "mandir",
+          "no",
+          "second",
+          "shop",
+          "shopping",
+          "vyapar"
+        ],
+        "target_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "ernakulam",
+          "kerala",
+          "no",
+          "shop"
+        ],
+        "shared_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "ernakulam",
+          "kerala",
+          "no",
+          "shop"
+        ],
+        "shared_address_token_df": {
+          "13": 65730,
+          "40": 25454,
+          "70": 14097,
+          "ernakulam": 37552,
+          "kerala": 52464,
+          "no": 1827194,
+          "shop": 84918
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "70"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "13",
+            "40",
+            "ernakulam",
+            "kerala",
+            "no",
+            "shop"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "MALAYALAM"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.10714285714285714,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-677348138",
+        "target_source": "S3",
+        "target_id": "S3-580383836",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Red Energy Private Limited",
+        "target_name": "റെഡ് എനർജി പ്രൈവറ്റ് ലിമിറ്റഡ്",
+        "s1_normalized_name": "red energy private limited",
+        "target_normalized_name": "റെഡ് എനർജി പ്രൈവറ്റ് ലിമിറ്റഡ്",
+        "prefix5": "red e",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "40/13 Shop No 70, Second Floor, Vyapar Mandir Shopping Complex, Ernakulam, Kerala",
+        "target_address": "40/13 Shop No 70, KL, Ernakulam",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "complex",
+          "ernakulam",
+          "floor",
+          "kerala",
+          "mandir",
+          "no",
+          "second",
+          "shop",
+          "shopping",
+          "vyapar"
+        ],
+        "target_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "ernakulam",
+          "kl",
+          "no",
+          "shop"
+        ],
+        "shared_address_tokens": [
+          "13",
+          "40",
+          "70",
+          "ernakulam",
+          "no",
+          "shop"
+        ],
+        "shared_address_token_df": {
+          "13": 65730,
+          "40": 25454,
+          "70": 14097,
+          "ernakulam": 37552,
+          "no": 1827194,
+          "shop": 84918
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "70"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "13",
+            "40",
+            "ernakulam",
+            "no",
+            "shop"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "MALAYALAM"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.10714285714285714,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-69626567",
+        "target_source": "S2",
+        "target_id": "S2-307441018",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Surya Builders Private Limited",
+        "target_name": "सूर्य बिल्डर्स प्राइवेट लिमिटेड",
+        "s1_normalized_name": "surya builders private limited",
+        "target_normalized_name": "सूर्य बिल्डर्स प्राइवेट लिमिटेड",
+        "prefix5": "surya",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "D-2 Ground Floor Naraina Vihar, Delhi, New Delhi, Delhi",
+        "target_address": "D-##2 GROUND FLOOR NARAINA VIHAR, DELHI, NEW DELHI, दिल्ली",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "2",
+          "d",
+          "delhi",
+          "floor",
+          "ground",
+          "naraina",
+          "new",
+          "vihar"
+        ],
+        "target_address_tokens": [
+          "2",
+          "d",
+          "delhi",
+          "floor",
+          "ground",
+          "naraina",
+          "new",
+          "vihar",
+          "दिल्ली"
+        ],
+        "shared_address_tokens": [
+          "2",
+          "d",
+          "delhi",
+          "floor",
+          "ground",
+          "naraina",
+          "new",
+          "vihar"
+        ],
+        "shared_address_token_df": {
+          "2": 311046,
+          "d": 196790,
+          "delhi": 534840,
+          "floor": 584232,
+          "ground": 93496,
+          "naraina": 2870,
+          "new": 373306,
+          "vihar": 88699
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "naraina"
+          ],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "2",
+            "d",
+            "delhi",
+            "floor",
+            "ground",
+            "new",
+            "vihar"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.09836065573770492,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-739572758",
+        "target_source": "S3",
+        "target_id": "S3-495277755",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Smart Solutions LLP",
+        "target_name": "LLP ... Smart-Solutions",
+        "s1_normalized_name": "smart solutions llp",
+        "target_normalized_name": "llp smart solutions",
+        "prefix5": "smart",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Shop No 17, Ground Floor, Svhplaza, Opp Kfc, Miyapu, Tirumalagiri, Hyderabad, Telangana",
+        "target_address": "17, Tirumalagiri, Hyderabad, Andhra Pradesh",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "17",
+          "floor",
+          "ground",
+          "hyderabad",
+          "kfc",
+          "miyapu",
+          "no",
+          "opp",
+          "shop",
+          "svhplaza",
+          "telangana",
+          "tirumalagiri"
+        ],
+        "target_address_tokens": [
+          "17",
+          "andhra",
+          "hyderabad",
+          "pradesh",
+          "tirumalagiri"
+        ],
+        "shared_address_tokens": [
+          "17",
+          "hyderabad",
+          "tirumalagiri"
+        ],
+        "shared_address_token_df": {
+          "17": 53613,
+          "hyderabad": 167047,
+          "tirumalagiri": 11335
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [
+            "tirumalagiri"
+          ],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "17",
+            "hyderabad"
+          ]
+        },
+        "shared_name_tokens": [
+          "llp",
+          "smart",
+          "solutions"
+        ],
+        "shared_name_token_df": {
+          "llp": 139146,
+          "smart": 10099,
+          "solutions": 69801
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": true,
+        "name_token_jaccard": 1.0,
+        "name_sequence_ratio_descriptive_only": 0.7894736842105263,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-788538938",
+        "target_source": "S2",
+        "target_id": "S2-170340691",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Hitech Impex Private Limited",
+        "target_name": "हाईटेक इम्पेक्स प्राइवेट लिमिटेड",
+        "s1_normalized_name": "hitech impex private limited",
+        "target_normalized_name": "हाईटेक इम्पेक्स प्राइवेट लिमिटेड",
+        "prefix5": "hitec",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Unit No. 604, 6Th Floor, Palm Spring Plaza, Gurgaon Sector-54, Sector -45, Gurgaon, Haryana",
+        "target_address": "PLOT 419 UNIT NO. 604, GURGAON, GURGAON III  SECTOR, हरियाणा",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "45",
+          "54",
+          "604",
+          "6th",
+          "floor",
+          "gurgaon",
+          "haryana",
+          "no",
+          "palm",
+          "plaza",
+          "sector",
+          "spring",
+          "unit"
+        ],
+        "target_address_tokens": [
+          "419",
+          "604",
+          "gurgaon",
+          "iii",
+          "no",
+          "plot",
+          "sector",
+          "unit",
+          "हरियाणा"
+        ],
+        "shared_address_tokens": [
+          "604",
+          "gurgaon",
+          "no",
+          "sector",
+          "unit"
+        ],
+        "shared_address_token_df": {
+          "604": 4719,
+          "gurgaon": 62994,
+          "no": 1827194,
+          "sector": 173024,
+          "unit": 42703
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "604"
+          ],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "gurgaon",
+            "no",
+            "sector",
+            "unit"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.1,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-788538938",
+        "target_source": "S2",
+        "target_id": "S2-938933474",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Hitech Impex Private Limited",
+        "target_name": "हाईटेक इम्पेक्स प्राइवेट लिमिटेड",
+        "s1_normalized_name": "hitech impex private limited",
+        "target_normalized_name": "हाईटेक इम्पेक्स प्राइवेट लिमिटेड",
+        "prefix5": "hitec",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Unit No. 604, 6Th Floor, Palm Spring Plaza, Gurgaon Sector-54, Sector -45, Gurgaon, Haryana",
+        "target_address": "PLOT 419 UNIT NO. 604, GURGAON, GURGAON III  SECTOR, Haryana",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "45",
+          "54",
+          "604",
+          "6th",
+          "floor",
+          "gurgaon",
+          "haryana",
+          "no",
+          "palm",
+          "plaza",
+          "sector",
+          "spring",
+          "unit"
+        ],
+        "target_address_tokens": [
+          "419",
+          "604",
+          "gurgaon",
+          "haryana",
+          "iii",
+          "no",
+          "plot",
+          "sector",
+          "unit"
+        ],
+        "shared_address_tokens": [
+          "604",
+          "gurgaon",
+          "haryana",
+          "no",
+          "sector",
+          "unit"
+        ],
+        "shared_address_token_df": {
+          "604": 4719,
+          "gurgaon": 62994,
+          "haryana": 66761,
+          "no": 1827194,
+          "sector": 173024,
+          "unit": 42703
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "604"
+          ],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "gurgaon",
+            "haryana",
+            "no",
+            "sector",
+            "unit"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.1,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-83018895",
+        "target_source": "S2",
+        "target_id": "S2-857852526",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Immanuel India Limited",
+        "target_name": "Xyloecto",
+        "s1_normalized_name": "immanuel india limited",
+        "target_normalized_name": "xyloecto",
+        "prefix5": "imman",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "C-156 Okhla Industrial Area Phase-1, New Delhi, South Delhi, Delhi",
+        "target_address": "C-156 OKHLA INDUSTRIAL AREA PHASE-1, NEW DELHI, SOUTH DELHI, Delhi",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "target_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "156": 4148,
+          "area": 48680,
+          "c": 472463,
+          "delhi": 534840,
+          "industrial": 72723,
+          "new": 373306,
+          "okhla": 9734,
+          "phase": 73068,
+          "south": 169977
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "156"
+          ],
+          "5001-10000": [
+            "okhla"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "area",
+            "c",
+            "delhi",
+            "industrial",
+            "new",
+            "phase",
+            "south"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.13333333333333333,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": true,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-83018895",
+        "target_source": "S3",
+        "target_id": "S3-473511559",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Immanuel India Limited",
+        "target_name": "Rizamira a/k/a Immanuel India Limited",
+        "s1_normalized_name": "immanuel india limited",
+        "target_normalized_name": "rizamira a k a immanuel india limited",
+        "prefix5": "imman",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "C-156 Okhla Industrial Area Phase-1, New Delhi, South Delhi, Delhi",
+        "target_address": "Delhi, South Delhi, C-156 Okhla Industrial Area Phase-1, New Delhi",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "target_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "156",
+          "area",
+          "c",
+          "delhi",
+          "industrial",
+          "new",
+          "okhla",
+          "phase",
+          "south"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "156": 4148,
+          "area": 48680,
+          "c": 472463,
+          "delhi": 534840,
+          "industrial": 72723,
+          "new": 373306,
+          "okhla": 9734,
+          "phase": 73068,
+          "south": 169977
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "156"
+          ],
+          "5001-10000": [
+            "okhla"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "area",
+            "c",
+            "delhi",
+            "industrial",
+            "new",
+            "phase",
+            "south"
+          ]
+        },
+        "shared_name_tokens": [
+          "immanuel",
+          "india",
+          "limited"
+        ],
+        "shared_name_token_df": {
+          "immanuel": 48,
+          "india": 223643,
+          "limited": 1199657
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.5,
+        "name_sequence_ratio_descriptive_only": 0.7457627118644068,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-83275465",
+        "target_source": "S3",
+        "target_id": "S3-333965145",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Lamaor Plutonian, Inc",
+        "target_name": "Lama0r Plutonian, Inc",
+        "s1_normalized_name": "lamaor plutonian inc",
+        "target_normalized_name": "lama0r plutonian inc",
+        "prefix5": "lamao",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": true,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "524 Maple Street, Ontario, CA",
+        "target_address": "524 Mpale St, Ontario, California",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "524",
+          "ca",
+          "maple",
+          "ontario",
+          "street"
+        ],
+        "target_address_tokens": [
+          "524",
+          "california",
+          "mpale",
+          "ontario",
+          "st",
+          "street"
+        ],
+        "shared_address_tokens": [
+          "524",
+          "ontario",
+          "street"
+        ],
+        "shared_address_token_df": {
+          "524": 2505,
+          "ontario": 6439,
+          "street": 1203095
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "524"
+          ],
+          "5001-10000": [
+            "ontario"
+          ],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "street"
+          ]
+        },
+        "shared_name_tokens": [
+          "inc",
+          "plutonian"
+        ],
+        "shared_name_token_df": {
+          "inc": 820140,
+          "plutonian": 1579
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.5,
+        "name_sequence_ratio_descriptive_only": 0.95,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": true,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-907438650",
+        "target_source": "S2",
+        "target_id": "S2-913298381",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "Silver Infotech Limited",
+        "target_name": "सिल्वर इंफोटेक लिमिटेड",
+        "s1_normalized_name": "silver infotech limited",
+        "target_normalized_name": "सिल्वर इंफोटेक लिमिटेड",
+        "prefix5": "silve",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Second Floor, Vipul World Sector-48, Gurgaon, Gurugram, D-14, Haryana",
+        "target_address": "D-14, GURUGRAM, GURGAON, Haryana",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "14",
+          "48",
+          "d",
+          "floor",
+          "gurgaon",
+          "gurugram",
+          "haryana",
+          "second",
+          "sector",
+          "vipul",
+          "world"
+        ],
+        "target_address_tokens": [
+          "14",
+          "d",
+          "gurgaon",
+          "gurugram",
+          "haryana"
+        ],
+        "shared_address_tokens": [
+          "14",
+          "d",
+          "gurgaon",
+          "gurugram",
+          "haryana"
+        ],
+        "shared_address_token_df": {
+          "14": 69300,
+          "d": 196790,
+          "gurgaon": 62994,
+          "gurugram": 16933,
+          "haryana": 66761
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [
+            "gurugram"
+          ],
+          ">25000_or_absent": [
+            "14",
+            "d",
+            "gurgaon",
+            "haryana"
+          ]
+        },
+        "shared_name_tokens": [],
+        "shared_name_token_df": {},
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 1,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "DEVANAGARI"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.0,
+        "name_sequence_ratio_descriptive_only": 0.08888888888888889,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": false,
+          "A_NAME25000": false,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "B_ONLY",
+        "s1_id": "S1-93462113",
+        "target_source": "S2",
+        "target_id": "S2-661914399",
+        "country_s1": "India",
+        "country_target": "India",
+        "s1_name": "BTZ Grinding Private Limited",
+        "target_name": "BTZ PRIVATE LIMITED SERVICE",
+        "s1_normalized_name": "btz grinding private limited",
+        "target_normalized_name": "btz private limited service",
+        "prefix5": "btz g",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": true,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "Flat N.T-1, F-177/2 T/F, W.N.2, Mehrauli, New Delhi, South West Delhi, Delhi",
+        "target_address": "दिल्ली, POT 853 FLAT N.T-1, F-177/2 T/F, W.N.2, MEHRAULI, NEW DELHI",
+        "target_address_missing": false,
+        "s1_address_tokens": [
+          "1",
+          "177",
+          "2",
+          "delhi",
+          "f",
+          "flat",
+          "mehrauli",
+          "n",
+          "new",
+          "south",
+          "t",
+          "w",
+          "west"
+        ],
+        "target_address_tokens": [
+          "1",
+          "177",
+          "2",
+          "853",
+          "delhi",
+          "f",
+          "flat",
+          "mehrauli",
+          "n",
+          "new",
+          "pot",
+          "t",
+          "w",
+          "दिल्ली"
+        ],
+        "shared_address_tokens": [
+          "1",
+          "177",
+          "2",
+          "delhi",
+          "f",
+          "flat",
+          "mehrauli",
+          "n",
+          "new",
+          "t",
+          "w"
+        ],
+        "shared_address_token_df": {
+          "1": 409328,
+          "177": 3331,
+          "2": 311046,
+          "delhi": 534840,
+          "f": 138100,
+          "flat": 171133,
+          "mehrauli": 2846,
+          "n": 94849,
+          "new": 373306,
+          "t": 60814,
+          "w": 48710
+        },
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [
+            "177",
+            "mehrauli"
+          ],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": [
+            "1",
+            "2",
+            "delhi",
+            "f",
+            "flat",
+            "n",
+            "new",
+            "t",
+            "w"
+          ]
+        },
+        "shared_name_tokens": [
+          "btz",
+          "limited",
+          "private"
+        ],
+        "shared_name_token_df": {
+          "btz": 6,
+          "limited": 1199657,
+          "private": 1166521
+        },
+        "multiple_shared_address_tokens": true,
+        "shared_eligible_address_token_count": 2,
+        "two_shared_eligible_address_tokens": true,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.6,
+        "name_sequence_ratio_descriptive_only": 0.6909090909090909,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": true,
+          "A_HF_RARE": false,
+          "A_HF_NAME": true,
+          "A_TWOADDR": true,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": true,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      }
+    ],
+    "persistent_miss_count": 3,
+    "persistent_misses": [
+      {
+        "status": "MISSED_BY_A_AND_B",
+        "s1_id": "S1-111042952",
+        "target_source": "S3",
+        "target_id": "S3-247569279",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Doa Inc",
+        "target_name": "Doa",
+        "s1_normalized_name": "doa inc",
+        "target_normalized_name": "doa",
+        "prefix5": "doa i",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "187 County Road 3813, Cleveland, TX",
+        "target_address": "",
+        "target_address_missing": true,
+        "s1_address_tokens": [
+          "187",
+          "3813",
+          "cleveland",
+          "county",
+          "road",
+          "tx"
+        ],
+        "target_address_tokens": [],
+        "shared_address_tokens": [],
+        "shared_address_token_df": {},
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": []
+        },
+        "shared_name_tokens": [
+          "doa"
+        ],
+        "shared_name_token_df": {
+          "doa": 176
+        },
+        "multiple_shared_address_tokens": false,
+        "shared_eligible_address_token_count": 0,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.5,
+        "name_sequence_ratio_descriptive_only": 0.6,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "MISSED_BY_A_AND_B",
+        "s1_id": "S1-160455001",
+        "target_source": "S2",
+        "target_id": "S2-43936834",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "Jilleen Myer Asset LLC",
+        "target_name": "THE JILLEEN MYER ASSET LLC",
+        "s1_normalized_name": "jilleen myer asset llc",
+        "target_normalized_name": "the jilleen myer asset llc",
+        "prefix5": "jille",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "9001 104th Place, Bixby, OK",
+        "target_address": "",
+        "target_address_missing": true,
+        "s1_address_tokens": [
+          "104th",
+          "9001",
+          "bixby",
+          "ok",
+          "place"
+        ],
+        "target_address_tokens": [],
+        "shared_address_tokens": [],
+        "shared_address_token_df": {},
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": []
+        },
+        "shared_name_tokens": [
+          "asset",
+          "jilleen",
+          "llc",
+          "myer"
+        ],
+        "shared_name_token_df": {
+          "asset": 12603,
+          "jilleen": 85,
+          "llc": 1099621,
+          "myer": 108
+        },
+        "multiple_shared_address_tokens": false,
+        "shared_eligible_address_token_count": 0,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.8,
+        "name_sequence_ratio_descriptive_only": 0.9166666666666666,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      },
+      {
+        "status": "MISSED_BY_A_AND_B",
+        "s1_id": "S1-993721743",
+        "target_source": "S3",
+        "target_id": "S3-647708261",
+        "country_s1": "US",
+        "country_target": "US",
+        "s1_name": "3223 Main St Management LLC",
+        "target_name": "The 3223 Main St Management [LLC]",
+        "s1_normalized_name": "3223 main st management llc",
+        "target_normalized_name": "the 3223 main st management llc",
+        "prefix5": "3223 ",
+        "prefix5_matches": false,
+        "prefix4_5_6_matches_same_country": {
+          "4": false,
+          "5": false,
+          "6": false
+        },
+        "s1_address": "121 Salem Street, Unit D2, Boston, MA",
+        "target_address": "",
+        "target_address_missing": true,
+        "s1_address_tokens": [
+          "121",
+          "boston",
+          "d2",
+          "ma",
+          "salem",
+          "street",
+          "unit"
+        ],
+        "target_address_tokens": [],
+        "shared_address_tokens": [],
+        "shared_address_token_df": {},
+        "shared_address_frequency_bands": {
+          "<=2500": [],
+          "2501-5000": [],
+          "5001-10000": [],
+          "10001-15000": [],
+          "15001-25000": [],
+          ">25000_or_absent": []
+        },
+        "shared_name_tokens": [
+          "3223",
+          "llc",
+          "main",
+          "management",
+          "st"
+        ],
+        "shared_name_token_df": {
+          "3223": 5,
+          "llc": 1099621,
+          "main": 10252,
+          "management": 13731,
+          "st": 8273
+        },
+        "multiple_shared_address_tokens": false,
+        "shared_eligible_address_token_count": 0,
+        "two_shared_eligible_address_tokens": false,
+        "any_shared_address_df_le2500": false,
+        "name_script_sets": {
+          "s1": [
+            "LATIN"
+          ],
+          "target": [
+            "LATIN"
+          ]
+        },
+        "name_token_sets_equal": false,
+        "name_token_jaccard": 0.8333333333333334,
+        "name_sequence_ratio_descriptive_only": 0.9310344827586207,
+        "targeted_rule_recovery": {
+          "A_HF_PREFIX": false,
+          "A_HF_ANYADDR": false,
+          "A_HF_RARE": false,
+          "A_HF_NAME": false,
+          "A_TWOADDR": false,
+          "A_NAME2500": true,
+          "A_NAME25000": true,
+          "A_HF_BAND1_ANYADDR": false,
+          "A_HF_BAND2_ANYADDR": false,
+          "A_HF_BAND3_ANYADDR": false,
+          "A_HF_BAND4_ANYADDR": false
+        }
+      }
+    ]
+  },
+  "new_validation": {
+    "selected_after_stage43_exploration": [
+      "A",
+      "B",
+      "A_HF_NAME",
+      "A_TWOADDR",
+      "A_NAME2500"
+    ],
+    "strategies": {
+      "A": {
+        "label": "prefix5_or_address_le2500",
+        "true_links": 491,
+        "recovered_links": 476,
+        "missed_links": 15,
+        "recall": 0.9694501018329938,
+        "s2": {
+          "true": 231,
+          "recovered": 224,
+          "missed": 7,
+          "recall": 0.9696969696969697
+        },
+        "s3": {
+          "true": 260,
+          "recovered": 252,
+          "missed": 8,
+          "recall": 0.9692307692307692
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 15,
+          "mean": 6574.576666666667,
+          "median": 3565.5,
+          "p90": 19220,
+          "p95": 22233,
+          "p99": 28915,
+          "max": 43740,
+          "total": 1972373
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 15,
+          "mean": 5825.54,
+          "median": 3927.5,
+          "p90": 13948,
+          "p95": 20052,
+          "p99": 24514,
+          "max": 29229,
+          "total": 582554,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 6,
+            "101-1000": 20,
+            "1001-10000": 56,
+            "10001-100000": 18,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "3721b203e25be66638998497a0466835d572f3ebacc0769b8f46079f7d1a8640",
+        "marginal_vs_A": {
+          "additional_links": 0,
+          "added_candidate_pairs": 0,
+          "added_candidates_per_additional_link": null,
+          "mean_additional_candidates_per_s1": 0.0,
+          "p95_additional_candidates_per_s1": 0,
+          "zero_match_additional_candidate_pairs": 0,
+          "zero_match_mean_additional_candidates": 0.0
+        }
+      },
+      "B": {
+        "label": "prefix5_or_address_le25000",
+        "true_links": 491,
+        "recovered_links": 488,
+        "missed_links": 3,
+        "recall": 0.9938900203665988,
+        "s2": {
+          "true": 231,
+          "recovered": 229,
+          "missed": 2,
+          "recall": 0.9913419913419913
+        },
+        "s3": {
+          "true": 260,
+          "recovered": 259,
+          "missed": 1,
+          "recall": 0.9961538461538462
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 391,
+          "mean": 25218.206666666665,
+          "median": 23158.0,
+          "p90": 49017,
+          "p95": 57511,
+          "p99": 77430,
+          "max": 90168,
+          "total": 7565462
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 693,
+          "mean": 24509.04,
+          "median": 22811.5,
+          "p90": 44247,
+          "p95": 53400,
+          "p99": 68654,
+          "max": 81307,
+          "total": 2450904,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 0,
+            "101-1000": 1,
+            "1001-10000": 20,
+            "10001-100000": 79,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "0169465448aada56767ea9d55afabbf0f810d593052c96c268b39c662b5518bc",
+        "marginal_vs_A": {
+          "additional_links": 12,
+          "added_candidate_pairs": 5593089,
+          "added_candidates_per_additional_link": 466090.75,
+          "mean_additional_candidates_per_s1": 18643.63,
+          "p95_additional_candidates_per_s1": 50647,
+          "zero_match_additional_candidate_pairs": 1868350,
+          "zero_match_mean_additional_candidates": 18683.5
+        }
+      },
+      "A_HF_NAME": {
+        "label": "A_plus_hf_address_and_name_token",
+        "true_links": 491,
+        "recovered_links": 485,
+        "missed_links": 6,
+        "recall": 0.9877800407331976,
+        "s2": {
+          "true": 231,
+          "recovered": 227,
+          "missed": 4,
+          "recall": 0.9826839826839827
+        },
+        "s3": {
+          "true": 260,
+          "recovered": 258,
+          "missed": 2,
+          "recall": 0.9923076923076923
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 25,
+          "mean": 6617.73,
+          "median": 3584.5,
+          "p90": 19225,
+          "p95": 22233,
+          "p99": 28931,
+          "max": 43762,
+          "total": 1985319
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 25,
+          "mean": 5867.71,
+          "median": 4094.5,
+          "p90": 14019,
+          "p95": 20134,
+          "p99": 24516,
+          "max": 29234,
+          "total": 586771,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 4,
+            "101-1000": 22,
+            "1001-10000": 56,
+            "10001-100000": 18,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "034917334c936f3f810e6e0f6115aeb951aaa30576d8e1a378398748a4b51c92",
+        "marginal_vs_A": {
+          "additional_links": 9,
+          "added_candidate_pairs": 12946,
+          "added_candidates_per_additional_link": 1438.4444444444443,
+          "mean_additional_candidates_per_s1": 43.153333333333336,
+          "p95_additional_candidates_per_s1": 197,
+          "zero_match_additional_candidate_pairs": 4217,
+          "zero_match_mean_additional_candidates": 42.17
+        }
+      },
+      "A_TWOADDR": {
+        "label": "A_plus_two_shared_address_tokens",
+        "true_links": 491,
+        "recovered_links": 484,
+        "missed_links": 7,
+        "recall": 0.9857433808553971,
+        "s2": {
+          "true": 231,
+          "recovered": 228,
+          "missed": 3,
+          "recall": 0.987012987012987
+        },
+        "s3": {
+          "true": 260,
+          "recovered": 256,
+          "missed": 4,
+          "recall": 0.9846153846153847
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 26,
+          "mean": 7149.836666666667,
+          "median": 4155.0,
+          "p90": 19276,
+          "p95": 22258,
+          "p99": 28949,
+          "max": 43740,
+          "total": 2144951
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 39,
+          "mean": 6376.01,
+          "median": 4459.5,
+          "p90": 15114,
+          "p95": 20756,
+          "p99": 26504,
+          "max": 29229,
+          "total": 637601,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 3,
+            "101-1000": 18,
+            "1001-10000": 58,
+            "10001-100000": 21,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "ae60975a02fa7e42374ab700843c4b728113e058d2912209737ea509d3edb514",
+        "marginal_vs_A": {
+          "additional_links": 8,
+          "added_candidate_pairs": 172578,
+          "added_candidates_per_additional_link": 21572.25,
+          "mean_additional_candidates_per_s1": 575.26,
+          "p95_additional_candidates_per_s1": 3903,
+          "zero_match_additional_candidate_pairs": 55047,
+          "zero_match_mean_additional_candidates": 550.47
+        }
+      },
+      "A_NAME2500": {
+        "label": "A_plus_name_token_df_le2500",
+        "true_links": 491,
+        "recovered_links": 485,
+        "missed_links": 6,
+        "recall": 0.9877800407331976,
+        "s2": {
+          "true": 231,
+          "recovered": 228,
+          "missed": 3,
+          "recall": 0.987012987012987
+        },
+        "s3": {
+          "true": 260,
+          "recovered": 257,
+          "missed": 3,
+          "recall": 0.9884615384615385
+        },
+        "candidate_volume": {
+          "n": 300,
+          "min": 23,
+          "mean": 7012.0633333333335,
+          "median": 4103.5,
+          "p90": 19519,
+          "p95": 22233,
+          "p99": 28915,
+          "max": 43740,
+          "total": 2103619
+        },
+        "zero_match": {
+          "n": 100,
+          "min": 23,
+          "mean": 6364.78,
+          "median": 4394.5,
+          "p90": 14264,
+          "p95": 20052,
+          "p99": 24514,
+          "max": 30297,
+          "total": 636478,
+          "bins": {
+            "0": 0,
+            "1-10": 0,
+            "11-100": 2,
+            "101-1000": 14,
+            "1001-10000": 65,
+            "10001-100000": 19,
+            ">100000": 0
+          }
+        },
+        "recovered_link_set_sha256": "1c85cfd4806e43ce10669f8b820a1347e9f3846b7a0d896e0a72b2aaaa1da66a",
+        "marginal_vs_A": {
+          "additional_links": 9,
+          "added_candidate_pairs": 131246,
+          "added_candidates_per_additional_link": 14582.888888888889,
+          "mean_additional_candidates_per_s1": 437.4866666666667,
+          "p95_additional_candidates_per_s1": 1949,
+          "zero_match_additional_candidate_pairs": 53924,
+          "zero_match_mean_additional_candidates": 539.24
+        }
+      }
+    },
+    "miss_analysis": {
+      "A": {
+        "missed_links": 15,
+        "category_counts_overlapping": {
+          "name order/punctuation": 4,
+          "high-frequency address": 15,
+          "name typo/abbreviation": 11,
+          "multilingual/script": 2
+        },
+        "examples": [
+          {
+            "s1_id": "S1-121562956",
+            "target_id": "S3-735308651",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Vijay Solutions Limited",
+            "target_name": "(limited) vijay solutions",
+            "s1_address": "B/28, Maharashtra, Shri Kedarnath Apartments, Rishikesh Park, Soniwadi, Natakwala Lane, Shimpoli, Mumbai, Borivali West",
+            "target_address": "B/2-8, Borivali West, Mumbai, MH",
+            "categories": [
+              "name order/punctuation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-211817335",
+            "target_id": "S3-578415430",
+            "source": "S3",
+            "country": "US",
+            "s1_name": "Fontaine, Bostic & Mally Ltd",
+            "target_name": "Ltd Fontaine, Bostic Mally &",
+            "s1_address": "64 Elm Street, Cambridge, MA",
+            "target_address": "64 Elm St, Cambridge, Massachusetts",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-271172478",
+            "target_id": "S2-623155217",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "Krause, Chelsea H., DDS, DDS PC",
+            "target_name": "DDS Chelsea H. Krause DDS PC",
+            "s1_address": "52 West Street, Unit Apartment 1B, Spring Valley, NY",
+            "target_address": "0052 WEST ST, SPRING VALLEY, NY",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-318134937",
+            "target_id": "S3-465285051",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Goldmine Holdings Corp",
+            "target_name": "Gahldmie Holdings Corp",
+            "s1_address": "B-1/E-23, Mohan Co-Operative Industrial Estate, Mathura Road, South East, New Delhi, South Delhi, Delhi",
+            "target_address": "South Delhi, DL, South Delhi, B-001/e-23",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-448497158",
+            "target_id": "S3-478043996",
+            "source": "S3",
+            "country": "US",
+            "s1_name": "Helton, Parsons & Wells Sprott LLC",
+            "target_name": "Services Helton, Parsons & Wells LLC",
+            "s1_address": "255 Beech Street, Unit D, Greenville, NC",
+            "target_address": "255 Beech St, Unit D, Greenville, North Carolina",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-466093421",
+            "target_id": "S3-880808065",
+            "source": "S3",
+            "country": "US",
+            "s1_name": "Young & Bautista LLC",
+            "target_name": "Y0ung & Bautista Llc",
+            "s1_address": "1127 Carroll Street, 03, IA",
+            "target_address": "Carroll Street, Iowa, Carroll Township",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-510583507",
+            "target_id": "S2-950723052",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Trinity & Sons Limited",
+            "target_name": "Sri Trinity Sons Limited Services",
+            "s1_address": "Plot No B - 9, Gayatri State, By Pass, Meerut, Uttar Pradesh",
+            "target_address": "PLOT 198  PLOT NO B - 9, GAYATRI STATE, BY PASS, MEERUT, Uttar Pradesh",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-510583507",
+            "target_id": "S3-315845027",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Trinity & Sons Limited",
+            "target_name": "Deltaarc D.B.A. Trinity & Sons Limited",
+            "s1_address": "Plot No B - 9, Gayatri State, By Pass, Meerut, Uttar Pradesh",
+            "target_address": "Plot No B - 9, Gayatri State, By Pass, Meerut, Uttar Pradesh",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-522046723",
+            "target_id": "S2-170682548",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "PX Infinite Inc",
+            "target_name": "pxinfinite.com",
+            "s1_address": "124 Mccomas Street, Fl 0, Wichita, KS",
+            "target_address": "124 MCCOMSA ST, WICHITA CITY, KS",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-525299422",
+            "target_id": "S2-134963448",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Body Electrical (India) Private Limited",
+            "target_name": "Private Body Électrical (India) Limited",
+            "s1_address": "Noida, C-168 Sector-49, Uttar Pradesh, Gautam Buddha Nagar",
+            "target_address": "C-D/168 SECTOR-49, NOIDA, GAUTAM BUDDHA NAGAR, Uttar Pradesh",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-566987979",
+            "target_id": "S2-850846840",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Shivam Shree Food Private Limited",
+            "target_name": "शिवम श्री फूड प्राइवेट लिमिटेड",
+            "s1_address": "3Rd Floor, Office No 11 Survey No 94 1, 94 2, 94 3, 94 4, 94 5, Surya Excellency, Narpoli Road, Above G P Parsik Bank, Narpoli, Bhiwandi, Thane, Maharashtra",
+            "target_address": "H.NO 3RD FLOOR, THANE, महाराष्ट्र",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-570561490",
+            "target_id": "S3-440525657",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Index & Co",
+            "target_name": "Irenx & Co",
+            "s1_address": "No 99/1 (99) S.P Road, Bangalore, Karnataka",
+            "target_address": "ಕರ್ನಾಟಕ, Bangalore, No 99/1 (99) S.p Road, Bangalore",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-600047145",
+            "target_id": "S3-594009330",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Balan Group",
+            "target_name": "Smt Balan Group Center",
+            "s1_address": "Hyderabad, Satya Nagar Uppal, Telangana, H No 2-3-71/124",
+            "target_address": "H No 2-3-71/124, Satya Nagar Uppal, Hyderabad, తెలంగాణ",
+            "categories": [
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-661915471",
+            "target_id": "S2-180556259",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Collective Krishak Public Limited",
+            "target_name": "PUBLIC COLLECTIVE KRISHAK LIMITED",
+            "s1_address": "Plot No. 35, Doctors Colony, Dcm Ajmer Road, Heerapur, Jaipur, Rajasthan",
+            "target_address": "PLOT NO. A-35, JAIPUR, राजस्थान",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-906095341",
+            "target_id": "S2-466130989",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "White Exports Private Limited",
+            "target_name": "व्हाइट एक्सपोर्ट्स प्राइवेट लिमिटेड",
+            "s1_address": "L I G 171, B Sector, Sonagiri, Piplani, Huzur, Huzur, Bhopal, Madhya Pradesh",
+            "target_address": "L I G 171, HUZUR, BHOPAL, Madhya Pradesh",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          }
+        ]
+      },
+      "B": {
+        "missed_links": 3,
+        "category_counts_overlapping": {
+          "name order/punctuation": 1,
+          "name typo/abbreviation": 2,
+          "high-frequency address": 3,
+          "multilingual/script": 1
+        },
+        "examples": [
+          {
+            "s1_id": "S1-271172478",
+            "target_id": "S2-623155217",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "Krause, Chelsea H., DDS, DDS PC",
+            "target_name": "DDS Chelsea H. Krause DDS PC",
+            "s1_address": "52 West Street, Unit Apartment 1B, Spring Valley, NY",
+            "target_address": "0052 WEST ST, SPRING VALLEY, NY",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-318134937",
+            "target_id": "S3-465285051",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Goldmine Holdings Corp",
+            "target_name": "Gahldmie Holdings Corp",
+            "s1_address": "B-1/E-23, Mohan Co-Operative Industrial Estate, Mathura Road, South East, New Delhi, South Delhi, Delhi",
+            "target_address": "South Delhi, DL, South Delhi, B-001/e-23",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-566987979",
+            "target_id": "S2-850846840",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Shivam Shree Food Private Limited",
+            "target_name": "शिवम श्री फूड प्राइवेट लिमिटेड",
+            "s1_address": "3Rd Floor, Office No 11 Survey No 94 1, 94 2, 94 3, 94 4, 94 5, Surya Excellency, Narpoli Road, Above G P Parsik Bank, Narpoli, Bhiwandi, Thane, Maharashtra",
+            "target_address": "H.NO 3RD FLOOR, THANE, महाराष्ट्र",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          }
+        ]
+      },
+      "A_HF_NAME": {
+        "missed_links": 6,
+        "category_counts_overlapping": {
+          "name order/punctuation": 1,
+          "name typo/abbreviation": 4,
+          "high-frequency address": 6,
+          "multilingual/script": 2
+        },
+        "examples": [
+          {
+            "s1_id": "S1-271172478",
+            "target_id": "S2-623155217",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "Krause, Chelsea H., DDS, DDS PC",
+            "target_name": "DDS Chelsea H. Krause DDS PC",
+            "s1_address": "52 West Street, Unit Apartment 1B, Spring Valley, NY",
+            "target_address": "0052 WEST ST, SPRING VALLEY, NY",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-318134937",
+            "target_id": "S3-465285051",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Goldmine Holdings Corp",
+            "target_name": "Gahldmie Holdings Corp",
+            "s1_address": "B-1/E-23, Mohan Co-Operative Industrial Estate, Mathura Road, South East, New Delhi, South Delhi, Delhi",
+            "target_address": "South Delhi, DL, South Delhi, B-001/e-23",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-522046723",
+            "target_id": "S2-170682548",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "PX Infinite Inc",
+            "target_name": "pxinfinite.com",
+            "s1_address": "124 Mccomas Street, Fl 0, Wichita, KS",
+            "target_address": "124 MCCOMSA ST, WICHITA CITY, KS",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-566987979",
+            "target_id": "S2-850846840",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Shivam Shree Food Private Limited",
+            "target_name": "शिवम श्री फूड प्राइवेट लिमिटेड",
+            "s1_address": "3Rd Floor, Office No 11 Survey No 94 1, 94 2, 94 3, 94 4, 94 5, Surya Excellency, Narpoli Road, Above G P Parsik Bank, Narpoli, Bhiwandi, Thane, Maharashtra",
+            "target_address": "H.NO 3RD FLOOR, THANE, महाराष्ट्र",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-570561490",
+            "target_id": "S3-440525657",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Index & Co",
+            "target_name": "Irenx & Co",
+            "s1_address": "No 99/1 (99) S.P Road, Bangalore, Karnataka",
+            "target_address": "ಕರ್ನಾಟಕ, Bangalore, No 99/1 (99) S.p Road, Bangalore",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-906095341",
+            "target_id": "S2-466130989",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "White Exports Private Limited",
+            "target_name": "व्हाइट एक्सपोर्ट्स प्राइवेट लिमिटेड",
+            "s1_address": "L I G 171, B Sector, Sonagiri, Piplani, Huzur, Huzur, Bhopal, Madhya Pradesh",
+            "target_address": "L I G 171, HUZUR, BHOPAL, Madhya Pradesh",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          }
+        ]
+      },
+      "A_TWOADDR": {
+        "missed_links": 7,
+        "category_counts_overlapping": {
+          "name order/punctuation": 3,
+          "high-frequency address": 7,
+          "name typo/abbreviation": 5,
+          "multilingual/script": 1
+        },
+        "examples": [
+          {
+            "s1_id": "S1-121562956",
+            "target_id": "S3-735308651",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Vijay Solutions Limited",
+            "target_name": "(limited) vijay solutions",
+            "s1_address": "B/28, Maharashtra, Shri Kedarnath Apartments, Rishikesh Park, Soniwadi, Natakwala Lane, Shimpoli, Mumbai, Borivali West",
+            "target_address": "B/2-8, Borivali West, Mumbai, MH",
+            "categories": [
+              "name order/punctuation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-271172478",
+            "target_id": "S2-623155217",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "Krause, Chelsea H., DDS, DDS PC",
+            "target_name": "DDS Chelsea H. Krause DDS PC",
+            "s1_address": "52 West Street, Unit Apartment 1B, Spring Valley, NY",
+            "target_address": "0052 WEST ST, SPRING VALLEY, NY",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-318134937",
+            "target_id": "S3-465285051",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Goldmine Holdings Corp",
+            "target_name": "Gahldmie Holdings Corp",
+            "s1_address": "B-1/E-23, Mohan Co-Operative Industrial Estate, Mathura Road, South East, New Delhi, South Delhi, Delhi",
+            "target_address": "South Delhi, DL, South Delhi, B-001/e-23",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-466093421",
+            "target_id": "S3-880808065",
+            "source": "S3",
+            "country": "US",
+            "s1_name": "Young & Bautista LLC",
+            "target_name": "Y0ung & Bautista Llc",
+            "s1_address": "1127 Carroll Street, 03, IA",
+            "target_address": "Carroll Street, Iowa, Carroll Township",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-566987979",
+            "target_id": "S2-850846840",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Shivam Shree Food Private Limited",
+            "target_name": "शिवम श्री फूड प्राइवेट लिमिटेड",
+            "s1_address": "3Rd Floor, Office No 11 Survey No 94 1, 94 2, 94 3, 94 4, 94 5, Surya Excellency, Narpoli Road, Above G P Parsik Bank, Narpoli, Bhiwandi, Thane, Maharashtra",
+            "target_address": "H.NO 3RD FLOOR, THANE, महाराष्ट्र",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-570561490",
+            "target_id": "S3-440525657",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Index & Co",
+            "target_name": "Irenx & Co",
+            "s1_address": "No 99/1 (99) S.P Road, Bangalore, Karnataka",
+            "target_address": "ಕರ್ನಾಟಕ, Bangalore, No 99/1 (99) S.p Road, Bangalore",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-661915471",
+            "target_id": "S2-180556259",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Collective Krishak Public Limited",
+            "target_name": "PUBLIC COLLECTIVE KRISHAK LIMITED",
+            "s1_address": "Plot No. 35, Doctors Colony, Dcm Ajmer Road, Heerapur, Jaipur, Rajasthan",
+            "target_address": "PLOT NO. A-35, JAIPUR, राजस्थान",
+            "categories": [
+              "name order/punctuation",
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          }
+        ]
+      },
+      "A_NAME2500": {
+        "missed_links": 6,
+        "category_counts_overlapping": {
+          "name order/punctuation": 1,
+          "high-frequency address": 6,
+          "name typo/abbreviation": 3,
+          "multilingual/script": 2
+        },
+        "examples": [
+          {
+            "s1_id": "S1-121562956",
+            "target_id": "S3-735308651",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Vijay Solutions Limited",
+            "target_name": "(limited) vijay solutions",
+            "s1_address": "B/28, Maharashtra, Shri Kedarnath Apartments, Rishikesh Park, Soniwadi, Natakwala Lane, Shimpoli, Mumbai, Borivali West",
+            "target_address": "B/2-8, Borivali West, Mumbai, MH",
+            "categories": [
+              "name order/punctuation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-318134937",
+            "target_id": "S3-465285051",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Goldmine Holdings Corp",
+            "target_name": "Gahldmie Holdings Corp",
+            "s1_address": "B-1/E-23, Mohan Co-Operative Industrial Estate, Mathura Road, South East, New Delhi, South Delhi, Delhi",
+            "target_address": "South Delhi, DL, South Delhi, B-001/e-23",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-522046723",
+            "target_id": "S2-170682548",
+            "source": "S2",
+            "country": "US",
+            "s1_name": "PX Infinite Inc",
+            "target_name": "pxinfinite.com",
+            "s1_address": "124 Mccomas Street, Fl 0, Wichita, KS",
+            "target_address": "124 MCCOMSA ST, WICHITA CITY, KS",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-566987979",
+            "target_id": "S2-850846840",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "Shivam Shree Food Private Limited",
+            "target_name": "शिवम श्री फूड प्राइवेट लिमिटेड",
+            "s1_address": "3Rd Floor, Office No 11 Survey No 94 1, 94 2, 94 3, 94 4, 94 5, Surya Excellency, Narpoli Road, Above G P Parsik Bank, Narpoli, Bhiwandi, Thane, Maharashtra",
+            "target_address": "H.NO 3RD FLOOR, THANE, महाराष्ट्र",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-570561490",
+            "target_id": "S3-440525657",
+            "source": "S3",
+            "country": "India",
+            "s1_name": "Index & Co",
+            "target_name": "Irenx & Co",
+            "s1_address": "No 99/1 (99) S.P Road, Bangalore, Karnataka",
+            "target_address": "ಕರ್ನಾಟಕ, Bangalore, No 99/1 (99) S.p Road, Bangalore",
+            "categories": [
+              "name typo/abbreviation",
+              "high-frequency address"
+            ]
+          },
+          {
+            "s1_id": "S1-906095341",
+            "target_id": "S2-466130989",
+            "source": "S2",
+            "country": "India",
+            "s1_name": "White Exports Private Limited",
+            "target_name": "व्हाइट एक्सपोर्ट्स प्राइवेट लिमिटेड",
+            "s1_address": "L I G 171, B Sector, Sonagiri, Piplani, Huzur, Huzur, Bhopal, Madhya Pradesh",
+            "target_address": "L I G 171, HUZUR, BHOPAL, Madhya Pradesh",
+            "categories": [
+              "multilingual/script",
+              "high-frequency address"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "runtime_seconds": 674.202
+}

@@ -1,0 +1,15 @@
+{
+  "index_reused": true,
+  "rows_processed": 1732544,
+  "predicted_match_ids": 510033,
+  "distribution_s1_rows_zero_one_many": {
+    "zero": 1232937,
+    "one": 489960,
+    "many": 9647
+  },
+  "rows_per_second": 3209.36,
+  "elapsed_seconds": 539.841,
+  "matching_results_bytes": 30138267,
+  "candidate_pairs_bytes": 30138269,
+  "peak_rss_bytes": 22970368
+}

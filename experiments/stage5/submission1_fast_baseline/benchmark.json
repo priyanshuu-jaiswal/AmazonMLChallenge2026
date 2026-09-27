@@ -1,0 +1,21 @@
+{
+  "index_reused": false,
+  "index_build_seconds": 9574.332,
+  "indexed_posting_rows": {
+    "by_name": 9969589,
+    "by_address": 9704083,
+    "by_pair": 9704083,
+    "by_abbr_address": 9704083
+  },
+  "rows_processed": 10000,
+  "predicted_match_ids": 2878,
+  "distribution_s1_rows_zero_one_many": {
+    "zero": 7189,
+    "one": 2747,
+    "many": 64
+  },
+  "rows_per_second": 2530.45,
+  "elapsed_seconds": 3.952,
+  "db_bytes": 3920707584,
+  "peak_rss_bytes": 357875712
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "sample_size_run1": 1500,
+  "sample_size_run2": 1500,
+  "sample_hash_run1": "0cbae83ea46220e4efbe161c984ac45e0202ea8d153c4b835c55a93b200da9d5",
+  "sample_hash_run2": "0cbae83ea46220e4efbe161c984ac45e0202ea8d153c4b835c55a93b200da9d5",
+  "sample_hashes_identical": true,
+  "all_recall_candidate_volume_and_failure_slice_results_identical": true
+}

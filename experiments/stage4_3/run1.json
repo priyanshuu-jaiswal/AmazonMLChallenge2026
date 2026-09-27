@@ -1,0 +1,1412 @@
+{
+  "title": "Stage 4.3 restarted reproducible held-out blocking validation",
+  "sample": {
+    "source_files": [
+      "student_resource/dataset/train/train_ground_truth.tsv",
+      "student_resource/dataset/train/train_source1.tsv"
+    ],
+    "filtering": "Use every ground-truth row whose S1 ID has a matching Source 1 row; include only exact Source 1 country values India or US; exclude rows outside the deterministic hash partition described below.",
+    "match_classification": "Parse matched_entity_ids as comma-separated nonempty trimmed IDs; count 0=zero, exactly 1=one, >=2=multi.",
+    "country_filter": "Exact string equality to India or US; France or any other value is excluded.",
+    "seed": 20260928,
+    "rng": "Python random.Random (stdlib)",
+    "population_order": "eligible IDs sorted lexicographically within each exact match-count × country stratum before random.sample",
+    "sampling": "without replacement; 50 per zero/one/multi × India/US stratum; strata sampled in zero, one, multi then India, US order using one RNG instance",
+    "hash_partition": "eligible only when SHA-256(UTF-8 S1 ID) first digest byte is <64; all other IDs excluded",
+    "insufficient_strata": "abort before evaluation; do not substitute or reduce quotas",
+    "final_order": "match class zero, one, multi; then country India, US; then S1 ID lexicographically",
+    "sample_hash": "e10975919f7d6b4b5a7fdc268617e936661a2a938ce6afa7aedf2a3137304b75",
+    "sample_hash_input": "UTF-8 final ordered S1 IDs joined by one LF byte, no trailing LF",
+    "historical_exclusion_limit": "Exact Stage 4.1/4.2/old 4.3 IDs are not logged, and old sampling code/ID lists are absent. This hash-partition holdout is the deterministic fallback; disjointness from historical samples cannot be proven.",
+    "sample_n": 300,
+    "strata": {
+      "zero": 100,
+      "one": 100,
+      "multi": 100
+    },
+    "country_counts": {
+      "India": 150,
+      "US": 150
+    },
+    "strata_country_counts": {
+      "zero/India": 50,
+      "zero/US": 50,
+      "one/India": 50,
+      "one/US": 50,
+      "multi/India": 50,
+      "multi/US": 50
+    },
+    "true_links": 487,
+    "s2_true_links": 252,
+    "s3_true_links": 235,
+    "country_true_links": {
+      "India": 240,
+      "US": 247
+    },
+    "validated_target_ids": 487,
+    "missing_target_ids": 0
+  },
+  "definitions": {
+    "prefix": "country + first 5 characters of Stage 3 conservative normalized business_name; names shorter than 5 have no prefix key",
+    "address": "country-specific distinct token keys from the union of conservative and approved abbreviation-normalized addresses; empty address emits no keys; target df counts records in S2+S3 and each record contributes once per key; usable iff 1 <= df <= cap",
+    "candidate_count": "unique S2+S3 target records per S1",
+    "quantiles": "nearest-rank quantile at ceil(p*n), one-based",
+    "address_key_frequency_sample": "all distinct queried country/token keys; frequency counted across both target source files"
+  },
+  "strategies": {
+    "Prefix-5 only": {
+      "true_links": 487,
+      "recovered_links": 358,
+      "missed_links": 129,
+      "recall": 0.7351129363449692,
+      "s2": {
+        "true": 252,
+        "recovered": 183,
+        "missed": 69,
+        "recall": 0.7261904761904762
+      },
+      "s3": {
+        "true": 235,
+        "recovered": 175,
+        "missed": 60,
+        "recall": 0.7446808510638298
+      },
+      "candidate_volume": {
+        "n": 300,
+        "min": 1,
+        "mean": 5067.266666666666,
+        "median": 1252.0,
+        "p90": 14250,
+        "p95": 19592,
+        "p99": 28911,
+        "max": 43343,
+        "total": 1520180
+      },
+      "by_match_class": {
+        "zero": {
+          "n": 100,
+          "min": 1,
+          "mean": 5430.15,
+          "median": 1444.0,
+          "p90": 14250,
+          "p95": 19339,
+          "p99": 26747,
+          "max": 43343,
+          "total": 543015
+        },
+        "one": {
+          "n": 100,
+          "min": 2,
+          "mean": 5327.26,
+          "median": 1036.5,
+          "p90": 16190,
+          "p95": 20242,
+          "p99": 28911,
+          "max": 43343,
+          "total": 532726
+        },
+        "multi": {
+          "n": 100,
+          "min": 1,
+          "mean": 4444.39,
+          "median": 1204.5,
+          "p90": 12182,
+          "p95": 14393,
+          "p99": 23499,
+          "max": 29747,
+          "total": 444439
+        }
+      },
+      "by_country": {
+        "India": {
+          "n": 150,
+          "min": 1,
+          "mean": 4539.26,
+          "median": 1391.0,
+          "p90": 11725,
+          "p95": 13635,
+          "p99": 28911,
+          "max": 28911,
+          "total": 680889
+        },
+        "US": {
+          "n": 150,
+          "min": 1,
+          "mean": 5595.2733333333335,
+          "median": 1204.5,
+          "p90": 17591,
+          "p95": 20138,
+          "p99": 43343,
+          "max": 43343,
+          "total": 839291
+        }
+      },
+      "country_recall": {
+        "India": {
+          "true": 240,
+          "recovered": 151,
+          "missed": 89,
+          "recall": 0.6291666666666667
+        },
+        "US": {
+          "true": 247,
+          "recovered": 207,
+          "missed": 40,
+          "recall": 0.8380566801619433
+        }
+      },
+      "zero_match": {
+        "n": 100,
+        "min": 1,
+        "mean": 5430.15,
+        "median": 1444.0,
+        "p90": 14250,
+        "p95": 19339,
+        "p99": 26747,
+        "max": 43343,
+        "total": 543015,
+        "bins": {
+          "0": 0,
+          "1-10": 5,
+          "11-100": 17,
+          "101-1000": 24,
+          "1001-10000": 33,
+          "10001-100000": 21,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "cec4f2a7e450827aba4c9f7ce2d7dacb2e4ba935ac3be4b01479485e84060a06",
+      "miss_categories_overlapping": {
+        "name word order": 12,
+        "name typo": 55,
+        "high-frequency address key": 126,
+        "address reordering/partial overlap": 29,
+        "multilingual/script difference": 39,
+        "missing target address": 3,
+        "name abbreviation": 2
+      },
+      "miss_examples": [
+        {
+          "s1_id": "S1-101720261",
+          "target_id": "S2-475188994",
+          "source": "S2",
+          "s1_name": "Office Traders Private Limited",
+          "target_name": "private office traders limited",
+          "s1_address": "97/ Sa, Block-E, New Alipore (Ground Floor), Kolkata, Howrah, West Bengal",
+          "target_address": "8-97/ SA, BLOCK-E, NEW ALIPORE (GROUND FLOOR), KOLKATA, HOWRAH, West Bengal",
+          "categories": [
+            "name word order",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-113830219",
+          "target_id": "S3-507979291",
+          "source": "S3",
+          "s1_name": "Aarush World Co",
+          "target_name": "Fayesol",
+          "s1_address": "My Home Ankura, Villa 81, Tellapur, Ramachandrapuram, Medak, Telangana",
+          "target_address": "My Home Ankura, Ramachandrapuram Bhel, Medak, తెలంగాణ",
+          "categories": [
+            "address reordering/partial overlap",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-123587864",
+          "target_id": "S2-772775722",
+          "source": "S2",
+          "s1_name": "Durgapur Tradelink Pvt Ltd",
+          "target_name": "PVT DURGAPUR TRADELINK (LIMITED)",
+          "s1_address": "Plot No- 123, Mouza- 96, Building No- 2A/1 Dinante, Arrah, Tetikhola Vivekananda Pa, Rk, Durgapur, Bardhaman, West Bengal",
+          "target_address": "PLOT NO- 12, MOUZA- 96, BUILDING NO- 2A/1 DINANTE, ARRAH, TETIKHOLA VIVEKANANDA PA, RK, DURGAPUR, BARDHAMAN, West Bengal",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-273930271",
+          "target_id": "S2-410281201",
+          "source": "S2",
+          "s1_name": "Great Healthcare Private Limited",
+          "target_name": "ग्रेट हेल्थकेयर प्राइवेट लिमिटेड",
+          "s1_address": "Ujha Gate Panipat, Panipat, Haryana",
+          "target_address": "PLOT C-73 UJHA GATE PANIPAT, null, PANIPAT, Haryana",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-322443778",
+          "target_id": "S3-459751717",
+          "source": "S3",
+          "s1_name": "Ace Anand Infra Private Limited",
+          "target_name": "एस आनंद इंफ्रा प्राइवेट लिमिटेड",
+          "s1_address": "601 Floor 6 Sky Flama Dosti Flamingos, Plot 5-209 E1 Tokersey Jivraj Road, Mumbai, Maharashtra",
+          "target_address": "महाराष्ट्र, Mumbai, Floor 6 Sky Flama Dosti Flamingos",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-363206374",
+          "target_id": "S2-574339343",
+          "source": "S2",
+          "s1_name": "North Services",
+          "target_name": "ਨਾਰਥ ਸਰਵਿਸਿਜ਼",
+          "s1_address": "519, Ext 1, Gilco Valley, Sector 127, Kharar, Mohali, Punjab",
+          "target_address": "#519, EXT 1, GILCO VALLEY, SECTOR 127, KHARAR, MOHALI, ਪੰਜਾਬ",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-377355553",
+          "target_id": "S2-890069490",
+          "source": "S2",
+          "s1_name": "White Solutions Private Limited",
+          "target_name": "వైట్ సొల్యూషన్స్ ప్రైవేట్ లిమిటెడ్",
+          "s1_address": "F No 203, Sahiti Vaidya'S Siri Signature, D Block, Road No.9, Kakatiya Hills, Hyderabad, Rangareddy, Telangana",
+          "target_address": "F NO 203, SAHITI VAIDYA'S SIRI SIGNATURE, D BLOCK, ROAD NO.9, KAKATIYA HILLS, HYDERABAD, RANGAREDDY, Telangana",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-380245723",
+          "target_id": "S3-899968304",
+          "source": "S3",
+          "s1_name": "White Infra",
+          "target_name": "ವೈಟ್ ಇನ್‌ಫ್ರಾ",
+          "s1_address": "C 388 Industrial Estate Gokul Road, Hubli Karnataka India, Hubli, Dharwad, Dharwar, Karnataka",
+          "target_address": "C ##388 Industrial Estate Gokul Road, Dharwad, KA, Dharwar",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-440400638",
+          "target_id": "S2-753166098",
+          "source": "S2",
+          "s1_name": "Roopak Chem Private Limited",
+          "target_name": "Shri roopak chem private limited",
+          "s1_address": "304, 3Rd Floor, Shipra, 187F/1, B.T. Road, North 24 Paraganas, North 24 Parganas, West Bengal",
+          "target_address": "304, 3RD FLOOR, SHIPRA, 187F/1, B.T. ROAD, NORTH 24 PARAGANAS, পশ্চিমবঙ্গ",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-575472657",
+          "target_id": "S2-602736392",
+          "source": "S2",
+          "s1_name": "Prava Pharmaceutical Limited",
+          "target_name": "Ltd Prava Pharmaceutical",
+          "s1_address": "1001 Manit Appts Hari Kripa Chs Ltd Cts No 47 & 50 Borla, Chembur, Mumbai, Mumbai City, Maharashtra",
+          "target_address": "G-1001 MANIT APPTS HARI KRIPA CHS LTD CTS NO 47 & 50 BORLA, CHEMBUR, MUMBAI CITY, BOMBAY, Maharashtra",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-575573214",
+          "target_id": "S2-893835551",
+          "source": "S2",
+          "s1_name": "Geekay Sales Private Limited",
+          "target_name": "Sri Geekay Sales Prívate (Limited)",
+          "s1_address": "12, Shant Nagar Colony, 100 Foota Road, Mathura, Uttar Pradesh",
+          "target_address": "HN 370 12, SHANT NAGAR COLONY, 100 FOOTA ROAD, MATHURA, उत्तर प्रदेश",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-583097336",
+          "target_id": "S2-81496173",
+          "source": "S2",
+          "s1_name": "Ss Healthcare Limited",
+          "target_name": "ਐੱਸਐੱਸ ਹੈਲਥਕੇਅਰ ਲਿਮਟਿਡ",
+          "s1_address": "Ludhiana, Punjab, Ludhiana, Scerat Heart School, Vill. Bhamian Kalan, Distt- Ludhiana, Sant Enclave",
+          "target_address": "PLOT 83 SANT ENCLAVE, LUDHIANA, Punjab",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        }
+      ]
+    },
+    "Address cap 2,500": {
+      "true_links": 487,
+      "recovered_links": 382,
+      "missed_links": 105,
+      "recall": 0.784394250513347,
+      "s2": {
+        "true": 252,
+        "recovered": 205,
+        "missed": 47,
+        "recall": 0.8134920634920635
+      },
+      "s3": {
+        "true": 235,
+        "recovered": 177,
+        "missed": 58,
+        "recall": 0.7531914893617021
+      },
+      "candidate_volume": {
+        "n": 300,
+        "min": 0,
+        "mean": 1376.7733333333333,
+        "median": 1080.5,
+        "p90": 3055,
+        "p95": 3703,
+        "p99": 5032,
+        "max": 7426,
+        "total": 413032
+      },
+      "by_match_class": {
+        "zero": {
+          "n": 100,
+          "min": 0,
+          "mean": 1312.03,
+          "median": 1108.5,
+          "p90": 2661,
+          "p95": 3400,
+          "p99": 3981,
+          "max": 4622,
+          "total": 131203
+        },
+        "one": {
+          "n": 100,
+          "min": 0,
+          "mean": 1455.84,
+          "median": 959.0,
+          "p90": 3310,
+          "p95": 4012,
+          "p99": 5032,
+          "max": 7426,
+          "total": 145584
+        },
+        "multi": {
+          "n": 100,
+          "min": 0,
+          "mean": 1362.45,
+          "median": 1099.0,
+          "p90": 3028,
+          "p95": 3518,
+          "p99": 5562,
+          "max": 6278,
+          "total": 136245
+        }
+      },
+      "by_country": {
+        "India": {
+          "n": 150,
+          "min": 0,
+          "mean": 1561.1,
+          "median": 1237.5,
+          "p90": 3400,
+          "p95": 4595,
+          "p99": 6278,
+          "max": 7426,
+          "total": 234165
+        },
+        "US": {
+          "n": 150,
+          "min": 0,
+          "mean": 1192.4466666666667,
+          "median": 927.5,
+          "p90": 2490,
+          "p95": 3263,
+          "p99": 4012,
+          "max": 5562,
+          "total": 178867
+        }
+      },
+      "country_recall": {
+        "India": {
+          "true": 240,
+          "recovered": 184,
+          "missed": 56,
+          "recall": 0.7666666666666667
+        },
+        "US": {
+          "true": 247,
+          "recovered": 198,
+          "missed": 49,
+          "recall": 0.8016194331983806
+        }
+      },
+      "zero_match": {
+        "n": 100,
+        "min": 0,
+        "mean": 1312.03,
+        "median": 1108.5,
+        "p90": 2661,
+        "p95": 3400,
+        "p99": 3981,
+        "max": 4622,
+        "total": 131203,
+        "bins": {
+          "0": 6,
+          "1-10": 1,
+          "11-100": 3,
+          "101-1000": 34,
+          "1001-10000": 56,
+          "10001-100000": 0,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "5b10ac2413113c03410cff5ab360c7f8f33d4938fa0a32d723afa039e1ba9db6",
+      "miss_categories_overlapping": {
+        "address reordering/partial overlap": 27,
+        "high-frequency address key": 85,
+        "missing target address": 19,
+        "name abbreviation": 52,
+        "name typo": 50,
+        "multilingual/script difference": 12,
+        "name word order": 6,
+        "other": 1
+      },
+      "miss_examples": [
+        {
+          "s1_id": "S1-123325360",
+          "target_id": "S3-618542762",
+          "source": "S3",
+          "s1_name": "Hitech Estate",
+          "target_name": "hitech estate",
+          "s1_address": "Tamil Nadu, S-9A D-Block, Tiruchirappalli, Royal Vesta, 60 Vayalur Rd M.M Nagar, Uyyakondan, Thirumalai, Tiruchirappalli",
+          "target_address": "S-d/9a D-block, Trichy, Tiruchirappalli, TN",
+          "categories": [
+            "address reordering/partial overlap",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-244005858",
+          "target_id": "S3-848537808",
+          "source": "S3",
+          "s1_name": "India Prime India LLP",
+          "target_name": "India-Prime Índia LLP",
+          "s1_address": "6B Ami Ramkrishna Chs Ltd, Vile Parle E Near Adar, Mumbai, Maharashtra",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation",
+            "name typo"
+          ]
+        },
+        {
+          "s1_id": "S1-420036755",
+          "target_id": "S3-144023070",
+          "source": "S3",
+          "s1_name": "Royal Industries Private Limited",
+          "target_name": "Royal Industries प्राइवेट लिमिटेड",
+          "s1_address": "S-82, Gali No. 2, Rajapuri, Uttam Nagar, New Delhi, West Delhi, Delhi",
+          "target_address": "S-82, New Delhi, West Delhi, DL",
+          "categories": [
+            "multilingual/script difference",
+            "name abbreviation",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-468705832",
+          "target_id": "S3-940527917",
+          "source": "S3",
+          "s1_name": "Shree Business Pvt Ltd",
+          "target_name": "Shree Business Pvt",
+          "s1_address": "1-8-303/48/9, Tirumala Chambers, Prenderghast Road, Sindhi Colony, Begumpe, T, Hyderabad, Telangana",
+          "target_address": "1-8-303/48/9, Hyderabad, TG",
+          "categories": [
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-470272914",
+          "target_id": "S3-324904225",
+          "source": "S3",
+          "s1_name": "Frontline Secure Private Limited",
+          "target_name": "frontline secure private limited",
+          "s1_address": "87, Swami Vivekanand Marg (Hewett Road), Allahabad, Uttar Pradesh",
+          "target_address": "87, Allahabad, UP",
+          "categories": [
+            "address reordering/partial overlap",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-563081167",
+          "target_id": "S3-501485081",
+          "source": "S3",
+          "s1_name": "Perfect It Pvt Ltd",
+          "target_name": "Perfect Pvt Ltd Center",
+          "s1_address": "Plot No-N-6/174, Irc Village Nayapalli, Bhubaneswar, Khordha, Orissa",
+          "target_address": "Orissa, Plot No-n-6/174",
+          "categories": [
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-583097336",
+          "target_id": "S2-81496173",
+          "source": "S2",
+          "s1_name": "Ss Healthcare Limited",
+          "target_name": "ਐੱਸਐੱਸ ਹੈਲਥਕੇਅਰ ਲਿਮਟਿਡ",
+          "s1_address": "Ludhiana, Punjab, Ludhiana, Scerat Heart School, Vill. Bhamian Kalan, Distt- Ludhiana, Sant Enclave",
+          "target_address": "PLOT 83 SANT ENCLAVE, LUDHIANA, Punjab",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-63612430",
+          "target_id": "S2-852896198",
+          "source": "S2",
+          "s1_name": "Star Infrastructure Private Limited",
+          "target_name": "स्टार इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+          "s1_address": "61, 1St Floor, Ashoka Enclave-1, Sector-35, Faridabad, Haryana",
+          "target_address": "61, FARIDABAD, SECTOR-35, हरियाणा",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-69626567",
+          "target_id": "S2-307441018",
+          "source": "S2",
+          "s1_name": "Surya Builders Private Limited",
+          "target_name": "सूर्य बिल्डर्स प्राइवेट लिमिटेड",
+          "s1_address": "D-2 Ground Floor Naraina Vihar, Delhi, New Delhi, Delhi",
+          "target_address": "D-##2 GROUND FLOOR NARAINA VIHAR, DELHI, NEW DELHI, दिल्ली",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-739572758",
+          "target_id": "S3-495277755",
+          "source": "S3",
+          "s1_name": "Smart Solutions LLP",
+          "target_name": "LLP ... Smart-Solutions",
+          "s1_address": "Shop No 17, Ground Floor, Svhplaza, Opp Kfc, Miyapu, Tirumalagiri, Hyderabad, Telangana",
+          "target_address": "17, Tirumalagiri, Hyderabad, Andhra Pradesh",
+          "categories": [
+            "name word order",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-800822801",
+          "target_id": "S3-397830359",
+          "source": "S3",
+          "s1_name": "Best Care Private Limited",
+          "target_name": "Best Care Care Private Limited",
+          "s1_address": "Gujarat, Vadodara, 69, Vadodara, Sahjanand Kutir Udhyog Mujmavda Baroda",
+          "target_address": "Vadodara, ##69, ગુજરાત, Vadodara",
+          "categories": [
+            "name word order",
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-878761271",
+          "target_id": "S3-60034229",
+          "source": "S3",
+          "s1_name": "Surya Services Pvt Ltd",
+          "target_name": "Surya Services PVT LTD",
+          "s1_address": "8, Khendala Chl No 20, Sw, Road, Kurla Nr.Kasaiwarda, Mumbai, Maharashtra",
+          "target_address": "008, Kings Circle, महाराष्ट्र",
+          "categories": [
+            "other"
+          ]
+        }
+      ]
+    },
+    "Address cap 25,000": {
+      "true_links": 487,
+      "recovered_links": 461,
+      "missed_links": 26,
+      "recall": 0.946611909650924,
+      "s2": {
+        "true": 252,
+        "recovered": 241,
+        "missed": 11,
+        "recall": 0.9563492063492064
+      },
+      "s3": {
+        "true": 235,
+        "recovered": 220,
+        "missed": 15,
+        "recall": 0.9361702127659575
+      },
+      "candidate_volume": {
+        "n": 300,
+        "min": 0,
+        "mean": 19592.616666666665,
+        "median": 16814.5,
+        "p90": 39414,
+        "p95": 47756,
+        "p99": 72220,
+        "max": 80113,
+        "total": 5877785
+      },
+      "by_match_class": {
+        "zero": {
+          "n": 100,
+          "min": 0,
+          "mean": 17650.9,
+          "median": 14521.0,
+          "p90": 38651,
+          "p95": 43443,
+          "p99": 63096,
+          "max": 73354,
+          "total": 1765090
+        },
+        "one": {
+          "n": 100,
+          "min": 116,
+          "mean": 22696.02,
+          "median": 21421.0,
+          "p90": 40293,
+          "p95": 47756,
+          "p99": 72220,
+          "max": 80113,
+          "total": 2269602
+        },
+        "multi": {
+          "n": 100,
+          "min": 4,
+          "mean": 18430.93,
+          "median": 15079.5,
+          "p90": 35961,
+          "p95": 53653,
+          "p99": 61102,
+          "max": 73117,
+          "total": 1843093
+        }
+      },
+      "by_country": {
+        "India": {
+          "n": 150,
+          "min": 0,
+          "mean": 24934.62,
+          "median": 23097.5,
+          "p90": 47756,
+          "p95": 58447,
+          "p99": 73354,
+          "max": 80113,
+          "total": 3740193
+        },
+        "US": {
+          "n": 150,
+          "min": 116,
+          "mean": 14250.613333333333,
+          "median": 10658.0,
+          "p90": 30113,
+          "p95": 35061,
+          "p99": 43574,
+          "max": 45822,
+          "total": 2137592
+        }
+      },
+      "country_recall": {
+        "India": {
+          "true": 240,
+          "recovered": 229,
+          "missed": 11,
+          "recall": 0.9541666666666667
+        },
+        "US": {
+          "true": 247,
+          "recovered": 232,
+          "missed": 15,
+          "recall": 0.9392712550607287
+        }
+      },
+      "zero_match": {
+        "n": 100,
+        "min": 0,
+        "mean": 17650.9,
+        "median": 14521.0,
+        "p90": 38651,
+        "p95": 43443,
+        "p99": 63096,
+        "max": 73354,
+        "total": 1765090,
+        "bins": {
+          "0": 1,
+          "1-10": 1,
+          "11-100": 0,
+          "101-1000": 4,
+          "1001-10000": 29,
+          "10001-100000": 65,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "975ce8602d50a0ffa831e921c9ac034db23512363a222e9cfd3b375f50f613c6",
+      "miss_categories_overlapping": {
+        "missing target address": 19,
+        "name abbreviation": 18,
+        "name typo": 16,
+        "other": 1,
+        "high-frequency address key": 6,
+        "name word order": 1
+      },
+      "miss_examples": [
+        {
+          "s1_id": "S1-244005858",
+          "target_id": "S3-848537808",
+          "source": "S3",
+          "s1_name": "India Prime India LLP",
+          "target_name": "India-Prime Índia LLP",
+          "s1_address": "6B Ami Ramkrishna Chs Ltd, Vile Parle E Near Adar, Mumbai, Maharashtra",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation",
+            "name typo"
+          ]
+        },
+        {
+          "s1_id": "S1-878761271",
+          "target_id": "S3-60034229",
+          "source": "S3",
+          "s1_name": "Surya Services Pvt Ltd",
+          "target_name": "Surya Services PVT LTD",
+          "s1_address": "8, Khendala Chl No 20, Sw, Road, Kurla Nr.Kasaiwarda, Mumbai, Maharashtra",
+          "target_address": "008, Kings Circle, महाराष्ट्र",
+          "categories": [
+            "other"
+          ]
+        },
+        {
+          "s1_id": "S1-111042952",
+          "target_id": "S3-247569279",
+          "source": "S3",
+          "s1_name": "Doa Inc",
+          "target_name": "Doa",
+          "s1_address": "187 County Road 3813, Cleveland, TX",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation"
+          ]
+        },
+        {
+          "s1_id": "S1-358961502",
+          "target_id": "S2-901142881",
+          "source": "S2",
+          "s1_name": "National Wireless Works",
+          "target_name": "National Wireless Works",
+          "s1_address": "5977 Foothills Drive, Buckeye, AZ",
+          "target_address": "",
+          "categories": [
+            "missing target address"
+          ]
+        },
+        {
+          "s1_id": "S1-708034524",
+          "target_id": "S3-399470196",
+          "source": "S3",
+          "s1_name": "Black, Emerson & Green LLC",
+          "target_name": "Blackemersongreen.Com",
+          "s1_address": "302 Pine Avenue, Canby, MN",
+          "target_address": "00302 Pine Avenue, Cnby, Minnesota",
+          "categories": [
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-103511521",
+          "target_id": "S3-252927667",
+          "source": "S3",
+          "s1_name": "Charbhuja Infrastructure Public Limited",
+          "target_name": "Charbhuja Infrastructure Public",
+          "s1_address": "Fl No 402, Siddheshwar Nagar, S No 39/3 Bldg A-3, Vishrantwadi, Pune, Maharashtra",
+          "target_address": "Fl No 00402, Pune, MH",
+          "categories": [
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-252260556",
+          "target_id": "S3-859161647",
+          "source": "S3",
+          "s1_name": "First Jay Finance Private Limited",
+          "target_name": "First Jay Private Limited  Services",
+          "s1_address": "2Nd Floor S2 Siva Jothi Residency Sakthi Nagar Main Road Sakthi Nagar Thin, Dal, Erode, 30/2, Erode, Tamil Nadu",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation",
+            "name typo"
+          ]
+        },
+        {
+          "s1_id": "S1-474875759",
+          "target_id": "S3-367136078",
+          "source": "S3",
+          "s1_name": "Kushagra Advertising Ltd",
+          "target_name": "KUSHAGRA ADVERTISING LTD",
+          "s1_address": "Kh No.317, 318, 442, 320, 321, Sector-75, Sarfabad, Noida, Gautam Buddha Nagar, Uttar Pradesh",
+          "target_address": "",
+          "categories": [
+            "missing target address"
+          ]
+        },
+        {
+          "s1_id": "S1-581995076",
+          "target_id": "S2-940357697",
+          "source": "S2",
+          "s1_name": "Swastik (India) Finlease Private Limited",
+          "target_name": "Swastik (India) Finlease",
+          "s1_address": "Plot No. 27, Rajasthan, Jaipur, Udyog Vihar, Heerawala",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation",
+            "name typo"
+          ]
+        },
+        {
+          "s1_id": "S1-675112504",
+          "target_id": "S2-993383516",
+          "source": "S2",
+          "s1_name": "Bliss Power Corporation",
+          "target_name": "bliss power corporation",
+          "s1_address": "Office No. F 15 Agarsen Tower, Jaipur, Rajasthan",
+          "target_address": "",
+          "categories": [
+            "missing target address"
+          ]
+        },
+        {
+          "s1_id": "S1-883371622",
+          "target_id": "S2-332363858",
+          "source": "S2",
+          "s1_name": "Aero & Sons",
+          "target_name": "AERO  & SONS COMPANY",
+          "s1_address": "Kolata, Holding No.170, West Bengal, Parganas North, Ward N O.8, Basunagar Gate No.1 72/A, Basunagar, Madhyamgram",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation"
+          ]
+        },
+        {
+          "s1_id": "S1-925029754",
+          "target_id": "S3-937464233",
+          "source": "S3",
+          "s1_name": "VHT Marche Private Limited",
+          "target_name": "VHT Marche Private",
+          "s1_address": "5 Lindsy St, Kolkata, Calcutta, West Bengal",
+          "target_address": "No #5 Lidnsy St, Kolkata, WB",
+          "categories": [
+            "name abbreviation",
+            "name typo",
+            "high-frequency address key"
+          ]
+        }
+      ]
+    },
+    "Union cap 2,500": {
+      "true_links": 487,
+      "recovered_links": 460,
+      "missed_links": 27,
+      "recall": 0.944558521560575,
+      "s2": {
+        "true": 252,
+        "recovered": 234,
+        "missed": 18,
+        "recall": 0.9285714285714286
+      },
+      "s3": {
+        "true": 235,
+        "recovered": 226,
+        "missed": 9,
+        "recall": 0.9617021276595744
+      },
+      "candidate_volume": {
+        "n": 300,
+        "min": 1,
+        "mean": 6440.22,
+        "median": 3413.5,
+        "p90": 15821,
+        "p95": 20794,
+        "p99": 30685,
+        "max": 45201,
+        "total": 1932066
+      },
+      "by_match_class": {
+        "zero": {
+          "n": 100,
+          "min": 1,
+          "mean": 6738.24,
+          "median": 4007.5,
+          "p90": 15667,
+          "p95": 20794,
+          "p99": 27065,
+          "max": 45201,
+          "total": 673824
+        },
+        "one": {
+          "n": 100,
+          "min": 11,
+          "mean": 6780.04,
+          "median": 3283.0,
+          "p90": 19307,
+          "p95": 21241,
+          "p99": 32404,
+          "max": 44590,
+          "total": 678004
+        },
+        "multi": {
+          "n": 100,
+          "min": 3,
+          "mean": 5802.38,
+          "median": 3328.0,
+          "p90": 14709,
+          "p95": 17500,
+          "p99": 29047,
+          "max": 29747,
+          "total": 580238
+        }
+      },
+      "by_country": {
+        "India": {
+          "n": 150,
+          "min": 1,
+          "mean": 6095.86,
+          "median": 4857.5,
+          "p90": 12898,
+          "p95": 15667,
+          "p99": 30685,
+          "max": 32404,
+          "total": 914379
+        },
+        "US": {
+          "n": 150,
+          "min": 11,
+          "mean": 6784.58,
+          "median": 3028.5,
+          "p90": 19307,
+          "p95": 21366,
+          "p99": 44590,
+          "max": 45201,
+          "total": 1017687
+        }
+      },
+      "country_recall": {
+        "India": {
+          "true": 240,
+          "recovered": 221,
+          "missed": 19,
+          "recall": 0.9208333333333333
+        },
+        "US": {
+          "true": 247,
+          "recovered": 239,
+          "missed": 8,
+          "recall": 0.9676113360323887
+        }
+      },
+      "zero_match": {
+        "n": 100,
+        "min": 1,
+        "mean": 6738.24,
+        "median": 4007.5,
+        "p90": 15667,
+        "p95": 20794,
+        "p99": 27065,
+        "max": 45201,
+        "total": 673824,
+        "bins": {
+          "0": 0,
+          "1-10": 1,
+          "11-100": 1,
+          "101-1000": 11,
+          "1001-10000": 62,
+          "10001-100000": 25,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "52eaf186a6854f044dc9c536a4ae7a4bba43343609a9650f5d8d9e4c0acf2a05",
+      "miss_categories_overlapping": {
+        "multilingual/script difference": 11,
+        "high-frequency address key": 24,
+        "name word order": 1,
+        "name typo": 9,
+        "missing target address": 3,
+        "name abbreviation": 1,
+        "address reordering/partial overlap": 6
+      },
+      "miss_examples": [
+        {
+          "s1_id": "S1-583097336",
+          "target_id": "S2-81496173",
+          "source": "S2",
+          "s1_name": "Ss Healthcare Limited",
+          "target_name": "ਐੱਸਐੱਸ ਹੈਲਥਕੇਅਰ ਲਿਮਟਿਡ",
+          "s1_address": "Ludhiana, Punjab, Ludhiana, Scerat Heart School, Vill. Bhamian Kalan, Distt- Ludhiana, Sant Enclave",
+          "target_address": "PLOT 83 SANT ENCLAVE, LUDHIANA, Punjab",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-63612430",
+          "target_id": "S2-852896198",
+          "source": "S2",
+          "s1_name": "Star Infrastructure Private Limited",
+          "target_name": "स्टार इंफ्रास्ट्रक्चर प्राइवेट लिमिटेड",
+          "s1_address": "61, 1St Floor, Ashoka Enclave-1, Sector-35, Faridabad, Haryana",
+          "target_address": "61, FARIDABAD, SECTOR-35, हरियाणा",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-69626567",
+          "target_id": "S2-307441018",
+          "source": "S2",
+          "s1_name": "Surya Builders Private Limited",
+          "target_name": "सूर्य बिल्डर्स प्राइवेट लिमिटेड",
+          "s1_address": "D-2 Ground Floor Naraina Vihar, Delhi, New Delhi, Delhi",
+          "target_address": "D-##2 GROUND FLOOR NARAINA VIHAR, DELHI, NEW DELHI, दिल्ली",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-739572758",
+          "target_id": "S3-495277755",
+          "source": "S3",
+          "s1_name": "Smart Solutions LLP",
+          "target_name": "LLP ... Smart-Solutions",
+          "s1_address": "Shop No 17, Ground Floor, Svhplaza, Opp Kfc, Miyapu, Tirumalagiri, Hyderabad, Telangana",
+          "target_address": "17, Tirumalagiri, Hyderabad, Andhra Pradesh",
+          "categories": [
+            "name word order",
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-111042952",
+          "target_id": "S3-247569279",
+          "source": "S3",
+          "s1_name": "Doa Inc",
+          "target_name": "Doa",
+          "s1_address": "187 County Road 3813, Cleveland, TX",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation"
+          ]
+        },
+        {
+          "s1_id": "S1-237355917",
+          "target_id": "S2-973803682",
+          "source": "S2",
+          "s1_name": "Y 6 Peak Newbury PC",
+          "target_name": "Y Peak Newbury PC Center",
+          "s1_address": "219 Broadway Avenue, Pasadena, TX",
+          "target_address": "219 BROADWAY AVENUE, PASADENA, TX",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-83275465",
+          "target_id": "S3-333965145",
+          "source": "S3",
+          "s1_name": "Lamaor Plutonian, Inc",
+          "target_name": "Lama0r Plutonian, Inc",
+          "s1_address": "524 Maple Street, Ontario, CA",
+          "target_address": "524 Mpale St, Ontario, California",
+          "categories": [
+            "name typo",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-15914874",
+          "target_id": "S2-828914623",
+          "source": "S2",
+          "s1_name": "Super Engineering Limited",
+          "target_name": "LIMITED SUPER ENGINEDRNG",
+          "s1_address": "Plot No-303, Vrundavan Nagar Society, B/H Moti Bahuchraji Mandir, Ved Road, Surat, Gujarat",
+          "target_address": "PLOT NO-303, SURAT, KATARGAM, Gujarat",
+          "categories": [
+            "address reordering/partial overlap",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-235315002",
+          "target_id": "S2-7547324",
+          "source": "S2",
+          "s1_name": "International Power Limited",
+          "target_name": "இன்டர்நேஷனல் பவர் லிமிடெட்",
+          "s1_address": "Old No.1/62, Nmew No.620 I T Express Road, Seevaram, Perungudi, Chennai, Tamil Nadu",
+          "target_address": "OLD NO.1/62, CHENNAI, Tamil Nadu",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-323636434",
+          "target_id": "S2-717931239",
+          "source": "S2",
+          "s1_name": "Big Finance Private Limited",
+          "target_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+          "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+          "target_address": "567 L-1/19-B, DDA FLATS KALKAJI, DELHI, दिल्ली",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-323636434",
+          "target_id": "S2-6415510",
+          "source": "S2",
+          "s1_name": "Big Finance Private Limited",
+          "target_name": "बिग फाइनेंस प्राइवेट लिमिटेड",
+          "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+          "target_address": "#567 L-1/19-B, DDA FLATS KALKAJI, DELHI",
+          "categories": [
+            "multilingual/script difference",
+            "high-frequency address key"
+          ]
+        },
+        {
+          "s1_id": "S1-323636434",
+          "target_id": "S3-335798528",
+          "source": "S3",
+          "s1_name": "Big Finance Private Limited",
+          "target_name": "bigfinance.com",
+          "s1_address": "L-1/19-B, Dda Flats Kalkaji, Delhi",
+          "target_address": "L-1/19-b, Dda Flats Kalkaji, Delhi, DL",
+          "categories": [
+            "address reordering/partial overlap",
+            "high-frequency address key"
+          ]
+        }
+      ]
+    },
+    "Union cap 25,000": {
+      "true_links": 487,
+      "recovered_links": 484,
+      "missed_links": 3,
+      "recall": 0.9938398357289527,
+      "s2": {
+        "true": 252,
+        "recovered": 251,
+        "missed": 1,
+        "recall": 0.996031746031746
+      },
+      "s3": {
+        "true": 235,
+        "recovered": 233,
+        "missed": 2,
+        "recall": 0.9914893617021276
+      },
+      "candidate_volume": {
+        "n": 300,
+        "min": 1,
+        "mean": 24633.54,
+        "median": 22741.0,
+        "p90": 46329,
+        "p95": 58191,
+        "p99": 73224,
+        "max": 81132,
+        "total": 7390062
+      },
+      "by_match_class": {
+        "zero": {
+          "n": 100,
+          "min": 1,
+          "mean": 23060.41,
+          "median": 21249.5,
+          "p90": 42626,
+          "p95": 49793,
+          "p99": 69193,
+          "max": 73361,
+          "total": 2306041
+        },
+        "one": {
+          "n": 100,
+          "min": 296,
+          "mean": 27987.71,
+          "median": 26955.0,
+          "p90": 46329,
+          "p95": 58191,
+          "p99": 73224,
+          "max": 81132,
+          "total": 2798771
+        },
+        "multi": {
+          "n": 100,
+          "min": 5,
+          "mean": 22852.5,
+          "median": 19571.0,
+          "p90": 49041,
+          "p95": 58267,
+          "p99": 66986,
+          "max": 79301,
+          "total": 2285250
+        }
+      },
+      "by_country": {
+        "India": {
+          "n": 150,
+          "min": 1,
+          "mean": 29437.053333333333,
+          "median": 26439.5,
+          "p90": 53773,
+          "p95": 66986,
+          "p99": 79301,
+          "max": 81132,
+          "total": 4415558
+        },
+        "US": {
+          "n": 150,
+          "min": 296,
+          "mean": 19830.02666666667,
+          "median": 17477.5,
+          "p90": 37355,
+          "p95": 44716,
+          "p99": 60784,
+          "max": 64336,
+          "total": 2974504
+        }
+      },
+      "country_recall": {
+        "India": {
+          "true": 240,
+          "recovered": 240,
+          "missed": 0,
+          "recall": 1.0
+        },
+        "US": {
+          "true": 247,
+          "recovered": 244,
+          "missed": 3,
+          "recall": 0.9878542510121457
+        }
+      },
+      "zero_match": {
+        "n": 100,
+        "min": 1,
+        "mean": 23060.41,
+        "median": 21249.5,
+        "p90": 42626,
+        "p95": 49793,
+        "p99": 69193,
+        "max": 73361,
+        "total": 2306041,
+        "bins": {
+          "0": 0,
+          "1-10": 1,
+          "11-100": 0,
+          "101-1000": 1,
+          "1001-10000": 16,
+          "10001-100000": 82,
+          ">100000": 0
+        }
+      },
+      "recovered_link_set_sha256": "4967c3dd1304ed1e873cfdf72c18ccedbe8649c4ed2bdddd4815efc9f6bd4881",
+      "miss_categories_overlapping": {
+        "missing target address": 3,
+        "name abbreviation": 1,
+        "name typo": 2
+      },
+      "miss_examples": [
+        {
+          "s1_id": "S1-111042952",
+          "target_id": "S3-247569279",
+          "source": "S3",
+          "s1_name": "Doa Inc",
+          "target_name": "Doa",
+          "s1_address": "187 County Road 3813, Cleveland, TX",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name abbreviation"
+          ]
+        },
+        {
+          "s1_id": "S1-160455001",
+          "target_id": "S2-43936834",
+          "source": "S2",
+          "s1_name": "Jilleen Myer Asset LLC",
+          "target_name": "THE JILLEEN MYER ASSET LLC",
+          "s1_address": "9001 104th Place, Bixby, OK",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name typo"
+          ]
+        },
+        {
+          "s1_id": "S1-993721743",
+          "target_id": "S3-647708261",
+          "source": "S3",
+          "s1_name": "3223 Main St Management LLC",
+          "target_name": "The 3223 Main St Management [LLC]",
+          "s1_address": "121 Salem Street, Unit D2, Boston, MA",
+          "target_address": "",
+          "categories": [
+            "missing target address",
+            "name typo"
+          ]
+        }
+      ]
+    }
+  },
+  "union_overlap": {
+    "recovered_by_both": 460,
+    "recovered_only_by_a": 0,
+    "recovered_only_by_b": 24,
+    "missed_by_both": 3
+  },
+  "key_frequency": {
+    "queried_address_keys": 1404,
+    "freq_min": 1,
+    "freq_median": 3173,
+    "freq_max": 1827194,
+    "address_key_df_over_2500_count": 746,
+    "address_key_df_over_25000_count": 260
+  },
+  "runtime_seconds": 419.636
+}
