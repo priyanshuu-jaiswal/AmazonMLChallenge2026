@@ -28,7 +28,25 @@ student_resource/
 └── ...
 ```
 
-The challenge files are required locally. Do not redistribute or copy the large dataset into Git. Do not modify `student_resource/dataset/`.
+The challenge files are required locally. Teammates should obtain them separately through the official challenge distribution/account, then place them in the structure above. Do not redistribute or copy the large dataset into Git. Do not modify `student_resource/dataset/`.
+
+To verify the expected files in a local checkout, run from the project root:
+
+```sh
+for f in \
+  student_resource/dataset/train/train_source1.tsv \
+  student_resource/dataset/train/train_source2.tsv \
+  student_resource/dataset/train/train_source3.tsv \
+  student_resource/dataset/train/train_ground_truth.tsv \
+  student_resource/dataset/test/test_source1.tsv \
+  student_resource/dataset/test/test_source2.tsv \
+  student_resource/dataset/test/test_source3.tsv \
+  student_resource/utils/validate_submission.py; do
+  test -f "$f" || echo "Missing: $f"
+done
+```
+
+The supplied `.gitignore` excludes `student_resource/dataset/`, `output/`, TSV/CSV exports, and local database files. Before staging, verify with `git check-ignore -v student_resource/dataset/train/train_source1.tsv output/matching_results.tsv experiments/stage5/submission1_fast_baseline/target_index.sqlite`, then inspect `git status --short` and the staged file list. Do not use `git add -f` on ignored data or generated files.
 
 ## Frozen Stage 4 design
 
@@ -41,14 +59,15 @@ Stage 4.7 used 1,500 S1s and 5,156 true links:
 | A | 96.18% (4,959/5,156) | 10,906,369 |
 | A + HF-address/name (frozen) | 97.42% (5,023/5,156) | 10,967,173 |
 | B | 98.84% (5,096/5,156) | 36,380,324 |
+| A + name-token≤2,500 | 97.63% (5,034/5,156) | 11,770,701 |
 
 Do not silently change these definitions. Record any proposed change as a separate experiment. See `experiments/stage4_7/` for the validation evidence.
 
 ## Stage 5 scorer and compute limit
 
-The held-out training validation scorer baseline measured F0.5=0.5483, precision=0.9030, recall=0.2510, threshold=12.0. It was not the source of Submission #1's leaderboard score.
+The held-out training validation scorer baseline measured F0.5=0.5483, precision=0.9030, recall=0.2510, threshold=12.0. Of 482 true links, 17 were not generated as candidates, 465 were scored, 121 scored ≥12, and 344 scored below 12. It was not the source of Submission #1's leaderboard score.
 
-The frozen generator is estimated to produce about 12.6 billion test candidates. At the measured ~19,600 pair scores/second, scoring the full set would take about 178 hours. Do not launch that job or materialize hundreds of GB of candidates. Stage 4 remains frozen; pursue a separately documented computationally feasible retrieval approach.
+The frozen generator is estimated to produce about 12.67 billion test candidates. At the measured ~19,600 pair scores/second, scoring the full set would take about 178 hours. Do not launch that job or materialize hundreds of GB of candidates. Stage 4 remains frozen; pursue a separately documented computationally feasible retrieval approach.
 
 ## Submission #1
 
